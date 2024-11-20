@@ -39,6 +39,7 @@ weight: 5
     * label
       * == key / value found | your data
         * values are key-specific
+      * allow selecting fields -- based on -- data sources
     * several views
 
 ## Before you begin
@@ -78,9 +79,11 @@ weight: 5
       * see [Time picker](#time-picker)
     * **Run query**
     * **Query editor**
-      * :=interface | you construct the query
+      * := interface | you construct the query
         * 👀if you select **Mixed** | data source picker -> you can run queries | MULTIPLE data sources👀 
       * 's elements differ -- based on -- data source
+        * _Example:_ select label or labels 
+      * see [how to use query editors](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/datasources/#use-query-editors)
     * **+Add query**
       * add ADDITIONAL queries
     * **Query history**
@@ -90,24 +93,11 @@ weight: 5
 
 ## Access Explore
 
-* TODO:
-To access Explore:
-
-1. Click on **Explore** in the left side menu.
-
-   To start with an existing query from a dashboard panel, select the Explore option from the Panel menu in the upper right. This opens an Explore page with the panel's query, enabling you to tweak or iterate the query outside your dashboard.
-
-   {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-panel-menu-10.1.png" class="docs-image--no-shadow" caption="Panel menu with Explore option" >}}
-
-1. Select a data source from the drop-down in the upper left.
-
-1. Using the query editor provided for the specific data source, begin writing your query. Each query editor differs based on each data source's unique elements.
-
-Some query editors provide a **Kick start your query** option, which gives you a list of basic pre-written queries. Refer to [Use query editors](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/datasources/#use-query-editors) to see how to use various query editors. For general information on querying data sources in Grafana, refer to [Query and transform data](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/query-transform-data/).
-
-Based on specific data source, certain query editors allow you to select the label or labels to add to your query. Labels are fields that consist of key/value pairs representing information in the data. Some data sources allow for selecting fields.
-
-1. Click **Run query** in the upper right to run your query.
+* steps
+  1. Click | **Explore** | left side menu
+  2. Select a data source
+  3. write your query | query editor
+  4. Click **Run query**
 
 ## Content outline
 
