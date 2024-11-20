@@ -58,6 +58,9 @@ cards:
 * Explore
   * allows | Grafana
     * querying,
+      * / mixing data sources 
+      * uses
+        * building visualizations -- based on -- these queries
     * analyzing,
     * aggregating data
 
