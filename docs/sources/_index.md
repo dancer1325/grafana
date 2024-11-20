@@ -80,12 +80,18 @@ cards:
 ## Overview
 
 * Grafana Open Source Software (OSS)
-  * allows, about your metrics, logs, and traces,
+  * allows, about your metrics, logs, and traces, / data on live
     * query,
     * visualize,
     * alert on,
     * explore
-  * Grafana data source plugins enable you to query data sources including time series databases like Prometheus and CloudWatch, logging tools like Loki and Elasticsearch, NoSQL/SQL databases like Postgres, CI/CD tooling like GitHub, and many more. Grafana OSS provides you with tools to display that data on live dashboards with insightful graphs and visualizations.
+  * data source plugins
+    * enable
+      * querying data sources
+        * _Example1:_ time series databases (Prometheus and CloudWatch)
+        * _Example2:_ logging tools (Loki and Elasticsearch)
+        * _Example3:_ NoSQL/SQL databases (Postgres)
+        * _Example4:_ CI/CD tooling (GitHub)
 
 * Grafana Enterprise
   * == commercial edition of Grafana /
