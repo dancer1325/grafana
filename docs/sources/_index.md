@@ -81,10 +81,12 @@ cards:
 
 * Grafana Open Source Software (OSS)
   * allows, about your metrics, logs, and traces, / data on live
+    * collect
     * query,
     * visualize,
     * alert on,
-    * explore
+    * explore,
+    * correlate
   * data source plugins
     * enable
       * querying data sources
@@ -92,6 +94,10 @@ cards:
         * _Example2:_ logging tools (Loki and Elasticsearch)
         * _Example3:_ NoSQL/SQL databases (Postgres)
         * _Example4:_ CI/CD tooling (GitHub)
+  * how to use this information?
+    * drives informed decisions,
+    * enhances system performance,
+    * streamlines troubleshooting
 
 * Grafana Enterprise
   * == commercial edition of Grafana /
