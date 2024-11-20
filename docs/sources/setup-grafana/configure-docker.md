@@ -20,62 +20,74 @@ weight: 1800
 
 # Configure a Grafana Docker image
 
-This topic explains how to run Grafana on Docker in complex environments that require you to:
-
-- Use different images
-- Change logging levels
-- Define secrets on the Cloud
-- Configure plugins
-
-> **Note:** The examples in this topic use the Grafana Enterprise Docker image. You can use the Grafana Open Source edition by changing the Docker image to `grafana/grafana-oss`.
+* goal
+  * how to run Grafana | Docker | complex environments / require
+    * Use different images
+    * Change logging levels
+    * Define secrets | Cloud
+    * Configure plugins
 
 ## Supported Docker image variants
 
-You can install and run Grafana using the following official Docker images.
-
 - **Grafana Enterprise**: `grafana/grafana-enterprise`
-
+  - variants
+    - Alpine
+    - Ubuntu
 - **Grafana Open Source**: `grafana/grafana-oss`
-
-Each edition is available in two variants: Alpine and Ubuntu.
+  - variants
+    - Alpine
+    - Ubuntu
 
 ## Alpine image (recommended)
 
-[Alpine Linux](https://alpinelinux.org/about/) is a Linux distribution not affiliated with any commercial entity. It is a versatile operating system that caters to users who prioritize security, efficiency, and user-friendliness. Alpine Linux is much smaller than other distribution base images, allowing for slimmer and more secure images to be created.
-
-By default, the images are built using the widely used [Alpine Linux project](http://alpinelinux.org/) base image, which can be found in the [Alpine docker repo](https://hub.docker.com/_/alpine).
-If you prioritize security and want to minimize the size of your image, it is recommended that you use the Alpine variant. However, it's important to note that the Alpine variant uses [musl libc](http://www.musl-libc.org/) instead of [glibc and others](http://www.etalabs.net/compare_libcs.html). As a result, some software might encounter problems depending on their libc requirements. Nonetheless, most software should not experience any issues, so the Alpine variant is generally reliable.
+* [Alpine Linux](https://alpinelinux.org/about/)
+  * == Linux distribution /
+    * -- NOT affiliated with -- any commercial entity
+    * audience
+      * users / prioritize
+        * security,
+        * efficiency,
+        * user-friendliness
+    * much smaller vs other distribution base images
+    * built -- based on -- [Alpine Linux project](http://alpinelinux.org/) base image
+      * see [Alpine docker repo](https://hub.docker.com/_/alpine)
+    * uses [musl libc](http://www.musl-libc.org/) -- instead of -- [glibc and others](http://www.etalabs.net/compare_libcs.html)
+      * -> SOME software might encounter problems
 
 ## Ubuntu image
 
-The Ubuntu-based Grafana Enterprise and OSS images are built using the [Ubuntu](https://ubuntu.com/) base image, which can be found in the [Ubuntu docker repo](https://hub.docker.com/_/ubuntu). An Ubuntu-based image can be a good option for users who prefer an Ubuntu-based image or require certain tools unavailable on Alpine.
-
-- **Grafana Enterprise**: `grafana/grafana-enterprise:<version>-ubuntu`
-
-- **Grafana Open Source**: `grafana/grafana-oss:<version>-ubuntu`
+* built -- based on -- [Ubuntu](https://ubuntu.com/) base image
+  * see [Ubuntu docker repo](https://hub.docker.com/_/ubuntu)
+* audience
+  * users /
+    * prefer an Ubuntu-based image
+    * require certain tools / unavailable | Alpine
+* images
+  - **Grafana Enterprise**: `grafana/grafana-enterprise:<version>-ubuntu`
+  - **Grafana Open Source**: `grafana/grafana-oss:<version>-ubuntu`
 
 ## Run a specific version of Grafana
 
-You can also run a specific version of Grafana or a beta version based on the main branch of the [grafana/grafana GitHub repository](https://github.com/grafana/grafana).
+* see [grafana/grafana GitHub repository releases](https://github.com/grafana/grafana)
 
-> **Note:** If you use a Linux operating system such as Debian or Ubuntu and encounter permission errors when running Docker commands, you might need to prefix the command with `sudo` or add your user to the `docker` group. The official Docker documentation provides instructions on how to [run Docker without a non-root user](https://docs.docker.com/engine/install/linux-postinstall/).
-
-To run a specific version of Grafana, add it in the command <version number> section:
+* if you use Linux OS (Debian or Ubuntu) & encounter permission errors | running `docker ....` -> 
+  * `sudo docker ...`  or
+  * add your user | `docker` group
+    * see [run Docker without a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 
 ```bash
 docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:<version number>
 ```
 
-Example:
+* _Example:_
 
-The following command runs the Grafana Enterprise container and specifies version 9.4.7. If you want to run a different version, modify the version number section.
-
-```bash
-docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7
-```
+    ```bash
+    docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7
+    ```
 
 ## Run the Grafana main branch
 
+* TODO:
 After every successful build of the main branch, two tags, `grafana/grafana-oss:main` and `grafana/grafana-oss:main-ubuntu`, are updated. Additionally, two new tags are created: `grafana/grafana-oss-dev:<version><build ID>-pre` and `grafana/grafana-oss-dev:<version><build ID>-pre-ubuntu`, where `version` is the next version of Grafana and `build ID `is the ID of the corresponding CI build. These tags provide access to the most recent Grafana main builds. For more information, refer to [grafana/grafana-oss-dev](https://hub.docker.com/r/grafana/grafana-oss-dev/tags).
 
 To ensure stability and consistency, we strongly recommend using the `grafana/grafana-oss-dev:<version><build ID>-pre` tag when running the Grafana main branch in a production environment. This tag ensures that you are using a specific version of Grafana instead of the most recent commit, which could potentially introduce bugs or issues. It also avoids polluting the tag namespace for the main Grafana images with thousands of pre-release tags.
