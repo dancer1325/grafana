@@ -13,6 +13,9 @@ weight: 15
 
 # Query inspector in Explore
 
+* TODO: 
+* Provides detailed statistics regarding your query. Inspector functions as a kind of debugging tool that "inspects" your query. It provides query statistics under **Stats**, request response time under **Query**, data frame details under **{} JSON**, and the shape of your data under **Data**. 
+
 The Query inspector in Grafana Explore gives you detailed statistics regarding your query, which helps you understand and troubleshoot issues with your queries. Query inspector also lets you inspect raw data, export data to a comma-separated values (CSV) file, export log results in TXT format, and view query requests.
 
 ## Query inspector UI
