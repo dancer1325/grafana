@@ -61,11 +61,21 @@ refs:
 
 ## Overview
 
-Panels are the basic building block in Grafana dashboards, composed of a [query](ref:query) and a visualization, a graphical representation of query results.
-
-Visualizations provide you several different ways to present your data within a panel, depending on what best suits the data and your needs. Grafana’s growing suite of visualizations, ranging from time series graphs to heatmaps to cutting-edge 3D charts, help you decode complex datasets.
-
-Panels offer a wide variety of formatting and styling options from applying colors based on field values to custom units. Each visualization also comes with options specific to it that give you further control over how your data is displayed. With Grafana panels and visualizations, you can easily get the information you need from your data and optimize performance.
+* Panels
+  * 👀== BASIC building block | Grafana dashboards👀 /
+    * variety of 
+      * formatting options
+      * styling options 
+  * 👀== [query](ref:query) + visualization 👀
+    * visualization
+      * == graphical representation of query results /
+        * include options-specific -- to control -- how to display your data  
+      * provide
+        * DIFFERENT ways to present your data | panel
+          * -- depend on -- what best suits the data & your needs
+          * _Example:_ time series graphs, heatmaps, cutting-edge 3D charts
+  * uses
+    * get the information -- to optimize -- performance
 
 ## Explore
 
