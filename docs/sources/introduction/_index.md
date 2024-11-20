@@ -14,18 +14,28 @@ weight: 5
 
 # About Grafana
 
-[Grafana open source software](/oss/) enables you to query, visualize, alert on, and explore your metrics, logs, and traces wherever they are stored. Grafana OSS provides you with tools to turn your time-series database (TSDB) data into insightful graphs and visualizations. The Grafana OSS plugin framework also enables you to connect other data sources like NoSQL/SQL databases, ticketing tools like Jira or ServiceNow, and CI/CD tooling like GitLab.
-
-After you have [installed Grafana]({{< relref "../setup-grafana/installation" >}}) and set up your first dashboard using instructions in [Getting started with Grafana]({{< relref "../getting-started/build-first-dashboard" >}}), you will have many options to choose from depending on your requirements. For example, if you want to view weather data and statistics about your smart home, then you can create a [playlist]({{< relref "../dashboards/create-manage-playlists" >}}). If you are the administrator for an enterprise and are managing Grafana for multiple teams, then you can set up [provisioning]({{< relref "../administration/provisioning" >}}) and [authentication]({{< relref "../setup-grafana/configure-security/configure-authentication" >}}).
-
-The following sections provide an overview of Grafana features and links to product documentation to help you learn more. For more guidance and ideas, check out our [Grafana Community forums](https://community.grafana.com/).
+* see [index](../_index.md)
+* time-series database (TSDB)
+* see 
+  * [installed Grafana](../setup-grafana/installation)
+  * [Getting started with Grafana](../getting-started/build-first-dashboard)
+  * [playlist](../dashboards/create-manage-playlists)
+  * if you are the admin for an enterprise & manage Grafana | MULTIPLE teams,
+    * [provisioning](../administration/provisioning)
+    * [authentication](../setup-grafana/configure-security/configure-authentication)
+  * [Grafana Community forums](https://community.grafana.com/)
 
 ## Explore metrics, logs, and traces
 
-Explore your data through ad-hoc queries and dynamic drilldown. Split view and compare different time ranges, queries and data sources side by side. Refer to [Explore]({{< relref "../explore" >}}) for more information.
+* Explore your data
+  * -- through -- 
+    * ad-hoc queries
+    * dynamic drilldown
+  * if you want to split view & compare different time ranges, queries and data sources -> see [Explore](../explore)
 
 ## Alerts
 
+* TODO:
 If you're using Grafana Alerting, then you can have alerts sent through a number of different alert notifiers, including PagerDuty, SMS, email, VictorOps, OpsGenie, or Slack.
 
 Alert hooks allow you to create different notifiers with a bit of code if you prefer some other channels of communication. Visually define [alert rules]({{< relref "../alerting/alerting-rules" >}}) for your most important metrics.
