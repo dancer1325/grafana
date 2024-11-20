@@ -11,6 +11,9 @@ weight: 10
 
 # Set up Grafana
 
-This section includes information that helps you get Grafana up and running.
+* goal
+  * Grafana
+    * up
+    * running
 
 {{< section >}}
