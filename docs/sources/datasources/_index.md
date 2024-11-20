@@ -53,28 +53,29 @@ refs:
 
 # Grafana data sources
 
-Grafana comes with built-in support for many _data sources_.
-If you need other data sources, you can also install one of the many data source plugins.
-If the plugin you need doesn't exist, you can develop a custom plugin.
+* goal
+  * how to manage data sources
+  * how to configure or query the built-in data sources
 
-{{< youtube id="cqHO0oYW6Ic" >}}
+* types
+  * built-in
+    * see list of [datasource plugins](https://grafana.com/grafana/plugins/) 
+  * if you need OTHER data sources -> install a data source plugin
+    * if the plugin does NOT exist -> develop a custom plugin
+      * see [Create a data source plugin](#create-a-data-source-plugin)
+* [youtube](https://www.youtube.com/watch?v=cqHO0oYW6Ic)
+  * goal
+    * add as data sources: Loki, Tempo, Mimir
 
-Each data source comes with a _query editor_,
-which formulates custom queries according to the source's structure.
-After you add and configure a data source, you can use it as an input for many operations, including:
-
-- Query the data with [Explore](ref:explore).
-- Visualize it in [panels](ref:panels).
-- Create rules for [alerts](ref:alerts).
-
-This documentation describes how to manage data sources in general,
-and how to configure or query the built-in data sources.
-For other data sources, refer to the list of [datasource plugins](/grafana/plugins/).
-
-To develop a custom plugin, refer to [Create a data source plugin](#create-a-data-source-plugin).
+* OWN _query editor_ / EACH data source
+* 👀once you add & configure a data source -> you can use it -- as -- many operations' input 👀
+  - Query the data -- via -- [Explore](ref:explore)
+  - Visualize | [panels](ref:panels)
+  - Create rules -- for -- [alerts](ref:alerts)
 
 ## Manage data sources
 
+* TODO:
 Only users with the [organization administrator role](ref:organization-roles) can add or remove data sources.
 To access data source management tools in Grafana as an administrator, navigate to **Configuration > Data Sources** in the Grafana sidebar.
 
@@ -97,19 +98,19 @@ Only users with the organization admin role can add data sources.
 
 ## Use query editors
 
-{{< figure src="/static/img/docs/queries/influxdb-query-editor-7-2.png" class="docs-image--no-shadow" max-width="1000px" caption="The InfluxDB query editor" >}}
+* uses
+  * create queries |
+    * [dashboard panels](ref:query-transform-data) or
+    * [Explore](ref:explore)
 
-Each data source's **query editor** provides a customized user interface that helps you write queries that take advantage of its unique capabilities.
-You use a data source's query editor when you create queries in [dashboard panels](ref:query-transform-data) or [Explore](ref:explore).
+* ⚠️DIFFERENT query language / data source ⚠️
+  * -> EACH data source query editor differently
+    * looks
+      * _Example1:_ provide auto-completion features, metric names, variable suggestions, or a visual query-building interface
+      * _Example2:_ [Prometheus query builder](https://vimeo.com/720004179)
+    * functions
 
-Because of the differences between query languages, each data source query editor looks and functions differently.
-Depending on your data source, the query editor might provide auto-completion features, metric names, variable suggestions, or a visual query-building interface.
-
-For example, this video demonstrates the visual Prometheus query builder:
-
-{{< vimeo 720004179 >}}
-
-For general information about querying in Grafana, and common options and user interface elements across all query editors, refer to [Query and transform data](ref:query-transform-data).
+* see [Query and transform data](ref:query-transform-data)
 
 ## Special data sources
 
