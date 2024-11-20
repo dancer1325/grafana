@@ -76,6 +76,7 @@ refs:
           * _Example:_ time series graphs, heatmaps, cutting-edge 3D charts
   * uses
     * get the information -- to optimize -- performance
+  * -- communicate, via queries, with -- data sources
 
 ## Explore
 
