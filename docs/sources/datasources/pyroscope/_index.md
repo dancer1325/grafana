@@ -43,25 +43,22 @@ refs:
 
 # Grafana Pyroscope data source
 
-Grafana Pyroscope is a horizontally scalable, highly available, multi-tenant, OSS, continuous profiling aggregation system. Add it as a data source, and you are ready to query your profiles in [Explore](ref:explore).
-
-Refer to [Introduction to Pyroscope](https://grafana.com/docs/pyroscope/<PYROSCOPE_VERSION>/introduction/) to understand profiling and Pyroscope.
-
-To use profiling data, you should:
+* see [Introduction to Pyroscope](https://grafana.com/docs/pyroscope/<PYROSCOPE_VERSION>/introduction/)
+* if you add it -- as a -- data source -> you can query your profiles | [Explore](ref:explore)
 
 - [Configure your application to send profiles](/docs/pyroscope/<PYROSCOPE_VERSION>/configure-client/)
 - [Configure the Grafana Pyroscope data source](./configure-pyroscope-data-source/).
 - [View and query profiling data using Explore Profiles or the query editor ](./query-profile-data/)
 
-## Integrate profiles into dashboards
+## Integrate profiles | dashboards
 
-Using the Pyroscope data source, you can integrate profiles into your dashboards.
-In this case, the screenshot shows memory profiles alongside panels for logs and metrics to be able to debug out of memory (OOM) errors alongside the associated logs and metrics.
-
-![dashboard](https://grafana.com/static/img/pyroscope/grafana-pyroscope-dashboard-2023-11-30.png)
+* _Example:_ memory profiles + panels for logs and metrics
+  * Reason: debug OOM errors / -- the associated -- logs and metrics
+    ![dashboard](https://grafana.com/static/img/pyroscope/grafana-pyroscope-dashboard-2023-11-30.png)
 
 ## Visualize traces and profiles data using Traces to profiles
 
+* TODO:
 You can link profile and tracing data using your Pyroscope data source with the Tempo data source.
 To learn more about how profiles and tracing can work together, refer to [Profiling and tracing synergies](./profiling-and-tracing/).
 
@@ -75,18 +72,17 @@ For more information, refer to the [Traces to profile section](ref:configure-tem
 
 ## Provision the Pyroscope data source
 
-You can modify the Grafana configuration files to provision the Pyroscope data source.
-To learn more, and to view the available provisioning settings, refer to [provisioning documentation](ref:provisioning-data-sources).
+* see [provisioning documentation](ref:provisioning-data-sources)
 
-Here is an example configuration:
+* _Example:_ provision the Pyroscope data source -- via, modifying the -- Grafana configuration files 
 
-```yaml
-apiVersion: 1
-
-datasources:
-  - name: Grafana Pyroscope
-    type: grafana-pyroscope-datasource
-    url: http://localhost:4040
-    jsonData:
-      minStep: '15s'
-```
+    ```yaml
+    apiVersion: 1
+    
+    datasources:
+      - name: Grafana Pyroscope
+        type: grafana-pyroscope-datasource
+        url: http://localhost:4040
+        jsonData:
+          minStep: '15s'
+    ```
