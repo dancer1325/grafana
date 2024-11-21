@@ -55,83 +55,76 @@ refs:
 
 # Query and transform data
 
-Grafana supports many types of [data sources](ref:data-sources).
-Data source **queries** return data that Grafana can **transform** and visualize.
-Each data source uses its own query language, and data source plugins each implement a query-building user interface called a query editor.
+* see [Grafana data sources](ref:data-sources)
+
+* data source
+  * **queries**
+    * return data / Grafana can
+      * **transform**
+      * visualize
+  * OWN query language / EACH data source
 
 ## About queries
 
-Grafana panels communicate with data sources via queries, which retrieve data for the visualization.
-A query is a question written in the query language used by the data source.
-
-You can configure query frequency and data collection limits in the panel's data source options.
-Grafana supports up to 26 queries per panel.
-
-> **Important:** You **must** be familiar with a data source's query language.
-> For more information, refer to [Data sources](ref:data-sources).
+* query
+  * := question | query language -- used by the -- data source
+    * see [Data sources](ref:data-sources)
+  * configuration
+    * | panel's data source options
+      * query frequency
+      * data collection limits
+  * <= 26 queries / panel
 
 ### Query editors
 
-{{< figure src="/static/img/docs/queries/influxdb-query-editor-7-2.png" class="docs-image--no-shadow" max-width="1000px" alt="The InfluxDB query editor" >}}
-
-Each data source's **query editor** provides a customized user interface that helps you write queries that take advantage of its unique capabilities.
-
-Because of the differences between query languages, each data source query editor looks and functions differently.
-Depending on your data source, the query editor might provide auto-completion features, metric names, variable suggestions, or a visual query-building interface.
-
-For example, this video demonstrates the visual Prometheus query builder:
-
-{{< vimeo 720004179 >}}
-
-For details on a specific data source's unique query editor features, refer to its documentation:
-
-- For data sources included with Grafana, refer to [Built-in core data sources](ref:built-in-core-data-sources), which links to each core data source's documentation.
-- For data sources installed as plugins, refer to its own documentation.
-  - Data source plugins in Grafana's [plugin catalog](/grafana/plugins/) link to or include their documentation in their catalog listings.
-    For details about the plugin catalog, refer to [Plugin management](ref:plugin-management).
-  - For links to Grafana Enterprise data source plugin documentation, refer to the [Enterprise plugins index](/docs/plugins/).
+* specific query editor features / data source 
+  - for Grafana built-in data sources -> see [Built-in core data sources](ref:built-in-core-data-sources)
+  - for data sources / -- installed as -- plugins -> see
+    - Data source plugins | Grafana's -> [plugin catalog](/grafana/plugins/)
+    - Grafana Enterprise data source plugin -> [Enterprise plugins index](/docs/plugins/).
 
 ### Query syntax
 
-Each data source uses a different query languages to request data.
-For details on a specific data source's unique query language, refer to its documentation.
+* ⚠️DIFFERENT query language / data source ⚠️
+  * _Example1:_ PostgreSQL
 
-**PostgreSQL example:**
+    ```
+    SELECT hostname FROM host WHERE region IN($region)
+    ```
 
-```
-SELECT hostname FROM host WHERE region IN($region)
-```
+  * _Example2:_ PromQL
 
-**PromQL example:**
-
-```
-query_result(max_over_time(<metric>[${__range_s}s]) != <state>)
-```
+    ```
+    query_result(max_over_time(<metric>[${__range_s}s]) != <state>)
+    ```
 
 ### Special data sources
 
+* TODO:
 Grafana also includes three special data sources: **Grafana**, **Mixed**, and **Dashboard**.
 For details, refer to [Data sources](ref:data-sources)
 
 ## Navigate the Query tab
 
-A panel's Query tab consists of the following elements:
-
-- **Data source selector:** Selects the data source to query.
-  For more information about data sources, refer to [Data sources](ref:data-sources).
-- **Query options:** Sets maximum data retrieval parameters and query execution time intervals.
-- **Query inspector button:** Opens the query inspector panel, where you can view and optimize your query.
-- **Query editor list:** Lists the queries you've written.
-- **Expressions:** Uses the expression builder to create alert expressions.
-  For more information about expressions, refer to [Use expressions to manipulate data](ref:use-expressions-to-manipulate-data).
-
-{{< figure src="/static/img/docs/queries/query-editor-7-2.png" class="docs-image--no-shadow" max-width="1000px" alt="The Query tab of the panel editor" >}}
+* panel's Query tab -- consists of --
+  - **Data source selector:**
+    - == data source -- to -- query
+  - **Query options:**
+    - sets
+      - MAXIMUM data retrieval parameters
+      - query execution time intervals
+      - ...
+  - **Query inspector button:**
+    - Opens the query inspector panel
+    - uses
+      - check -- to optimize -- your query
+  - **Query editor list:**
+  - **Expressions:**
+    - see [here](expression-queries)
 
 ## Add a query
 
-A query returns data that Grafana visualizes in dashboard panels.
-When you create a panel, Grafana automatically selects the default data source.
-
+* TODO:
 **To add a query:**
 
 1. Edit the panel to which you're adding a query.
