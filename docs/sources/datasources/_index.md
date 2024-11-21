@@ -114,26 +114,33 @@ Only users with the organization admin role can add data sources.
 
 ## Special data sources
 
-Grafana includes three special data sources:
-
 ### Grafana
 
-A built-in data source that generates random walk data and can poll the [Testdata]({{< relref "./testdata/" >}}) data source. Additionally, it can list files and get other data from a Grafana installation. This can be helpful for testing visualizations and running experiments.
+* == built-in data source /
+  * generates random walk data
+    * -> uses
+      * testing visualizations
+      * running experiments
+  * can
+    * poll the data source's [Testdata]({{< relref "./testdata/" >}})
+    * list files
+    * get other data -- from a -- Grafana installation 
 
 ### Mixed
 
-An abstraction that lets you query multiple data sources in the same panel. When you select Mixed, you can then select a different data source for each new query that you add.
-
-- The first query uses the data source that was selected before you selected **Mixed**.
-- You can't change an existing query to use the **Mixed** data source.
-
-{{< docs/play title="Mixed Datasources Example" url="https://play.grafana.org/d/000000100/" >}}
+* allows
+  * run queries | MULTIPLE data sources | SAME panel
+    * 1@ query
+      * 👀-- uses the -- data source / was selected BEFORE you selected **Mixed** 👀
+    * EXISTING query -- can NOT be changed to use the -- **Mixed** data source
+* _Example:_ [Mixed Datasources Example](https://play.grafana.org/d/000000100/)
 
 ### Dashboard
 
-A data source that uses the result set from another panel in the same dashboard. The dashboard data source can use data either directly from the selected panel or from annotations attached to the selected panel.
-
-{{< docs/play title="Panel as a Data Source" url="https://play.grafana.org/d/ede8zps8ndb0gc/" >}}
+* == data source / | SAME dashboard, can use 
+  * result set -- from -- another panel
+  * data -- from -- annotations / attached | selected panel
+* _Example:_ [Panel as a Data Source](https://play.grafana.org/d/ede8zps8ndb0gc/)
 
 ## Built-in core data sources
 
