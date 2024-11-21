@@ -144,7 +144,7 @@ Only users with the organization admin role can add data sources.
 
 ## Built-in core data sources
 
-These built-in core data sources are also included in the Grafana documentation:
+* included | Grafana documentation
 
 {{< column-list >}}
 
