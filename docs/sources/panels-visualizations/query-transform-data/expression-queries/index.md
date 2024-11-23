@@ -46,7 +46,8 @@ Server-side expressions allow you to manipulate data returned from queries with 
 
 ### Using expressions
 
-Expressions are most commonly used for [Grafana Alerting](ref:grafana-alerting). The processing is done server-side, so expressions can operate without a browser session. However, expressions can also be used with backend data sources and visualization.
+* [Grafana Alerting](ref:grafana-alerting)
+* TODO: The processing is done server-side, so expressions can operate without a browser session. However, expressions can also be used with backend data sources and visualization.
 
 {{% admonition type="note" %}}
 Expressions do not work with legacy dashboard alerts.
