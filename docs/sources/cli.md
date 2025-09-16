@@ -30,10 +30,6 @@ weight: 400
       * _Example1:_ | Linux,  `/usr/share/grafana/bin/grafana cli`
       * _Example1:_ | Windows,  `C:\Program Files\GrafanaLabs\grafana\bin\grafana.exe cli`
 
-{{% admonition type="note" %}}
-Some commands, such as installing or removing plugins, require `sudo` on Linux. If you are on Windows, run Windows PowerShell as Administrator.
-{{% /admonition %}}
-
 ## Grafana CLI command syntax
 
 ```bash
@@ -47,6 +43,9 @@ grafana cli [global options] command [command options] [arguments...]
     grafana cli -h
     ```
   * list ALL commands & options
+
+* commands / require admin rights
+  * installing or removing plugins
 
 ## Global options
 

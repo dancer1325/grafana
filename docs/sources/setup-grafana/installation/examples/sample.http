@@ -1,0 +1,5 @@
+### GET Grafana admin settings
+GET {{GRAFANA_HOST}}/api/admin/settings
+Authorization: Basic admin admin
+
+###
