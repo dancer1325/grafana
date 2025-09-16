@@ -1,18 +1,17 @@
 # Grafana Docker image
 
-This topic contains instructions for installing Grafana using the Docker image.
+* goal
+  * install Grafana -- via -- Docker image
 
-## Run the Grafana Docker container
+## how to run the Grafana Docker container?
 
-Start the Docker container by binding Grafana to external port `3000`.
-
-```bash
-docker run -d --name=grafana -p 3000:3000 grafana/grafana
-```
-
-Try it out, default admin user credentials are admin/admin.
-
-Further documentation can be found at http://docs.grafana.org/installation/docker/.
+* steps
+  * | terminal
+    * `docker run -d --name=grafana -p 3000:3000 grafana/grafana`
+      * Grafana is bound -- to -- external port `3000` 
+  * | browser,
+    * http://localhost:3000/
+    * "admin" / "admin"
 
 ## Changelog
 
