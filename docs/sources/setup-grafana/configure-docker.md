@@ -53,6 +53,7 @@ weight: 1800
       * see [Alpine docker repo](https://hub.docker.com/_/alpine)
     * uses [musl libc](http://www.musl-libc.org/) -- instead of -- [glibc and others](http://www.etalabs.net/compare_libcs.html)
       * -> SOME software might encounter problems
+    * _Example:_ [here](https://hub.docker.com/layers/grafana/grafana/main/images/sha256-c905e269ee455b2ee6d4281fef85fc1a78e70bfadba8a01a0dbb7047fa20e973)
 
 ## Ubuntu image
 
@@ -68,37 +69,47 @@ weight: 1800
 
 ## Run a specific version of Grafana
 
-* see [grafana/grafana GitHub repository releases](https://github.com/grafana/grafana)
+* [Grafana releases](https://github.com/grafana/grafana/releases)
 
-* if you use Linux OS (Debian or Ubuntu) & encounter permission errors | running `docker ....` -> 
-  * `sudo docker ...`  or
-  * add your user | `docker` group
-    * see [run Docker without a non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
+* _Example:_ `docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:<version number>` 
 
-```bash
-docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:<version number>
-```
+## Common problems
 
-* _Example:_
+* permission errors | running `docker ....` 
+  * Solutions:
+    * `sudo docker ...` OR
+    * add your user | `docker` group
+      * [run Docker WITHOUT non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 
-    ```bash
-    docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7
-    ```
+## Run the Grafana | main branch
 
-## Run the Grafana main branch
-
-* TODO:
-After every successful build of the main branch, two tags, `grafana/grafana-oss:main` and `grafana/grafana-oss:main-ubuntu`, are updated. Additionally, two new tags are created: `grafana/grafana-oss-dev:<version><build ID>-pre` and `grafana/grafana-oss-dev:<version><build ID>-pre-ubuntu`, where `version` is the next version of Grafana and `build ID `is the ID of the corresponding CI build. These tags provide access to the most recent Grafana main builds. For more information, refer to [grafana/grafana-oss-dev](https://hub.docker.com/r/grafana/grafana-oss-dev/tags).
-
-To ensure stability and consistency, we strongly recommend using the `grafana/grafana-oss-dev:<version><build ID>-pre` tag when running the Grafana main branch in a production environment. This tag ensures that you are using a specific version of Grafana instead of the most recent commit, which could potentially introduce bugs or issues. It also avoids polluting the tag namespace for the main Grafana images with thousands of pre-release tags.
-
-For a list of available tags, refer to [grafana/grafana-oss](https://hub.docker.com/r/grafana/grafana-oss/tags/) and [grafana/grafana-oss-dev](https://hub.docker.com/r/grafana/grafana-oss-dev/tags/).
+* AFTER successful build of the main branch,
+  * generated tags -- [grafana/grafana-oss](https://hub.docker.com/r/grafana/grafana-oss/tags/) --
+    * `grafana/grafana-oss:main`
+    * `grafana/grafana-oss:main-ubuntu`
+  * ADDITIONALLY created -- [grafana/grafana-oss-dev](https://hub.docker.com/r/grafana/grafana-oss-dev/tags) -- 
+    * `grafana/grafana-oss-dev:<version><build ID>-pre`
+      * `<version>`
+        * == Grafana`s NEXT version
+      * `<build ID>`
+        * == CI build's ID
+      * use cases
+        * run Grafana main branch | production environment
+          * Reason:🧠
+            * stable
+            * consistent🧠
+    * `grafana/grafana-oss-dev:<version><build ID>-pre-ubuntu` 
 
 ## Default paths
 
-Grafana comes with default configuration parameters that remain the same among versions regardless of the operating system or the environment (for example, virtual machine, Docker, Kubernetes, etc.). You can refer to the [Configure Grafana]({{< relref "./configure-grafana" >}}) documentation to view all the default configuration settings.
-
-The following configurations are set by default when you start the Grafana Docker container. When running in Docker you cannot change the configurations by editing the `conf/grafana.ini` file. Instead, you can modify the configuration using [environment variables]({{< relref "./configure-grafana#override-configuration-with-environment-variables" >}}).
+* == 👀default configuration parameters👀 
+  * / INDEPENDENT of 
+    * versions OR
+    * OS OR
+    * environment
+  * _Example:_ virtual machine, Docker, Kubernetes, etc.
+  * [here](configure-grafana)
+  * / set | start the Grafana Docker container
 
 | Setting               | Default value             |
 | --------------------- | ------------------------- |
@@ -109,13 +120,21 @@ The following configurations are set by default when you start the Grafana Docke
 | GF_PATHS_PLUGINS      | /var/lib/grafana/plugins  |
 | GF_PATHS_PROVISIONING | /etc/grafana/provisioning |
 
+* | run Grafana in Docker,
+  * if you want to change the configurations -> -- via -- [environment variables](configure-grafana/_index.md#override-configuration-with-environment-variables) 
+    * ❌NOT valid, -- via -- `conf/grafana.ini`❌
+
 ## Install plugins in the Docker container
 
-You can install publicly available plugins and plugins that are private or used internally in an organization. For plugin installation instructions, refer to [Install plugins in the Docker container]({{< relref "./installation/docker#install-plugins-in-the-docker-container" >}}).
+* types of plugins
+  * private
+  * community 
+
+* [how to install plugins | Docker container](./installation/docker/index.md#install-plugins-in-the-docker-container)
 
 ### Install plugins from other sources
 
-To install plugins from other sources, you must define the custom URL and specify it immediately before the plugin name in the `GF_INSTALL_PLUGINS` environment variable: `GF_INSTALL_PLUGINS=<url to plugin zip>;<plugin name>`.
+* TODO: To install plugins from other sources, you must define the custom URL and specify it immediately before the plugin name in the `GF_INSTALL_PLUGINS` environment variable: `GF_INSTALL_PLUGINS=<url to plugin zip>;<plugin name>`.
 
 Example:
 
@@ -129,9 +148,12 @@ docker run -d -p 3000:3000 --name=grafana \
 
 ## Build a custom Grafana Docker image
 
-In the Grafana GitHub repository, the `packaging/docker/custom/` folder includes a `Dockerfile` that you can use to build a custom Grafana image. The `Dockerfile` accepts `GRAFANA_VERSION`, `GF_INSTALL_PLUGINS`, and `GF_INSTALL_IMAGE_RENDERER_PLUGIN` as build arguments.
+In the Grafana GitHub repository, the `packaging/docker/custom/` folder includes a `Dockerfile` that you can use to build a custom Grafana image
+* The `Dockerfile` accepts `GRAFANA_VERSION`, `GF_INSTALL_PLUGINS`, and `GF_INSTALL_IMAGE_RENDERER_PLUGIN` as build arguments.
 
-The `GRAFANA_VERSION` build argument must be a valid `grafana/grafana` Docker image tag. By default, Grafana builds an Alpine-based image. To build an Ubuntu-based image, append `-ubuntu` to the `GRAFANA_VERSION` build argument.
+The `GRAFANA_VERSION` build argument must be a valid `grafana/grafana` Docker image tag
+* By default, Grafana builds an Alpine-based image
+* To build an Ubuntu-based image, append `-ubuntu` to the `GRAFANA_VERSION` build argument.
 
 Example:
 

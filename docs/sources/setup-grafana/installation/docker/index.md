@@ -13,24 +13,26 @@ weight: 400
 
 # Run Grafana Docker image
 
-This topic guides you through installing Grafana via the official Docker images. Specifically, it covers running Grafana via the Docker command line interface (CLI) and docker-compose.
+* goal
+  * install Grafana -- via the -- official Docker images
 
-{{< youtube id="FlDfcMbSLXs" start="703">}}
+* [Youtube](https://www.youtube.com/watch?v=FlDfcMbSLXs)
 
-Grafana Docker images come in two editions:
-
-- **Grafana Enterprise**: `grafana/grafana-enterprise`
-- **Grafana Open Source**: `grafana/grafana-oss`
-
-> **Note:** The recommended and default edition of Grafana is Grafana Enterprise. It is free and includes all the features of the OSS edition. Additionally, you have the option to upgrade to the [full Enterprise feature set](/products/enterprise/?utm_source=grafana-install-page), which includes support for [Enterprise plugins](/grafana/plugins/?enterprise=1&utcm_source=grafana-install-page).
-
-The default images for Grafana are created using the Alpine Linux project and can be found in the Alpine official image. For instructions on configuring a Docker image for Grafana, refer to [Configure a Grafana Docker image]({{< relref "../../configure-docker" >}}).
+* Grafana Docker images
+  * types OR editions
+    - **Grafana Enterprise**: `grafana/grafana-enterprise`
+      - recommended one
+      - 👀free👀
+        - ⚠️!= [enterprise product](https://grafana.com/products/enterprise/?utm_source=grafana-install-page)⚠️
+    - **Grafana Open Source**: `grafana/grafana-oss`
+  * [MORE](../../configure-docker)
 
 ## Run Grafana via Docker CLI
 
 This section shows you how to run Grafana using the Docker CLI.
 
-> **Note:** If you are on a Linux system (for example, Debian or Ubuntu), you might need to add `sudo` before the command or add your user to the `docker` group. For more information, refer to [Linux post-installation steps for Docker Engine](https://docs.docker.com/engine/install/linux-postinstall/).
+> **Note:** If you are on a Linux system (for example, Debian or Ubuntu), you might need to add `sudo` before the command or add your user to the `docker` group
+* For more information, refer to [Linux post-installation steps for Docker Engine](https://docs.docker.com/engine/install/linux-postinstall/).
 
 To run the latest stable version of Grafana, run the following command:
 
@@ -42,8 +44,10 @@ Where:
 
 - [`docker run`](https://docs.docker.com/engine/reference/commandline/run/) is a Docker CLI command that runs a new container from an image
 - `-d` (`--detach`) runs the container in the background
-- `-p <host-port>:<container-port>` (`--publish`) publish a container's port(s) to the host, allowing you to reach the container's port via a host port. In this case, we can reach the container's port `3000` via the host's port `3000`
-- `--name` assign a logical name to the container (e.g. `grafana`). This allows you to refer to the container by name instead of by ID.
+- `-p <host-port>:<container-port>` (`--publish`) publish a container's port(s) to the host, allowing you to reach the container's port via a host port
+* In this case, we can reach the container's port `3000` via the host's port `3000`
+- `--name` assign a logical name to the container (e.g. `grafana`)
+* This allows you to refer to the container by name instead of by ID.
 - `grafana/grafana-enterprise` is the image to run
 
 ### Stop the Grafana container
@@ -66,9 +70,14 @@ docker stop grafana
 
 ### Save your Grafana data
 
-By default, Grafana uses an embedded SQLite version 3 database to store configuration, users, dashboards, and other data. When you run Docker images as containers, changes to these Grafana data are written to the filesystem within the container, which will only persist for as long as the container exists. If you stop and remove the container, any filesystem changes (i.e. the Grafana data) will be discarded. To avoid losing your data, you can set up persistent storage using [Docker volumes](https://docs.docker.com/storage/volumes/) or [bind mounts](https://docs.docker.com/storage/bind-mounts/) for your container.
+By default, Grafana uses an embedded SQLite version 3 database to store configuration, users, dashboards, and other data
+* When you run Docker images as containers, changes to these Grafana data are written to the filesystem within the container, which will only persist for as long as the container exists
+* If you stop and remove the container, any filesystem changes (i.e. the Grafana data) will be discarded
+* To avoid losing your data, you can set up persistent storage using [Docker volumes](https://docs.docker.com/storage/volumes/) or [bind mounts](https://docs.docker.com/storage/bind-mounts/) for your container.
 
-> **Note:** Though both methods are similar, there is a slight difference. If you want your storage to be fully managed by Docker and accessed only through Docker containers and the Docker CLI, you should choose to use persistent storage. However, if you need full control of the storage and want to allow other processes besides Docker to access or modify the storage layer, then bind mounts is the right choice for your environment.
+> **Note:** Though both methods are similar, there is a slight difference
+* If you want your storage to be fully managed by Docker and accessed only through Docker containers and the Docker CLI, you should choose to use persistent storage
+* However, if you need full control of the storage and want to allow other processes besides Docker to access or modify the storage layer, then bind mounts is the right choice for your environment.
 
 #### Use Docker volumes (recommended)
 

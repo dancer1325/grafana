@@ -13,21 +13,28 @@ weight: 200
 
 # Configure Grafana
 
-Grafana has default and custom configuration files. You can customize your Grafana instance by modifying the custom configuration file or by using environment variables. To see the list of settings for a Grafana instance, refer to [View server settings]({{< relref "../../administration/stats-and-license#view-server-settings" >}}).
-
-{{% admonition type="note" %}}
-After you add custom options, [uncomment](#remove-comments-in-the-ini-files) the relevant sections of the configuration file. Restart Grafana for your changes to take effect.
-{{% /admonition %}}
+* Grafana
+  * 's configuration files types
+    * default
+    * custom 
+  * ways to customize your Grafana instance
+    * modify the custom configuration file
+      * -> restart Grafana
+    * use environment variables
+  * ['s settings](../../administration/stats-and-license/index.md#view-server-settings)
 
 ## Configuration file location
 
-The default settings for a Grafana instance are stored in the `$WORKING_DIR/conf/defaults.ini` file. _Do not_ change this file.
+The default settings for a Grafana instance are stored in the `$WORKING_DIR/conf/defaults.ini` file
+* _Do not_ change this file.
 
-Depending on your OS, your custom configuration file is either the `$WORKING_DIR/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file. The custom configuration file path can be overridden using the `--config` parameter.
+Depending on your OS, your custom configuration file is either the `$WORKING_DIR/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file
+* The custom configuration file path can be overridden using the `--config` parameter.
 
 ### Linux
 
-If you installed Grafana using the `deb` or `rpm` packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used. This path is specified in the Grafana init.d script using `--config` file parameter.
+If you installed Grafana using the `deb` or `rpm` packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used
+* This path is specified in the Grafana init.d script using `--config` file parameter.
 
 ### Docker
 
@@ -35,26 +42,25 @@ Refer to [Configure a Grafana Docker image]({{< relref "../configure-docker" >}}
 
 ### Windows
 
-On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file. It contains all the settings commented out. Copy `sample.ini` and name it `custom.ini`.
+On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file
+* It contains all the settings commented out
+* Copy `sample.ini` and name it `custom.ini`.
 
 ### macOS
 
-By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`. For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly. Otherwise, add a configuration file named `custom.ini` to the `conf` folder to override the settings defined in `conf/defaults.ini`.
+By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`
+* For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly. Otherwise, add a configuration file named `custom.ini` to the `conf` folder to override the settings defined in `conf/defaults.ini`.
 
 ## Remove comments in the .ini files
 
-Grafana uses semicolons (the `;` char) to comment out lines in a `.ini` file. You must uncomment each line in the `custom.ini` or the `grafana.ini` file that you are modify by removing `;` from the beginning of that line. Otherwise your changes will be ignored.
-
-For example:
-
-```
-# The HTTP port  to use
-;http_port = 3000
-```
+* | ".ini"
+  * `;` char
+    * 👀comment out lines 👀
 
 ## Override configuration with environment variables
 
-Do not use environment variables to _add_ new configuration settings. Instead, use environmental variables to _override_ existing options.
+Do not use environment variables to _add_ new configuration settings
+* Instead, use environmental variables to _override_ existing options.
 
 To override an option:
 
@@ -62,7 +68,9 @@ To override an option:
 GF_<SectionName>_<KeyName>
 ```
 
-Where the section name is the text within the brackets. Everything should be uppercase, `.` and `-` should be replaced by `_`. For example, if you have these configuration settings:
+Where the section name is the text within the brackets
+* Everything should be uppercase, `.` and `-` should be replaced by `_`
+* For example, if you have these configuration settings:
 
 ```bash
 # default section
@@ -95,16 +103,19 @@ export GF_FEATURE_TOGGLES_ENABLE=newNavigation
 
 If any of your options contains the expression `$__<provider>{<argument>}`
 or `${<environment variable>}`, then they will be processed by Grafana's
-variable expander. The expander runs the provider with the provided argument
+variable expander
+* The expander runs the provider with the provided argument
 to get the final value of the option.
 
 There are three providers: `env`, `file`, and `vault`.
 
 ### Env provider
 
-The `env` provider can be used to expand an environment variable. If you
+The `env` provider can be used to expand an environment variable
+* If you
 set an option to `$__env{PORT}` the `PORT` environment variable will be
-used in its place. For environment variables you can also use the
+used in its place
+* For environment variables you can also use the
 short-hand syntax `${PORT}`.
 Grafana's log directory would be set to the `grafana` directory in the
 directory behind the `LOGDIR` environment variable in the following
@@ -117,7 +128,8 @@ logs = $__env{LOGDIR}/grafana
 
 ### File provider
 
-`file` reads a file from the filesystem. It trims whitespace from the
+`file` reads a file from the filesystem
+* It trims whitespace from the
 beginning and the end of files.
 The database password in the following example would be replaced by
 the content of the `/etc/secrets/gf_sql_password` file:
@@ -131,17 +143,22 @@ password = $__file{/etc/secrets/gf_sql_password}
 
 The `vault` provider allows you to manage your secrets with [Hashicorp Vault](https://www.hashicorp.com/products/vault).
 
-> Vault provider is only available in Grafana Enterprise v7.1+. For more information, refer to [Vault integration]({{< relref "../configure-security/configure-database-encryption/integrate-with-hashicorp-vault" >}}) in [Grafana Enterprise]({{< relref "../../introduction/grafana-enterprise" >}}).
+> Vault provider is only available in Grafana Enterprise v7.1+
+* For more information, refer to [Vault integration]({{< relref "../configure-security/configure-database-encryption/integrate-with-hashicorp-vault" >}}) in [Grafana Enterprise]({{< relref "../../introduction/grafana-enterprise" >}}).
 
 <hr />
 
 ## app_mode
 
-Options are `production` and `development`. Default is `production`. _Do not_ change this option unless you are working on Grafana development.
+Options are `production` and `development`
+* Default is `production`
+* _Do not_ change this option unless you are working on Grafana development.
 
 ## instance_name
 
-Set the name of the grafana-server instance. Used in logging, internal metrics, and clustering info. Defaults to: `${HOSTNAME}`, which will be replaced with
+Set the name of the grafana-server instance
+* Used in logging, internal metrics, and clustering info
+* Defaults to: `${HOSTNAME}`, which will be replaced with
 environment variable `HOSTNAME`, if that is empty or does not exist Grafana will try to use system calls to get the machine name.
 
 <hr />
@@ -150,18 +167,23 @@ environment variable `HOSTNAME`, if that is empty or does not exist Grafana will
 
 ### data
 
-Path to where Grafana stores the sqlite3 database (if used), file-based sessions (if used), and other data. This path is usually specified via command line in the init.d script or the systemd service file.
+Path to where Grafana stores the sqlite3 database (if used), file-based sessions (if used), and other data
+* This path is usually specified via command line in the init.d script or the systemd service file.
 
 **macOS:** The default SQLite database is located at `/usr/local/var/lib/grafana`
 
 ### temp_data_lifetime
 
-How long temporary images in `data` directory should be kept. Defaults to: `24h`. Supported modifiers: `h` (hours),
-`m` (minutes), for example: `168h`, `30m`, `10h30m`. Use `0` to never clean up temporary files.
+How long temporary images in `data` directory should be kept
+* Defaults to: `24h`
+* Supported modifiers: `h` (hours),
+`m` (minutes), for example: `168h`, `30m`, `10h30m`
+* Use `0` to never clean up temporary files.
 
 ### logs
 
-Path to where Grafana stores logs. This path is usually specified via command line in the init.d script or the systemd service file. You can override it in the configuration file or in the default environment variable file. However, please note that by overriding this the default log path will be used temporarily until Grafana has fully initialized/started.
+Path to where Grafana stores logs
+* This path is usually specified via command line in the init.d script or the systemd service file. You can override it in the configuration file or in the default environment variable file. However, please note that by overriding this the default log path will be used temporarily until Grafana has fully initialized/started.
 
 Override log path using the command line argument `cfg:default.paths.logs`:
 
