@@ -124,7 +124,7 @@ weight: 1800
   * if you want to change the configurations -> -- via -- [environment variables](configure-grafana/_index.md#override-configuration-with-environment-variables) 
     * ❌NOT valid, -- via -- `conf/grafana.ini`❌
 
-## Install plugins in the Docker container
+## Install plugins | Docker container
 
 * types of plugins
   * private
@@ -132,51 +132,26 @@ weight: 1800
 
 * [how to install plugins | Docker container](./installation/docker/index.md#install-plugins-in-the-docker-container)
 
-### Install plugins from other sources
+### Install plugins -- from -- other sources
 
-* TODO: To install plugins from other sources, you must define the custom URL and specify it immediately before the plugin name in the `GF_INSTALL_PLUGINS` environment variable: `GF_INSTALL_PLUGINS=<url to plugin zip>;<plugin name>`.
-
-Example:
-
-The following command runs Grafana Enterprise on **port 3000** in detached mode and installs the custom plugin, which is specified as a URL parameter in the `GF_INSTALL_PLUGINS` environment variable.
-
-```bash
-docker run -d -p 3000:3000 --name=grafana \
-  -e "GF_INSTALL_PLUGINS=http://plugin-domain.com/my-custom-plugin.zip;custom-plugin,grafana-clock-panel" \
-  grafana/grafana-enterprise
-```
+* `-e GF_INSTALL_PLUGINS=<url to plugin zip>;<plugin name>`
 
 ## Build a custom Grafana Docker image
 
-In the Grafana GitHub repository, the `packaging/docker/custom/` folder includes a `Dockerfile` that you can use to build a custom Grafana image
-* The `Dockerfile` accepts `GRAFANA_VERSION`, `GF_INSTALL_PLUGINS`, and `GF_INSTALL_IMAGE_RENDERER_PLUGIN` as build arguments.
+* see [this Dockerfile](/grafana/packaging/docker/custom/Dockerfile)
+  * 's arguments
+    * `GRAFANA_VERSION`
+      * requirements
+        * valid `grafana/grafana` Docker image tag
 
-The `GRAFANA_VERSION` build argument must be a valid `grafana/grafana` Docker image tag
-* By default, Grafana builds an Alpine-based image
-* To build an Ubuntu-based image, append `-ubuntu` to the `GRAFANA_VERSION` build argument.
+### Build Grafana -- via -- Image Renderer plugin pre-installed
 
-Example:
+* TODO: > **Note:** This feature is experimental.
 
-The following example shows you how to build and run a custom Grafana Docker image based on the latest official Ubuntu-based Grafana Docker image:
-
-```bash
-# go to the custom directory
-cd packaging/docker/custom
-
-# run the docker build command to build the image
-docker build \
-  --build-arg "GRAFANA_VERSION=latest-ubuntu" \
-  -t grafana-custom .
-
-# run the custom grafana container using docker run command
-docker run -d -p 3000:3000 --name=grafana grafana-custom
-```
-
-### Build Grafana with the Image Renderer plugin pre-installed
-
-> **Note:** This feature is experimental.
-
-Currently, the Grafana Image Renderer plugin requires dependencies that are not available in the Grafana Docker image (see [GitHub Issue#301](https://github.com/grafana/grafana-image-renderer/issues/301) for more details). However, you can create a customized Docker image using the `GF_INSTALL_IMAGE_RENDERER_PLUGIN` build argument as a solution. This will install the necessary dependencies for the Grafana Image Renderer plugin to run.
+Currently, the Grafana Image Renderer plugin requires dependencies that are
+not available in the Grafana Docker image (see [GitHub Issue#301](https://github.com/grafana/grafana-image-renderer/issues/301) for more details)
+However, you can create a customized Docker image using the `GF_INSTALL_IMAGE_RENDERER_PLUGIN` build argument as a solution
+This will install the necessary dependencies for the Grafana Image Renderer plugin to run.
 
 Example:
 
@@ -243,150 +218,45 @@ docker run -d -p 3000:3000 --name=grafana grafana-custom
 
 ## Logging
 
-By default, Docker container logs are directed to `STDOUT`, a common practice in the Docker community. You can change this by setting a different [log mode]({{< relref "./configure-grafana#mode" >}}) such as `console`, `file`, or `syslog`. You can use one or more modes by separating them with spaces, for example, `console file`. By default, both `console` and `file` modes are enabled.
+* == Docker container logs
 
-Example:
+* places | forward Docker container logs,
+  * `STDOUT`
+    * default one
+  * 👀if you want to set -> -- via -- [log mode](./configure-grafana/_index.md#mode)👀
 
-The following example runs Grafana using the `console file` log mode that is set in the `GF_LOG_MODE` environment variable.
+* `-e "GF_LOG_MODE=mode1 mode2 ..."`
+  * `docker run -p 3000:3000 --name=grafana -e "GF_LOG_MODE=console file" grafana/grafana`
 
-```bash
-# Run Grafana while logging to both standard out
-# and /var/log/grafana/grafana.log
+## Configure Grafana with Docker Secrets OR Docker volumes
 
-docker run -p 3000:3000 -e "GF_LOG_MODE=console file" grafana/grafana-enterprise
-```
+* goal
+  * input confidential data | Grafana, -- via -- configuration files
 
-## Configure Grafana with Docker Secrets
+* use cases
+  * input login credentials & secrets
 
-You can input confidential data like login credentials and secrets into Grafana using configuration files. This method works well with [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/), as the secrets are automatically mapped to the `/run/secrets/` location within the container.
+### -- via -- Docker Secrets
+* -- based on -- [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/) 
+  * Reason:🧠secrets are AUTOMATICALLY mapped -- to -- Docker container's `/run/secrets/` location🧠 
 
-You can apply this technique to any configuration options in `conf/grafana.ini` by setting `GF_<SectionName>_<KeyName>__FILE` to the file path that contains the secret information. For more information about Docker secret command usage, refer to [docker secret](https://docs.docker.com/engine/reference/commandline/secret/).
+* steps
+  * `docker secret create secretNameToSet`
+  * `docker run -d -p 3000:3000 --name grafana -e "GF_<SectionName>_<KeyName>__FILE=/run/secrets/secretNameToSet" grafana/grafana`
 
-The following example demonstrates how to set the admin password:
-
-- Admin password secret: `/run/secrets/admin_password`
-- Environment variable: `GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/admin_password`
-
-### Configure Docker secrets credentials for AWS CloudWatch
-
-Grafana ships with built-in support for the [Amazon CloudWatch datasource]({{< relref "../datasources/aws-cloudwatch" >}}). To configure the data source, you must provide information such as the AWS ID-Key, secret access key, region, and so on. You can use Docker secrets as a way to provide this information.
-
-Example:
-
-The example below shows how to use Grafana environment variables via Docker Secrets for the AWS ID-Key, secret access key, region, and profile.
-
-The example uses the following values for the AWS Cloudwatch data source:
-
-```bash
-AWS_default_ACCESS_KEY_ID=aws01us02
-AWS_default_SECRET_ACCESS_KEY=topsecret9b78c6
-AWS_default_REGION=us-east-1
-```
-
-1. Create a Docker secret for each of the values noted above.
-
-   ```bash
-   echo "aws01us02" | docker secret create aws_access_key_id -
-   ```
-
-   ```bash
-   echo "topsecret9b78c6" | docker secret create aws_secret_access_key -
-   ```
-
-   ```bash
-   echo "us-east-1" | docker secret create aws_region -
-   ```
-
-1. Run the following command to determine that the secrets were created.
-
-   ```bash
-   $ docker secret ls
-   ```
-
-   The output from the command should look similar to the following:
-
-   ```
-   ID                          NAME           DRIVER    CREATED              UPDATED
-   i4g62kyuy80lnti5d05oqzgwh   aws_access_key_id             5 minutes ago        5 minutes ago
-   uegit5plcwodp57fxbqbnke7h   aws_secret_access_key         3 minutes ago        3 minutes ago
-   fxbqbnke7hplcwodp57fuegit   aws_region                    About a minute ago   About a minute ago
-   ```
-
-   Where:
-
-   ID = the secret unique ID that will be use in the docker run command
-
-   NAME = the logical name defined for each secret
-
-1. Add the secrets to the command line when you run Docker.
-
-   ```bash
-   docker run -d -p 3000:3000 --name grafana \
-     -e "GF_DEFAULT_INSTANCE_NAME=my-grafana" \
-     -e "GF_AWS_PROFILES=default" \
-     -e "GF_AWS_default_ACCESS_KEY_ID__FILE=/run/secrets/aws_access_key_id" \
-     -e "GF_AWS_default_SECRET_ACCESS_KEY__FILE=/run/secrets/aws_secret_access_key" \
-     -e "GF_AWS_default_REGION__FILE=/run/secrets/aws_region" \
-     -v grafana-data:/var/lib/grafana \
-     grafana/grafana-enterprise
-   ```
-
-You can also specify multiple profiles to `GF_AWS_PROFILES` (for example, `GF_AWS_PROFILES=default another`).
-
-The following list includes the supported environment variables:
-
-- `GF_AWS_${profile}_ACCESS_KEY_ID`: AWS access key ID (required).
-- `GF_AWS_${profile}_SECRET_ACCESS_KEY`: AWS secret access key (required).
-- `GF_AWS_${profile}_REGION`: AWS region (optional).
+### -- via -- Docker volumes
+* [here](examples/configureDocker/README.md#---via----docker-volumes)
 
 ## Troubleshoot a Docker deployment
 
-By default, the Grafana log level is set to `INFO`, but you can increase the log level to `DEBUG` mode when you want to reproduce a problem.
+* recommendation
+  * switch log level
+    * ways
+      * | Docker Cli,
+        * `-e "GF_LOG_LEVEL=someAllowedLogLevel"`
+      * | Docker Compose
+        * add the environment variable `GF_LOG_LEVEL`
+  * `docker compose config`
+    * validate Docker Compose file
 
-For more information about logging, refer to [logs]({{< relref "./configure-grafana#log" >}}).
-
-### Increase log level using the Docker run (CLI) command
-
-To increase the log level to `DEBUG` mode, add the environment variable `GF_LOG_LEVEL` to the command line.
-
-```bash
-docker run -d -p 3000:3000 --name=grafana \
-  -e "GF_LOG_LEVEL=debug" \
-  grafana/grafana-enterprise
-```
-
-### Increase log level using the Docker Compose
-
-To increase the log level to `DEBUG` mode, add the environment variable `GF_LOG_LEVEL` to the `docker-compose.yaml` file.
-
-```yaml
-version: '3.8'
-services:
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    restart: unless-stopped
-    environment:
-      # increases the log level from info to debug
-      - GF_LOG_LEVEL=debug
-    ports:
-      - '3000:3000'
-    volumes:
-      - 'grafana_storage:/var/lib/grafana'
-volumes:
-  grafana_storage: {}
-```
-
-### Validate Docker Compose YAML file
-
-The chance of syntax errors appearing in a YAML file increases as the file becomes more complex. You can use the following command to check for syntax errors.
-
-```bash
-# go to your docker-compose.yaml directory
-cd /path-to/docker-compose/file
-
-# run the validation command
-docker compose config
-```
-
-If there are errors in the YAML file, the command output highlights the lines that contain errors. If there are no errors in the YAML file, the output includes the content of the `docker-compose.yaml` file in detailed YAML format.
+* [MORE](./configure-grafana/_index.md#log)

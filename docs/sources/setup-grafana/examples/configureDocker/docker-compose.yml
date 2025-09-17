@@ -1,0 +1,20 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      # 1.    configure docker volumes
+      - GF_SECURITY_ADMIN_PASSWORD=mysecretpassword
+#      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/admin_password
+      # 2.    adjust log level
+      - GF_LOG_LEVEL=debug
+#    volumes:
+#      - ./secrets/admin_password:/run/secrets/admin_password:ro
+      # Comentar esta línea para usar almacenamiento temporal
+      # - grafana-data:/var/lib/grafana
+
+    # 3. validate docker compose file
+    #dfasldfhawlfa      -- uncomment to check
+
