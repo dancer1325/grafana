@@ -25,7 +25,7 @@ cards:
   items:
     - title: Introduction
       href: ./fundamentals/
-      description: Learn more about the fundamentals and available features that help you create, manage, and respond to alerts; and improve your team’s ability to resolve issues quickly.
+      description: Learn more about the fundamentals and available features that help you create, manage, and respond to alerts; and improve your team's ability to resolve issues quickly.
       height: 24
     - title: Configure alert rules
       href: ./alerting-rules/
@@ -35,13 +35,17 @@ cards:
       href: ./configure-notifications/
       description: Choose how, when, and where to send your alert notifications.
       height: 24
-    - title: Monitor status
-      href: ./manage-notifications/
+    - title: Monitor alerts
+      href: ./monitor-status/
       description: Monitor, respond to, and triage issues within your services.
       height: 24
     - title: Additional configuration
       href: ./set-up/
-      description: Use advanced configuration options to further tailor your alerting setup. These options can enhance security, scalability, and automation in complex environments.
+      description: Use advanced configuration to customize your alerting setup and improve security, scalability, and automation in complex environments.
+      height: 24
+    - title: Best practices
+      href: ./best-practices/
+      description: Get practical guidance for handling common alert issues, and explore examples for creating both basic and advanced alerts.
       height: 24
 ---
 

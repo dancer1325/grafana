@@ -2,10 +2,14 @@ package zipkin
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
+	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/openzipkin/zipkin-go/model"
 	"github.com/stretchr/testify/assert"
@@ -16,29 +20,37 @@ func TestZipkinClient_Services(t *testing.T) {
 		name           string
 		mockResponse   string
 		mockStatusCode int
+		mockStatus     string
 		expectedResult []string
 		expectError    bool
+		expectedError  error
 	}{
 		{
 			name:           "Successful response",
 			mockResponse:   `["service1", "service2"]`,
 			mockStatusCode: http.StatusOK,
+			mockStatus:     "OK",
 			expectedResult: []string{"service1", "service2"},
 			expectError:    false,
+			expectedError:  nil,
 		},
 		{
 			name:           "Non-200 response",
 			mockResponse:   "",
 			mockStatusCode: http.StatusInternalServerError,
+			mockStatus:     "Internal Server Error",
 			expectedResult: []string{},
 			expectError:    true,
+			expectedError:  backend.DownstreamError(fmt.Errorf("request failed: Internal Server Error")),
 		},
 		{
 			name:           "Invalid JSON response",
 			mockResponse:   `{invalid json`,
 			mockStatusCode: http.StatusOK,
+			mockStatus:     "OK",
 			expectedResult: []string{},
 			expectError:    true,
+			expectedError:  errors.New("invalid character 'i' looking for beginning of value"),
 		},
 	}
 
@@ -250,7 +262,8 @@ func TestZipkinClient_Trace(t *testing.T) {
 					Tags: map[string]string{"key1": "value1"},
 				},
 			},
-			expectError: false,
+			expectError:   false,
+			expectedError: "",
 		},
 		{
 			name:           "Invalid traceID",
@@ -261,13 +274,31 @@ func TestZipkinClient_Trace(t *testing.T) {
 			expectError:    true,
 			expectedError:  "invalid/empty traceId",
 		},
+		{
+			name:           "Special characters traceID",
+			traceID:        "a/b",
+			mockResponse:   `[{"traceId":"00000000000004d2","id":"0000000000000001","name":"operation1","tags":{"key1":"value1"}}]`,
+			mockStatusCode: http.StatusOK,
+			expectedResult: []model.SpanModel{
+				{
+					SpanContext: model.SpanContext{
+						TraceID: model.TraceID{Low: 1234},
+						ID:      model.ID(1),
+					},
+					Name: "operation1",
+					Tags: map[string]string{"key1": "value1"},
+				},
+			},
+			expectError:   false,
+			expectedError: "",
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var client ZipkinClient
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				assert.Equal(t, "/api/v2/trace/"+tt.traceID, r.URL.Path)
+				assert.Contains(t, r.URL.String(), "/api/v2/trace/"+url.QueryEscape(tt.traceID))
 				w.WriteHeader(tt.mockStatusCode)
 				_, _ = w.Write([]byte(tt.mockResponse))
 			}))

@@ -18,6 +18,11 @@ title: Configure a Grafana Docker image
 weight: 1800
 ---
 
+{{< admonition type="caution" >}}
+Starting with Grafana release `12.4.0`, the `grafana/grafana-oss` Docker Hub repository will no longer be updated.
+Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. These two repositories have the same Grafana OSS docker images.
+{{< /admonition >}}
+
 # Configure a Grafana Docker image
 
 * goal

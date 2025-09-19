@@ -2,43 +2,50 @@ package dualwrite
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 
-	"github.com/grafana/authlib/claims"
 	"go.opentelemetry.io/otel"
+
+	claims "github.com/grafana/authlib/types"
 
 	"github.com/grafana/grafana/pkg/infra/db"
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/infra/serverlock"
 	"github.com/grafana/grafana/pkg/services/authz/zanzana"
+	"github.com/grafana/grafana/pkg/services/featuremgmt"
+	"github.com/grafana/grafana/pkg/services/folder"
+	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/setting"
 )
 
 var tracer = otel.Tracer("github.com/grafana/grafana/pkg/accesscontrol/migrator")
+var reconcilerLogger = log.New("zanzana.reconciler")
 
 // ZanzanaReconciler is a component to reconcile RBAC permissions to zanzana.
 // We should rewrite the migration after we have "migrated" all possible actions
 // into our schema.
 type ZanzanaReconciler struct {
-	cfg *setting.Cfg
-	log log.Logger
-
-	store  db.DB
-	client zanzana.Client
-	lock   *serverlock.ServerLockService
+	cfg      *setting.Cfg
+	log      log.Logger
+	features featuremgmt.FeatureToggles
+	store    db.DB
+	client   zanzana.Client
+	lock     *serverlock.ServerLockService
 	// reconcilers are migrations that tries to reconcile the state of grafana db to zanzana store.
 	// These are run periodically to try to maintain a consistent state.
 	reconcilers []resourceReconciler
 }
 
-func NewZanzanaReconciler(cfg *setting.Cfg, client zanzana.Client, store db.DB, lock *serverlock.ServerLockService) *ZanzanaReconciler {
-	return &ZanzanaReconciler{
-		cfg:    cfg,
-		log:    log.New("zanzana.reconciler"),
-		client: client,
-		lock:   lock,
-		store:  store,
+func ProvideZanzanaReconciler(cfg *setting.Cfg, features featuremgmt.FeatureToggles, client zanzana.Client, store db.DB, lock *serverlock.ServerLockService, folderService folder.Service) *ZanzanaReconciler {
+	zanzanaReconciler := &ZanzanaReconciler{
+		cfg:      cfg,
+		log:      reconcilerLogger,
+		features: features,
+		client:   client,
+		lock:     lock,
+		store:    store,
 		reconcilers: []resourceReconciler{
 			newResourceReconciler(
 				"team memberships",
@@ -48,26 +55,26 @@ func NewZanzanaReconciler(cfg *setting.Cfg, client zanzana.Client, store db.DB, 
 			),
 			newResourceReconciler(
 				"folder tree",
-				folderTreeCollector(store),
+				folderTreeCollector(folderService),
 				zanzanaCollector([]string{zanzana.RelationParent}),
 				client,
 			),
 			newResourceReconciler(
 				"managed folder permissions",
 				managedPermissionsCollector(store, zanzana.KindFolders),
-				zanzanaCollector(zanzana.FolderRelations),
+				zanzanaCollector(zanzana.RelationsFolder),
 				client,
 			),
 			newResourceReconciler(
 				"managed dashboard permissions",
 				managedPermissionsCollector(store, zanzana.KindDashboards),
-				zanzanaCollector(zanzana.ResourceRelations),
+				zanzanaCollector(zanzana.RelationsResouce),
 				client,
 			),
 			newResourceReconciler(
-				"basic role permissions",
-				basicRolePermissionsCollector(store),
-				zanzanaCollector(zanzana.FolderRelations),
+				"role permissions",
+				rolePermissionsCollector(store),
+				zanzanaCollector(zanzana.RelationsFolder),
 				client,
 			),
 			newResourceReconciler(
@@ -76,8 +83,35 @@ func NewZanzanaReconciler(cfg *setting.Cfg, client zanzana.Client, store db.DB, 
 				zanzanaCollector([]string{zanzana.RelationAssignee}),
 				client,
 			),
+			newResourceReconciler(
+				"role bindings",
+				roleBindingsCollector(store),
+				zanzanaCollector([]string{zanzana.RelationAssignee}),
+				client,
+			),
 		},
 	}
+
+	if cfg.Anonymous.Enabled {
+		zanzanaReconciler.reconcilers = append(zanzanaReconciler.reconcilers,
+			newResourceReconciler(
+				"anonymous role binding",
+				anonymousRoleBindingsCollector(cfg, store),
+				zanzanaCollector([]string{zanzana.RelationAssignee}),
+				client,
+			),
+		)
+	}
+
+	return zanzanaReconciler
+}
+
+// Run implements registry.BackgroundService
+func (r *ZanzanaReconciler) Run(ctx context.Context) error {
+	if r.features.IsEnabledGlobally(featuremgmt.FlagZanzana) {
+		return r.Reconcile(ctx)
+	}
+	return nil
 }
 
 // Reconcile schedules as job that will run and reconcile resources between
@@ -86,9 +120,8 @@ func (r *ZanzanaReconciler) Reconcile(ctx context.Context) error {
 	r.reconcile(ctx)
 
 	// FIXME:
-	// 1. We should be a bit graceful about reconciliations so we are not hammering dbs
-	// 2. We should be able to configure reconciliation interval
-	ticker := time.NewTicker(1 * time.Hour)
+	// We should be a bit graceful about reconciliations so we are not hammering dbs
+	ticker := time.NewTicker(r.cfg.RBAC.ZanzanaReconciliationInterval)
 	for {
 		select {
 		case <-ticker.C:
@@ -102,7 +135,10 @@ func (r *ZanzanaReconciler) Reconcile(ctx context.Context) error {
 func (r *ZanzanaReconciler) reconcile(ctx context.Context) {
 	run := func(ctx context.Context, namespace string) {
 		now := time.Now()
+		r.log.Debug("Started reconciliation")
+
 		for _, reconciler := range r.reconcilers {
+			r.log.Debug("Performing zanzana reconciliation", "reconciler", reconciler.name)
 			if err := reconciler.reconcile(ctx, namespace); err != nil {
 				r.log.Warn("Failed to perform reconciliation for resource", "err", err)
 			}
@@ -139,11 +175,14 @@ func (r *ZanzanaReconciler) reconcile(ctx context.Context) {
 	}
 
 	// We ignore the error for now
-	_ = r.lock.LockExecuteAndRelease(ctx, "zanzana-reconciliation", 10*time.Hour, func(ctx context.Context) {
+	err := r.lock.LockExecuteAndRelease(ctx, "zanzana-reconciliation", 10*time.Hour, func(ctx context.Context) {
 		for _, ns := range namespaces {
 			run(ctx, ns)
 		}
 	})
+	if err != nil {
+		r.log.Error("Error performing zanzana reconciliation", "error", err)
+	}
 }
 
 func (r *ZanzanaReconciler) getOrgs(ctx context.Context) ([]int64, error) {
@@ -159,4 +198,23 @@ func (r *ZanzanaReconciler) getOrgs(ctx context.Context) ([]int64, error) {
 		return nil, err
 	}
 	return orgs, nil
+}
+
+func getOrgByName(ctx context.Context, store db.DB, name string) (*org.Org, error) {
+	var orga org.Org
+	err := store.WithDbSession(ctx, func(dbSession *db.Session) error {
+		exists, err := dbSession.Where("name=?", name).Get(&orga)
+		if err != nil {
+			return err
+		}
+		if !exists {
+			return fmt.Errorf("org does not exist: %s", name)
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return &orga, nil
 }

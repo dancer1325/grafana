@@ -46,7 +46,8 @@ import { RenderEvent } from 'app/types/events';
 import { deleteAnnotation, saveAnnotation, updateAnnotation } from '../../annotations/api';
 import { getDashboardQueryRunner } from '../../query/state/DashboardQueryRunner/DashboardQueryRunner';
 import { getTimeSrv, TimeSrv } from '../services/TimeSrv';
-import { DashboardModel, PanelModel } from '../state';
+import { DashboardModel } from '../state/DashboardModel';
+import { PanelModel } from '../state/PanelModel';
 import { getPanelChromeProps } from '../utils/getPanelChromeProps';
 import { loadSnapshotData } from '../utils/loadSnapshotData';
 
@@ -113,6 +114,7 @@ export class PanelStateWrapper extends PureComponent<Props, State> {
         canAddAnnotations: props.dashboard.canAddAnnotations.bind(props.dashboard),
         canEditAnnotations: props.dashboard.canEditAnnotations.bind(props.dashboard),
         canDeleteAnnotations: props.dashboard.canDeleteAnnotations.bind(props.dashboard),
+        canExecuteActions: props.dashboard.canExecuteActions.bind(props.dashboard),
         onAddAdHocFilter: this.onAddAdHocFilter,
         onUpdateData: this.onUpdateData,
       },
@@ -361,6 +363,7 @@ export class PanelStateWrapper extends PureComponent<Props, State> {
       panel.runAllPanelQueries({
         dashboardUID: dashboard.uid,
         dashboardTimezone: dashboard.getTimezone(),
+        dashboardTitle: dashboard.title,
         timeData,
         width,
       });

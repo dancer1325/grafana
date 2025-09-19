@@ -65,12 +65,10 @@ There are different ways you can follow along with this tutorial.
 - **Grafana OSS**
 
   To run a Grafana stack locally, ensure you have the following applications installed:
-
   - [Docker Compose](https://docs.docker.com/get-docker/) (included in Docker for Desktop for macOS and Windows)
   - [Git](https://git-scm.com/)
 
 - **Interactive learning environment**
-
   - Alternatively, you can [try out this example in our interactive learning environment](https://killercoda.com/grafana-labs/course/grafana/alerting-loki-logs). It's a fully configured environment with all the dependencies already installed.
 
 ## Set up the Grafana stack
@@ -82,7 +80,7 @@ To demonstrate the observation of data using the Grafana stack, download and run
 1. Download and save a Docker compose file to run Grafana, Loki and Promtail.
 
    ```bash
-   wget https://raw.githubusercontent.com/grafana/loki/v2.8.0/production/docker-compose.yaml -O docker-compose.yaml
+   wget https://raw.githubusercontent.com/grafana/loki/refs/heads/main/production/docker-compose.yaml -O docker-compose.yaml
    ```
 
 2. Run the Grafana stack.
@@ -217,7 +215,7 @@ In this section, we use the default options for Grafana-managed alert rule creat
 
    <!-- INTERACTIVE ignore START -->
 
-   {{% admonition type="note" %}}
+   {{< admonition type="note" >}}
    If you're using your own logs, modify the LogQL query to match your own log message. Refer to the Loki docs to understand the [pattern parser](https://grafana.com/docs/loki/latest/logql/log_queries/#pattern).
    {{% / admonition %}}
    <!-- INTERACTIVE ignore END -->
@@ -227,14 +225,13 @@ In this section, we use the default options for Grafana-managed alert rule creat
    {{< /docs/ignore >}}
 
 1. In the **Alert condition** section:
-
    - Keep `Last` as the value for the reducer function (`WHEN`), and `0` as the threshold value. This is the value above which the alert rule should trigger.
 
 1. Click **Preview alert rule condition** to run the query.
 
    It should return alert instances from log lines with a status code that is not 200 (OK), and that has met the alert condition. The condition for the alert rule to fire is any occurrence that goes over the threshold of `0`. Since the Loki query has returned more than zero alert instances, the alert rule is `Firing`.
 
-   {{< figure src="/media/docs/alerting/expression-loki-alert.png" max-width="1200px" caption="Preview of a firing alert instances" >}}
+   {{< figure src="/media/docs/alerting/firing-loki-alert-rule.png" max-width="1200px" caption="Preview of a firing alert instances" >}}
 
 ### Set evaluation behavior
 

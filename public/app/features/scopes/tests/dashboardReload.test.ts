@@ -1,8 +1,8 @@
 import { config } from '@grafana/runtime';
 import { setDashboardAPI } from 'app/features/dashboard/api/dashboard_api';
+import { getDashboardScenePageStateManager } from 'app/features/dashboard-scene/pages/DashboardScenePageStateManager';
 
 import { enterEditMode, updateMyVar, updateScopes, updateTimeRange } from './utils/actions';
-import { expectDashboardReload, expectNotDashboardReload } from './utils/assertions';
 import { getDatasource, getInstanceSettings, getMock } from './utils/mocks';
 import { renderDashboard, resetScenes } from './utils/render';
 
@@ -15,84 +15,75 @@ jest.mock('@grafana/runtime', () => ({
   usePluginLinks: jest.fn().mockReturnValue({ links: [] }),
 }));
 
-const runTest = async (
-  reloadDashboardsOnParamsChange: boolean,
-  reloadOnParamsChange: boolean,
-  withUid: boolean,
-  editMode: boolean
-) => {
-  config.featureToggles.reloadDashboardsOnParamsChange = reloadDashboardsOnParamsChange;
-  setDashboardAPI(undefined);
-  const uid = 'dash-1';
-  const dashboardScene = renderDashboard({ uid: withUid ? uid : undefined }, { reloadOnParamsChange });
-
-  if (editMode) {
-    await enterEditMode(dashboardScene);
-  }
-
-  const shouldReload = reloadDashboardsOnParamsChange && reloadOnParamsChange && withUid && !editMode;
-
-  await updateTimeRange(dashboardScene);
-  if (!shouldReload) {
-    expectNotDashboardReload();
-  } else {
-    expectDashboardReload();
-  }
-
-  await updateMyVar(dashboardScene, '2');
-  if (!shouldReload) {
-    expectNotDashboardReload();
-  } else {
-    expectDashboardReload();
-  }
-
-  await updateScopes(['grafana']);
-  if (!shouldReload) {
-    expectNotDashboardReload();
-  } else {
-    expectDashboardReload();
-  }
-};
-
 describe('Dashboard reload', () => {
+  let dashboardReloadSpy: jest.SpyInstance;
+  beforeEach(() => {
+    jest.spyOn(console, 'log').mockImplementation();
+  });
   beforeAll(() => {
     config.featureToggles.scopeFilters = true;
     config.featureToggles.groupByVariable = true;
   });
 
-  afterEach(async () => {
-    setDashboardAPI(undefined);
-    await resetScenes();
-  });
+  it.each([
+    [false, false, false, false],
+    [false, false, true, false],
+    [false, true, false, false],
+    [false, true, true, false],
+    [true, false, false, false],
+    [true, false, true, false],
+    [true, true, false, true],
+    [true, true, true, true],
+    [true, true, false, false],
+    [true, true, true, false],
+  ])(
+    `reloadDashboardsOnParamsChange: %s, reloadOnParamsChange: %s, withUid: %s, editMode: %s`,
+    async (reloadDashboardsOnParamsChange, reloadOnParamsChange, withUid, editMode) => {
+      config.featureToggles.reloadDashboardsOnParamsChange = reloadDashboardsOnParamsChange;
+      setDashboardAPI(undefined);
 
-  describe('reloadDashboardsOnParamsChange off', () => {
-    describe('reloadOnParamsChange off', () => {
-      it('with UID - no reload', () => runTest(false, false, true, false));
-      it('without UID - no reload', () => runTest(false, false, false, false));
-    });
+      const { scene: dashboardScene, scopesService } = await renderDashboard(
+        { uid: withUid ? 'dash-1' : undefined },
+        { reloadOnParamsChange }
+      );
 
-    describe('reloadOnParamsChange on', () => {
-      it('with UID - no reload', () => runTest(false, true, true, false));
-      it('without UID - no reload', () => runTest(false, true, false, false));
-    });
-  });
+      dashboardReloadSpy = jest.spyOn(getDashboardScenePageStateManager(), 'reloadDashboard');
 
-  describe('reloadDashboardsOnParamsChange on', () => {
-    describe('reloadOnParamsChange off', () => {
-      it('with UID - no reload', () => runTest(true, false, true, false));
-      it('without UID - no reload', () => runTest(true, false, false, false));
-    });
+      if (editMode) {
+        await enterEditMode(dashboardScene);
+      }
 
-    describe('reloadOnParamsChange on', () => {
-      describe('edit mode on', () => {
-        it('with UID - no reload', () => runTest(true, true, true, true));
-        it('without UID - no reload', () => runTest(true, true, false, true));
-      });
+      const shouldReload = reloadDashboardsOnParamsChange && reloadOnParamsChange && withUid && !editMode;
+      dashboardReloadSpy.mockClear();
 
-      describe('edit mode off', () => {
-        it('with UID - reload', () => runTest(true, true, true, false));
-        it('without UID - no reload', () => runTest(true, true, false, false));
-      });
-    });
-  });
+      await updateTimeRange(dashboardScene);
+      await jest.advanceTimersToNextTimerAsync();
+      if (!shouldReload) {
+        expect(dashboardReloadSpy).not.toHaveBeenCalled();
+      } else {
+        expect(dashboardReloadSpy).toHaveBeenCalled();
+      }
+
+      await updateMyVar(dashboardScene, '2');
+      await jest.advanceTimersToNextTimerAsync();
+      if (!shouldReload) {
+        expect(dashboardReloadSpy).not.toHaveBeenCalled();
+      } else {
+        expect(dashboardReloadSpy).toHaveBeenCalled();
+      }
+
+      await updateScopes(scopesService, ['grafana']);
+      await jest.advanceTimersToNextTimerAsync();
+      if (!shouldReload) {
+        expect(dashboardReloadSpy).not.toHaveBeenCalled();
+      } else {
+        expect(dashboardReloadSpy).toHaveBeenCalled();
+      }
+
+      getDashboardScenePageStateManager().clearDashboardCache();
+      getDashboardScenePageStateManager().clearSceneCache();
+      setDashboardAPI(undefined);
+      await resetScenes([dashboardReloadSpy]);
+    }
+  );
 });

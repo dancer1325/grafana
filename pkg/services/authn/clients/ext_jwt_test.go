@@ -2,20 +2,23 @@ package clients
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/rsa"
 	"fmt"
 	"net/http"
 	"testing"
 	"time"
 
-	"github.com/go-jose/go-jose/v3"
-	"github.com/go-jose/go-jose/v3/jwt"
-	authnlib "github.com/grafana/authlib/authn"
-	"github.com/grafana/authlib/claims"
+	"github.com/go-jose/go-jose/v4"
+	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	authnlib "github.com/grafana/authlib/authn"
+	claims "github.com/grafana/authlib/types"
+
+	"github.com/grafana/grafana/pkg/infra/tracing"
 	"github.com/grafana/grafana/pkg/services/authn"
 	"github.com/grafana/grafana/pkg/setting"
 )
@@ -27,7 +30,7 @@ type (
 
 var (
 	validAccessTokenClaims = accessTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "access-policy:this-uid",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -40,7 +43,7 @@ var (
 		},
 	}
 	validIDTokenClaims = idTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "user:2",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -51,7 +54,7 @@ var (
 		},
 	}
 	validIDTokenClaimsWithStackSet = idTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "user:2",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -62,7 +65,7 @@ var (
 		},
 	}
 	validIDTokenClaimsWithDeprecatedStackClaimSet = idTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "user:2",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -73,7 +76,7 @@ var (
 		},
 	}
 	validAccessTokenClaimsWildcard = accessTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "access-policy:this-uid",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -83,7 +86,7 @@ var (
 		},
 	}
 	validAccessTokenClaimsWithStackSet = accessTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "access-policy:this-uid",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -93,7 +96,7 @@ var (
 		},
 	}
 	validAccessTokenClaimsWithDeprecatedStackClaimSet = accessTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "access-policy:this-uid",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -103,7 +106,7 @@ var (
 		},
 	}
 	invalidNamespaceIDTokenClaims = idTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "user:2",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -114,7 +117,7 @@ var (
 		},
 	}
 	invalidSubjectIDTokenClaims = idTokenClaims{
-		Claims: &jwt.Claims{
+		Claims: jwt.Claims{
 			Subject:  "service-account:2",
 			Expiry:   jwt.NewNumericDate(time.Date(2023, 5, 3, 0, 0, 0, 0, time.UTC)),
 			IssuedAt: jwt.NewNumericDate(time.Date(2023, 5, 2, 0, 0, 0, 0, time.UTC)),
@@ -125,7 +128,8 @@ var (
 		},
 	}
 
-	pk, _ = rsa.GenerateKey(rand.Reader, 4096)
+	// generate ES256 key
+	pk, _ = ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 )
 
 var _ authnlib.Verifier[authnlib.IDTokenClaims] = &mockIDVerifier{}
@@ -171,12 +175,12 @@ func TestExtendedJWT_Test(t *testing.T) {
 		},
 		{
 			name:           "should return true when Authorization header contains Bearer prefix",
-			authHeaderFunc: func() string { return "Bearer " + generateToken(validAccessTokenClaims, pk, jose.RS256) },
+			authHeaderFunc: func() string { return "Bearer " + generateToken(t, validAccessTokenClaims, pk, jose.ES256) },
 			want:           true,
 		},
 		{
 			name:           "should return true when Authorization header only contains the token",
-			authHeaderFunc: func() string { return generateToken(validAccessTokenClaims, pk, jose.RS256) },
+			authHeaderFunc: func() string { return generateToken(t, validAccessTokenClaims, pk, jose.ES256) },
 			want:           true,
 		},
 		{
@@ -237,7 +241,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 				AuthID:            "access-policy:this-uid",
 				ClientParams: authn.ClientParams{
 					SyncPermissions:        true,
-					FetchPermissionsParams: authn.FetchPermissionsParams{Roles: []string{"fixed:folders:reader"}, AllowedActions: []string{"folders:read"}}},
+					FetchPermissionsParams: authn.FetchPermissionsParams{Roles: []string{"fixed:folders:reader"}, AllowedActions: []string{"folders:read"}, K8s: []string{}}},
 			},
 		},
 		{
@@ -283,7 +287,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 			},
 		},
 		{
-			name:        "should authenticate as user using wildcard namespace for access token",
+			name:        "should authenticate as user in the user namespace",
 			accessToken: &validAccessTokenClaimsWildcard,
 			idToken:     &validIDTokenClaims,
 			orgID:       1,
@@ -293,7 +297,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 				OrgID:             1,
 				AccessTokenClaims: &validAccessTokenClaimsWildcard,
 				IDTokenClaims:     &validIDTokenClaims,
-				Namespace:         "*",
+				Namespace:         "default",
 				AuthenticatedBy:   "extendedjwt",
 				AuthID:            "access-policy:this-uid",
 				ClientParams: authn.ClientParams{
@@ -459,7 +463,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 		{
 			name: "should return error when the subject is not an access-policy",
 			accessToken: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "user:2",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -483,7 +487,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 
 			validHTTPReq := &http.Request{
 				Header: map[string][]string{
-					"X-Access-Token": {generateToken(*tc.accessToken, pk, jose.RS256)},
+					"X-Access-Token": {generateToken(t, *tc.accessToken, pk, jose.ES256)},
 				},
 			}
 
@@ -491,7 +495,7 @@ func TestExtendedJWT_Authenticate(t *testing.T) {
 			if tc.idToken != nil {
 				env.s.accessTokenVerifier = &mockVerifier{Claims: *tc.accessToken}
 				env.s.idTokenVerifier = &mockIDVerifier{Claims: *tc.idToken}
-				validHTTPReq.Header.Add(ExtJWTAuthorizationHeaderName, generateIDToken(*tc.idToken, pk, jose.RS256))
+				validHTTPReq.Header.Add(ExtJWTAuthorizationHeaderName, generateIDToken(t, *tc.idToken, pk, jose.ES256))
 			}
 
 			id, err := env.s.Authenticate(context.Background(), &authn.Request{
@@ -523,7 +527,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "missing iss",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
 					ID:       "1234567890",
@@ -538,7 +542,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "missing expiry",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -553,7 +557,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "expired token",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -569,7 +573,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "missing aud",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					ID:       "1234567890",
@@ -584,7 +588,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "wrong aud",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://some-other-host:3000"},
@@ -605,7 +609,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "missing sub",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Audience: jwt.Audience{"http://localhost:3000"},
 					ID:       "1234567890",
@@ -620,7 +624,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "missing iat",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -635,7 +639,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "iat later than current time",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -651,7 +655,7 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 		{
 			name: "unsupported alg",
 			payload: &accessTokenClaims{
-				Claims: &jwt.Claims{
+				Claims: jwt.Claims{
 					Issuer:   "http://localhost:3000",
 					Subject:  "access-policy:this-uid",
 					Audience: jwt.Audience{"http://localhost:3000"},
@@ -672,14 +676,14 @@ func TestVerifyRFC9068TokenFailureScenarios(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.alg == "" {
-				tc.alg = jose.RS256
+				tc.alg = jose.ES256
 			}
 
 			var tokenToTest string
 			if tc.generateWrongTyp {
-				tokenToTest = generateIDToken(*tc.idPayload, pk, tc.alg)
+				tokenToTest = generateIDToken(t, *tc.idPayload, pk, tc.alg)
 			} else {
-				tokenToTest = generateToken(*tc.payload, pk, tc.alg)
+				tokenToTest = generateToken(t, *tc.payload, pk, tc.alg)
 			}
 			_, err := env.s.accessTokenVerifier.Verify(context.Background(), tokenToTest)
 			require.Error(t, err)
@@ -698,7 +702,7 @@ func setupTestCtx(cfg *setting.Cfg) *testEnv {
 		}
 	}
 
-	extJwtClient := ProvideExtendedJWT(cfg)
+	extJwtClient := ProvideExtendedJWT(cfg, tracing.InitializeTracerForTest())
 
 	return &testEnv{
 		s: extJwtClient,
@@ -709,24 +713,40 @@ type testEnv struct {
 	s *ExtendedJWT
 }
 
-func generateToken(payload accessTokenClaims, signingKey any, alg jose.SignatureAlgorithm) string {
-	signer, _ := jose.NewSigner(jose.SigningKey{Algorithm: alg, Key: signingKey}, &jose.SignerOptions{
+func generateToken(t *testing.T, payload accessTokenClaims, signingKey any, alg jose.SignatureAlgorithm) string {
+	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: alg, Key: signingKey}, &jose.SignerOptions{
 		ExtraHeaders: map[jose.HeaderKey]any{
 			jose.HeaderType: authnlib.TokenTypeAccess,
 			"kid":           "default",
 		}})
+	if err != nil {
+		// For incompatible algorithm/key combinations (like RS384 with ECDSA key),
+		// return invalid token to test verification failure
+		if alg == jose.RS384 {
+			return "invalid.token"
+		}
+		require.NoError(t, err)
+	}
 
-	result, _ := jwt.Signed(signer).Claims(payload).CompactSerialize()
+	result, err := jwt.Signed(signer).Claims(payload).Serialize()
+	require.NoError(t, err)
 	return result
 }
 
-func generateIDToken(payload idTokenClaims, signingKey any, alg jose.SignatureAlgorithm) string {
-	signer, _ := jose.NewSigner(jose.SigningKey{Algorithm: alg, Key: signingKey}, &jose.SignerOptions{
+func generateIDToken(t *testing.T, payload idTokenClaims, signingKey any, alg jose.SignatureAlgorithm) string {
+	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: alg, Key: signingKey}, &jose.SignerOptions{
 		ExtraHeaders: map[jose.HeaderKey]any{
 			jose.HeaderType: authnlib.TokenTypeID,
 			"kid":           "default",
 		}})
+	if err != nil {
+		if alg == jose.RS384 {
+			return "invalid.token"
+		}
+		require.NoError(t, err)
+	}
 
-	result, _ := jwt.Signed(signer).Claims(payload).CompactSerialize()
+	result, err := jwt.Signed(signer).Claims(payload).Serialize()
+	require.NoError(t, err)
 	return result
 }

@@ -16,11 +16,7 @@ import {
 } from '@grafana/data';
 import { DashboardCursorSync, VizLegendOptions } from '@grafana/schema';
 import { Themeable2, VizLayout } from '@grafana/ui';
-import { UPlotChart } from '@grafana/ui/src/components/uPlot/Plot';
-import { AxisProps } from '@grafana/ui/src/components/uPlot/config/UPlotAxisBuilder';
-import { Renderers, UPlotConfigBuilder } from '@grafana/ui/src/components/uPlot/config/UPlotConfigBuilder';
-import { ScaleProps } from '@grafana/ui/src/components/uPlot/config/UPlotScaleBuilder';
-import { pluginLog } from '@grafana/ui/src/components/uPlot/utils';
+import { UPlotChart, AxisProps, Renderers, UPlotConfigBuilder, ScaleProps, pluginLog } from '@grafana/ui/internal';
 
 import { GraphNGLegendEvent, XYFieldMatchers } from './types';
 import { preparePlotFrame as defaultPreparePlotFrame } from './utils';
@@ -51,6 +47,14 @@ export interface GraphNGProps extends Themeable2 {
   replaceVariables: InterpolateFunction;
   dataLinkPostProcessor?: DataLinkPostProcessor;
   cursorSync?: DashboardCursorSync;
+
+  // Remove fields that are hidden from the visualization before rendering
+  // The fields will still be available for other things like data links
+  // this is a temporary hack that only works when:
+  // 1. renderLegend (above) does not render <PlotLegend>
+  // 2. does not have legend series toggle
+  // 3. passes through all fields required for link/action gen (including those with hideFrom.viz)
+  omitHideFromViz?: boolean;
 
   /**
    * needed for propsToDiff to re-init the plot & config
@@ -172,6 +176,15 @@ export class GraphNG extends Component<GraphNGProps, GraphNGState> {
         alignedFrameFinal = {
           ...alignedFrame,
           fields: alignedFrame.fields.filter((field, i) => i === 0 || fields.y(field, alignedFrame, [alignedFrame])),
+        };
+      }
+
+      if (props.omitHideFromViz) {
+        const nonHiddenFields = alignedFrameFinal.fields.filter((field) => field.config.custom?.hideFrom?.viz !== true);
+        alignedFrameFinal = {
+          ...alignedFrameFinal,
+          fields: nonHiddenFields,
+          length: nonHiddenFields.length,
         };
       }
 

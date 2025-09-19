@@ -1,13 +1,15 @@
 ---
 aliases:
-  - ../administration/configuration/
-  - ../installation/configuration/
-description: Configuration documentation
+  - ../administration/configuration/ # /docs/grafana/latest/administration/configuration/
+  - ../installation/configuration/ # /docs/grafana/latest/installation/configuration/
+description: Learn how to configure Grafana and understand configuration options.
 labels:
   products:
     - enterprise
     - oss
 title: Configure Grafana
+toc:
+  endLevel: 4
 weight: 200
 ---
 
@@ -27,29 +29,45 @@ weight: 200
 
 The default settings for a Grafana instance are stored in the `$WORKING_DIR/conf/defaults.ini` file
 * _Do not_ change this file.
+The default settings for a Grafana instance are stored in the `<WORKING DIRECTORY>/conf/defaults.ini` file.
+_Don't_ change this file.
 
 Depending on your OS, your custom configuration file is either the `$WORKING_DIR/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file
 * The custom configuration file path can be overridden using the `--config` parameter.
+Depending on your OS, your custom configuration file is either the `<WORKING DIRECTORY>/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file.
+You can use a custom configuration path with the `--config` option.
 
 ### Linux
 
 If you installed Grafana using the `deb` or `rpm` packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used
 * This path is specified in the Grafana init.d script using `--config` file parameter.
+If you installed Grafana using the deb or RPM packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used.
+This path is specified in the Grafana init.d script using `--config` option.
 
 ### Docker
 
-Refer to [Configure a Grafana Docker image]({{< relref "../configure-docker" >}}) for information about environmental variables, persistent storage, and building custom Docker images.
+Refer to [Configure a Grafana Docker image](/docs/grafana/<GRAFANA_VERSION>/setup-grafana/configure-docker/) for information about environmental variables, persistent storage, and building custom Docker images.
 
 ### Windows
 
 On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file
 * It contains all the settings commented out
 * Copy `sample.ini` and name it `custom.ini`.
+On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file.
+It contains all the settings commented out.
+Copy `sample.ini` and name it `custom.ini`.
 
 ### macOS
 
 By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`
 * For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly. Otherwise, add a configuration file named `custom.ini` to the `conf` folder to override the settings defined in `conf/defaults.ini`.
+By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`.
+For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly.
+Otherwise, add a configuration file named `custom.ini` to the `conf` directory to override the settings defined in `conf/defaults.ini`.
+
+### Grafana Cloud
+
+There is no local configuration file for Grafana Cloud stacks, but many of these settings are still configurable. To edit configurable settings, open a support ticket.
 
 ## Remove comments in the .ini files
 
@@ -61,18 +79,23 @@ By default, the configuration file is located at `/opt/homebrew/etc/grafana/graf
 
 Do not use environment variables to _add_ new configuration settings
 * Instead, use environmental variables to _override_ existing options.
+Don't use environment variables to _add_ new configuration settings.
+Instead, use environmental variables to _override_ existing options.
 
 To override an option:
 
 ```bash
-GF_<SectionName>_<KeyName>
+GF_<SECTION NAME>_<KEY>
 ```
 
 Where the section name is the text within the brackets
 * Everything should be uppercase, `.` and `-` should be replaced by `_`
 * For example, if you have these configuration settings:
+Where _`<SECTION NAME>`_ is the text within the square brackets (`[` and `]`) in the configuration file.
+All letters must be uppercase, periods (`.`) and dashes (`-`) must replaced by underscores (`_`).
+For example, if you have these configuration settings:
 
-```bash
+```ini
 # default section
 instance_name = ${HOSTNAME}
 
@@ -101,89 +124,87 @@ export GF_FEATURE_TOGGLES_ENABLE=newNavigation
 
 ## Variable expansion
 
-If any of your options contains the expression `$__<provider>{<argument>}`
-or `${<environment variable>}`, then they will be processed by Grafana's
-variable expander
-* The expander runs the provider with the provided argument
-to get the final value of the option.
+If any of your options contains the expression `$__<PROVIDER>{<ARGUMENT>}`or `${<ENVIRONMENT VARIABLE>}`, then Grafana evaluates them.
+The evaluation runs the provider with the provided argument to get the final value of the option.
 
 There are three providers: `env`, `file`, and `vault`.
 
-### Env provider
+### `env` provider
 
-The `env` provider can be used to expand an environment variable
-* If you
-set an option to `$__env{PORT}` the `PORT` environment variable will be
-used in its place
-* For environment variables you can also use the
-short-hand syntax `${PORT}`.
-Grafana's log directory would be set to the `grafana` directory in the
-directory behind the `LOGDIR` environment variable in the following
-example.
+The `env` provider expands environment variables.
+If you set an option to `$__env{PORT}` the value of the `PORT` environment variable replaces it.
+For environment variables you can also use the short-hand syntax `${PORT}`.
+
+The following example sets the log directory to the path in the `LOGDIR` environment variable:
 
 ```ini
 [paths]
 logs = $__env{LOGDIR}/grafana
 ```
 
-### File provider
+### `file` provider
 
-`file` reads a file from the filesystem
-* It trims whitespace from the
-beginning and the end of files.
-The database password in the following example would be replaced by
-the content of the `/etc/secrets/gf_sql_password` file:
+The `file` provider reads a file from the filesystem.
+It trims whitespace from the beginning and the end of files.
+
+The following example sets the database password to the contents of the `/etc/secrets/gf_sql_password` file:
 
 ```ini
 [database]
 password = $__file{/etc/secrets/gf_sql_password}
 ```
 
-### Vault provider
+### `vault` provider
 
-The `vault` provider allows you to manage your secrets with [Hashicorp Vault](https://www.hashicorp.com/products/vault).
+The `vault` provider lets manage your secrets with [Hashicorp Vault](https://www.hashicorp.com/products/vault).
 
-> Vault provider is only available in Grafana Enterprise v7.1+
-* For more information, refer to [Vault integration]({{< relref "../configure-security/configure-database-encryption/integrate-with-hashicorp-vault" >}}) in [Grafana Enterprise]({{< relref "../../introduction/grafana-enterprise" >}}).
+{{< admonition type="note" >}}
+The `vault` provider is only available in Grafana Enterprise.
+
+For more information, refer to [Integrate Grafana with Hashicorp Vault](/docs/grafana/<GRAFANA_VERSION>/setup-grafana/configure-security/configure-database-encryption/integrate-with-hashicorp-vault).
+
+{{< /admonition >}}
+
+## Configuration options
+
+The following headings describe the sections and configuration options of the Grafana configuration file.
+
+### `app_mode`
+
+Options are `production` and `development`.
+Default is `production`. _Don't_ change this option unless you are working on Grafana development.
+
+### `instance_name`
+
+Set the name of the Grafana server instance.
+Used in logging, internal metrics, and clustering info.
+Defaults to: `${HOSTNAME}`, which uses the value of the environment variable `HOSTNAME`, if that is empty or doesn't exist Grafana tries to use system calls to get the machine name.
 
 <hr />
 
-## app_mode
+### `[paths]`
 
-Options are `production` and `development`
-* Default is `production`
-* _Do not_ change this option unless you are working on Grafana development.
+#### `data`
 
-## instance_name
-
-Set the name of the grafana-server instance
-* Used in logging, internal metrics, and clustering info
-* Defaults to: `${HOSTNAME}`, which will be replaced with
-environment variable `HOSTNAME`, if that is empty or does not exist Grafana will try to use system calls to get the machine name.
-
-<hr />
-
-## [paths]
-
-### data
-
-Path to where Grafana stores the sqlite3 database (if used), file-based sessions (if used), and other data
-* This path is usually specified via command line in the init.d script or the systemd service file.
+Path to where Grafana stores the sqlite3 database (if used), file-based sessions (if used), and other data.
+This path is usually specified via command line in the init.d script or the systemd service file.
 
 **macOS:** The default SQLite database is located at `/usr/local/var/lib/grafana`
 
-### temp_data_lifetime
+#### `temp_data_lifetime`
 
-How long temporary images in `data` directory should be kept
-* Defaults to: `24h`
-* Supported modifiers: `h` (hours),
-`m` (minutes), for example: `168h`, `30m`, `10h30m`
-* Use `0` to never clean up temporary files.
+How long temporary images in `data` directory should be kept. Defaults to: `24h`. Supported modifiers: `h` (hours),
+`m` (minutes), for example: `168h`, `30m`, `10h30m`. Use `0` to never clean up temporary files.
 
-### logs
+#### `logs`
 
-Path to where Grafana stores logs
-* This path is usually specified via command line in the init.d script or the systemd service file. You can override it in the configuration file or in the default environment variable file. However, please note that by overriding this the default log path will be used temporarily until Grafana has fully initialized/started.
+Path to where Grafana stores logs.
+This path is usually specified via command line in the init.d script or the systemd service file.
+You can override it in the configuration file or in the default environment variable file.
+
+{{< admonition type="note" >}}
+When overriding the default log path in the configuration file or environment variable file, Grafana still logs to the default log path until it has fully started.
+{{< /admonition >}}
 
 Override log path using the command line argument `cfg:default.paths.logs`:
 
@@ -193,25 +214,26 @@ Override log path using the command line argument `cfg:default.paths.logs`:
 
 **macOS:** By default, the log file should be located at `/usr/local/var/log/grafana/grafana.log`.
 
-### plugins
+#### `plugins`
 
-Directory where Grafana automatically scans and looks for plugins. For information about manually or automatically installing plugins, refer to [Install Grafana plugins]({{< relref "../../administration/plugin-management#install-grafana-plugins" >}}).
+Directory where Grafana automatically scans and looks for plugins. For information about manually or automatically installing plugins, refer to [Install Grafana plugins](../../administration/plugin-management/#install-grafana-plugins).
 
 **macOS:** By default, the Mac plugin location is: `/usr/local/var/lib/grafana/plugins`.
 
-### provisioning
+#### `provisioning`
 
-Folder that contains [provisioning]({{< relref "../../administration/provisioning" >}}) config files that Grafana will apply on startup. Dashboards will be reloaded when the json files changes.
+Directory that contains [provisioning](../../administration/provisioning/) configuration files that Grafana applies on startup.
+Dashboards are reloaded when the JSON files change.
 
 <hr />
 
-## [server]
+### `[server]`
 
-### protocol
+#### `protocol`
 
 `http`,`https`,`h2` or `socket`
 
-### min_tls_version
+#### `min_tls_version`
 
 The TLS Handshake requires a minimum TLS version. The available options are TLS1.2 and TLS1.3.
 If you do not specify a version, the system uses TLS1.2.
@@ -1048,29 +1070,32 @@ For GitLab, GitHub, Okta, Generic OAuth providers, Grafana synchronizes organiza
 | false | true | Skips organization role and Grafana Admin synchronization for GitHub users. Role is set to `auto_assign_org_role`. | true |
 | true | true | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for GitHub users. Role is set to `auto_assign_org_role`. | true |
 
-**[auth.gitlab]**
-| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | **Resulting Org Role** | Modifiable |
-|-----------------------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| false | false | Synchronize user organization role with Gitlab role. If no role is provided, `auto_assign_org_role` is set. | false |
-| true | false | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`. | true |
-| false | true | Skips organization role and Grafana Admin synchronization for Gitlab users. Role is set to `auto_assign_org_role`. | true |
-| true | true | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for Gitlab users. Role is set to `auto_assign_org_role`. | true |
+`[auth.gitlab]`
 
-**[auth.generic_oauth]**
-| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | **Resulting Org Role** | Modifiable |
-|-----------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| false | false | Synchronize user organization role with the provider's role. If no role is provided, `auto_assign_org_role` is set. | false |
-| true | false | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`. | true |
-| false | true | Skips organization role and Grafana Admin synchronization for the provider's users. Role is set to `auto_assign_org_role`. | true |
-| true | true | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for the provider's users. Role is set to `auto_assign_org_role`. | true |
+| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | Resulting Org Role                                                                                                                                               | Modifiable |
+| --------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| false                             | false                | Synchronize user organization role with GitLab role. If no role is provided, `auto_assign_org_role` is set.                                                      | false      |
+| true                              | false                | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`.                                                   | true       |
+| false                             | true                 | Skips organization role and Grafana Admin synchronization for GitLab users. Role is set to `auto_assign_org_role`.                                               | true       |
+| true                              | true                 | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for GitLab users. Role is set to `auto_assign_org_role`. | true       |
 
-**[auth.okta]**
-| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | **Resulting Org Role** | Modifiable |
-|-----------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| false | false | Synchronize user organization role with Okta role. If no role is provided, `auto_assign_org_role` is set. | false |
-| true | false | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`. | true |
-| false | true | Skips organization role and Grafana Admin synchronization for Okta users. Role is set to `auto_assign_org_role`. | true |
-| true | true | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for Okta users. Role is set to `auto_assign_org_role`. | true |
+`[auth.generic_oauth]`
+
+| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | Resulting Org Role                                                                                                                                                       | Modifiable |
+| --------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| false                             | false                | Synchronize user organization role with the provider's role. If no role is provided, `auto_assign_org_role` is set.                                                      | false      |
+| true                              | false                | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`.                                                           | true       |
+| false                             | true                 | Skips organization role and Grafana Admin synchronization for the provider's users. Role is set to `auto_assign_org_role`.                                               | true       |
+| true                              | true                 | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for the provider's users. Role is set to `auto_assign_org_role`. | true       |
+
+`[auth.okta]`
+
+| `oauth_skip_org_role_update_sync` | `skip_org_role_sync` | Resulting Org Role                                                                                                                                             | Modifiable |
+| --------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| false                             | false                | Synchronize user organization role with Okta role. If no role is provided, `auto_assign_org_role` is set.                                                      | false      |
+| true                              | false                | Skips organization role synchronization for all OAuth providers' users. Role is set to `auto_assign_org_role`.                                                 | true       |
+| false                             | true                 | Skips organization role and Grafana Admin synchronization for Okta users. Role is set to `auto_assign_org_role`.                                               | true       |
+| true                              | true                 | Skips organization role synchronization for all OAuth providers and skips Grafana Admin synchronization for Okta users. Role is set to `auto_assign_org_role`. | true       |
 
 #### Example skip_org_role_sync
 
@@ -1309,7 +1334,11 @@ By default, this will include all Grafana Labs owned Azure plugins or those that
 
 ### azure_entra_password_credentials_enabled
 
-Specifies whether Entra password auth can be used for the MSSQL data source. This authentication is not recommended and consideration should be taken before enabling this.
+By default, this includes all Grafana Labs owned Azure plugins or those that use Azure settings (Azure Monitor, Azure Data Explorer, Prometheus, MSSQL).
+
+#### `azure_entra_password_credentials_enabled`
+
+Specifies whether Entra password authentication can be used for the MSSQL data source. This authentication isn't recommended and consideration should be taken before enabling this.
 
 Disabled by default, needs to be explicitly enabled.
 
@@ -1335,72 +1364,75 @@ Default is `localhost:25`. Use port 465 for implicit TLS.
 
 In case of SMTP auth, default is `empty`.
 
-### password
+#### `password`
 
 In case of SMTP auth, default is `empty`. If the password contains `#` or `;`, then you have to wrap it with triple quotes. Example: """#password;"""
 
-### cert_file
+#### `cert_file`
 
 File path to a cert file, default is `empty`.
 
-### key_file
+#### `key_file`
 
 File path to a key file, default is `empty`.
 
-### skip_verify
+#### `skip_verify`
 
 Verify SSL for SMTP server, default is `false`.
 
-### from_address
+#### `from_address`
 
 Address used when sending out emails, default is `admin@grafana.localhost`.
 
-### from_name
+#### `from_name`
 
 Name to be used when sending out emails, default is `Grafana`.
 
-### ehlo_identity
+#### `ehlo_identity`
 
-Name to be used as client identity for EHLO in SMTP dialog, default is `<instance_name>`.
+Name to be used as client identity for EHLO in SMTP conversation, default is `<instance_name>`.
 
-### startTLS_policy
+#### `startTLS_policy`
 
-Either "OpportunisticStartTLS", "MandatoryStartTLS", "NoStartTLS". Default is `empty`.
+Either `OpportunisticStartTLS`, `MandatoryStartTLS`, `NoStartTLS`, or `empty`. Default is `empty`.
 
-### enable_tracing
+#### `enable_tracing`
 
-Enable trace propagation in e-mail headers, using the `traceparent`, `tracestate` and (optionally) `baggage` fields. Default is `false`. To enable, you must first configure tracing in one of the `tracing.opentelemetry.*` sections.
+Enable trace propagation in email headers, using the `traceparent`, `tracestate` and (optionally) `baggage` fields. Default is `false`. To enable, you must first configure tracing in one of the `tracing.opentelemetry.*` sections.
 
 <hr>
 
-## [smtp.static_headers]
+### `[smtp.static_headers]`
 
 Enter key-value pairs on their own lines to be included as headers on outgoing emails. All keys must be in canonical mail header format.
 Examples: `Foo=bar`, `Foo-Header=bar`.
 
 <hr>
 
-## [emails]
+### `[emails]`
 
-### welcome_email_on_sign_up
+#### `welcome_email_on_sign_up`
 
 Default is `false`.
 
-### templates_pattern
+#### `templates_pattern`
 
 Enter a comma separated list of template patterns. Default is `emails/*.html, emails/*.txt`.
 
-### content_types
+#### `content_types`
 
-Enter a comma-separated list of content types that should be included in the emails that are sent. List the content types according descending preference, e.g. `text/html, text/plain` for HTML as the most preferred. The order of the parts is significant as the mail clients will use the content type that is supported and most preferred by the sender. Supported content types are `text/html` and `text/plain`. Default is `text/html`.
+Enter a comma-separated list of content types that should be included in the emails that are sent. List the content types according descending preference.
+For example, `text/html, text/plain` for HTML as the most preferred.
+The order of the parts is significant as the mail clients uses the media type that is supported and most preferred by the sender.
+Supported content types are `text/html` and `text/plain`. Default is `text/html`.
 
 <hr>
 
-## [log]
+### `[log]`
 
 Grafana logging options.
 
-### mode
+### `mode`
 
 * ALLOWED values
   * "console",
@@ -1411,7 +1443,7 @@ Grafana logging options.
 * `mode1 mode2 mode3`
   * way to specify your desired modes
 
-### level
+### `level`
 
 * ALLOWED values
   * "debug"
@@ -1421,12 +1453,22 @@ Grafana logging options.
   * "error"
   * "critical"
 
-### filters
+#### `filters`
 
 Optional settings to set different levels for specific loggers.
 For example: `filters = sqlstore:debug`
 
-### user_facing_default_error
+You can use multiple filters with a comma-seperated list:
+For example: `filters = sqlstore:debug,plugins:info`
+
+The equivalent for a `docker-compose.yaml` looks like this:
+
+```
+GF_LOG_FILTERS: sqlstore:debug,plugins:info
+GF_LOG_LEVEL: error
+```
+
+#### `user_facing_default_error`
 
 Use this configuration option to set the default error message shown to users. This message is displayed instead of sensitive backend errors, which should be obfuscated. The default message is `Please inspect the Grafana server log for details.`.
 
@@ -1651,7 +1693,19 @@ The Redis server address that should be connected to.
 For more information on Redis, refer to [Enable alerting high availability using Redis](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/alerting/set-up/configure-high-availability/#enable-alerting-high-availability-using-redis).
 {{< /admonition >}}
 
-### ha_redis_username
+#### `ha_redis_cluster_mode_enabled`
+
+Set to `true` when using Redis in Cluster mode. Mutually exclusive with `ha_redis_sentinel_mode_enabled`.
+
+#### `ha_redis_sentinel_mode_enabled`
+
+Set to `true` when using Redis in Sentinel mode. Mutually exclusive with `ha_redis_cluster_mode_enabled`.
+
+#### `ha_redis_sentinel_master_name`
+
+Redis Sentinel master name. Only applicable when `ha_redis_sentinel_mode_enabled` is set to `true`.
+
+#### `ha_redis_username`
 
 The username that should be used to authenticate with the Redis server.
 
@@ -1659,7 +1713,15 @@ The username that should be used to authenticate with the Redis server.
 
 The password that should be used to authenticate with the Redis server.
 
-### ha_redis_db
+#### `ha_redis_sentinel_username`
+
+The username that should be used to authenticate with Redis Sentinel. Only applicable when `ha_redis_sentinel_mode_enabled` is set to `true`.
+
+#### `ha_redis_sentinel_password`
+
+The password that should be used to authenticate with Redis Sentinel. Only applicable when `ha_redis_sentinel_mode_enabled` is set to `true`.
+
+#### `ha_redis_db`
 
 The Redis database. The default value is `0`.
 
@@ -1675,7 +1737,39 @@ The name of the cluster peer that will be used as an identifier. If none is prov
 
 The maximum number of simultaneous Redis connections.
 
-### ha_listen_address
+#### `ha_redis_tls_enabled`
+
+Enable TLS on the client used to communicate with the Redis server. This should be set to `true` if using any of the other `ha_redis_tls_*` fields.
+
+#### `ha_redis_tls_cert_path`
+
+Path to the PEM-encoded TLS client certificate file used to authenticate with the Redis server. Required if using Mutual TLS.
+
+#### `ha_redis_tls_key_path`
+
+Path to the PEM-encoded TLS private key file. Also requires the client certificate to be configured. Required if using Mutual TLS.
+
+#### `ha_redis_tls_ca_path`
+
+Path to the PEM-encoded CA certificates file. If not set, the host's root CA certificates are used.
+
+#### `ha_redis_tls_server_name`
+
+Overrides the expected name of the Redis server certificate.
+
+#### `ha_redis_tls_insecure_skip_verify`
+
+Skips validating the Redis server certificate.
+
+#### `ha_redis_tls_cipher_suites`
+
+Overrides the default TLS cipher suite list.
+
+#### `ha_redis_tls_min_version`
+
+Overrides the default minimum TLS version. Allowed values: `VersionTLS10`, `VersionTLS11`, `VersionTLS12`, `VersionTLS13`
+
+#### `ha_listen_address`
 
 Listen IP address and port to receive unified alerting messages for other Grafana instances. The port is used for both TCP and UDP. It is assumed other Grafana instances are also running on the same port. The default value is `0.0.0.0:9094`.
 
@@ -2444,29 +2538,30 @@ You can configure the plugin to use a different browser binary instead of the pr
 
 Please note that this is _not_ recommended. You might encounter problems if the installed version of Chrome/Chromium is not compatible with the plugin.
 
-### rendering_mode
+#### `rendering_mode`
 
-Instruct how headless browser instances are created. Default is `default` and will create a new browser instance on each request.
+Instruct how headless browser instances are created. Default is `default` and creates a new browser instance on each request.
 
-Mode `clustered` will make sure that only a maximum of browsers/incognito pages can execute concurrently.
+Mode `clustered` makes sure that only a maximum of browsers or incognito pages can execute concurrently.
 
-Mode `reusable` will have one browser instance and will create a new incognito page on each request.
+Mode `reusable` uses one browser instance and creates a new incognito page on each request.
 
-### rendering_clustering_mode
+#### `rendering_clustering_mode`
 
-When rendering_mode = clustered, you can instruct how many browsers or incognito pages can execute concurrently. Default is `browser` and will cluster using browser instances.
+When `rendering_mode = clustered`, you can instruct how many browsers or incognito pages can execute concurrently.
+Default is `browser` and clusters using browser instances.
 
-Mode `context` will cluster using incognito pages.
+Mode `context` clusters using incognito pages.
 
-### rendering_clustering_max_concurrency
+#### `rendering_clustering_max_concurrency`
 
-When rendering_mode = clustered, you can define the maximum number of browser instances/incognito pages that can execute concurrently. Default is `5`.
+When `rendering_mode = clustered`, you can define the maximum number of browser instances or incognito pages that can execute concurrently. Default is `5`.
 
-### rendering_clustering_timeout
+#### `rendering_clustering_timeout`
 
-{{% admonition type="note" %}}
-Available in grafana-image-renderer v3.3.0 and later versions.
-{{% /admonition %}}
+{{< admonition type="note" >}}
+Available in `grafana-image-renderer` v3.3.0 and later versions.
+{{< /admonition >}}
 
 When rendering_mode = clustered, you can specify the duration a rendering request can take before it will time out. Default is `30` seconds.
 
@@ -2478,29 +2573,29 @@ Limit the maximum viewport width that can be requested.
 
 Limit the maximum viewport height that can be requested.
 
-### rendering_viewport_max_device_scale_factor
+#### `rendering_viewport_max_device_scale_factor`
 
 Limit the maximum viewport device scale factor that can be requested.
 
-### grpc_host
+#### `grpc_host`
 
 Change the listening host of the gRPC server. Default host is `127.0.0.1`.
 
-### grpc_port
+#### `grpc_port`
 
-Change the listening port of the gRPC server. Default port is `0` and will automatically assign a port not in use.
-
-<hr>
-
-## [enterprise]
-
-For more information about Grafana Enterprise, refer to [Grafana Enterprise]({{< relref "../../introduction/grafana-enterprise" >}}).
+Change the listening port of the gRPC server. Default port is `0` and uses a port not in use.
 
 <hr>
 
-## [feature_toggles]
+### `[enterprise]`
 
-### enable
+For more information about Grafana Enterprise, refer to [Grafana Enterprise](../../introduction/grafana-enterprise/).
+
+<hr>
+
+### `[feature_toggles]`
+
+#### `enable`
 
 Keys of features to enable, separated by space.
 
@@ -2510,45 +2605,17 @@ Some feature toggles for stable features are on by default. Use this setting to 
 
 <hr>
 
-## [feature_management]
-
-The options in this section configure the experimental Feature Toggle Admin Page feature, which is enabled using the `featureToggleAdminPage` feature toggle. Grafana Labs offers support on a best-effort basis, and breaking changes might occur prior to the feature being made generally available.
-
-Please see [Configure feature toggles]({{< relref "./feature-toggles" >}}) for more information.
-
-### allow_editing
-
-Lets you switch the feature toggle state in the feature management page. The default is `false`.
-
-### update_webhook
-
-Set the URL of the controller that manages the feature toggle updates. If not set, feature toggles in the feature management page will be read-only.
-
-{{% admonition type="note" %}}
-The API for feature toggle updates has not been defined yet.
-{{% /admonition %}}
-
-### hidden_toggles
-
-Hide additional specific feature toggles from the feature management page. By default, feature toggles in the `unknown`, `experimental`, and `private preview` stages are hidden from the UI. Use this option to hide toggles in the `public preview`, `general availability`, and `deprecated` stages.
-
-### read_only_toggles
-
-Use to disable updates for additional specific feature toggles in the feature management page. By default, feature toggles can only be updated if they are in the `general availability` and `deprecated`stages. Use this option to disable updates for toggles in those stages.
-
-<hr>
-
-## [date_formats]
+### `[date_formats]`
 
 This section controls system-wide defaults for date formats used in time ranges, graphs, and date input boxes.
 
 The format patterns use [Moment.js](https://momentjs.com/docs/#/displaying/) formatting tokens.
 
-### full_date
+#### `full_date`
 
 Full date format used by time range picker and in other places where a full date is rendered.
 
-### intervals
+#### `intervals`
 
 These intervals formats are used in the graph to show only a partial date or time. For example, if there are only
 minutes between Y-axis tick labels then the `interval_minute` format is used.
@@ -2564,31 +2631,73 @@ interval_month = YYYY-MM
 interval_year = YYYY
 ```
 
-### use_browser_locale
+#### `use_browser_locale`
 
 Set this to `true` to have date formats automatically derived from your browser location. Defaults to `false`. This is an experimental feature.
 
-### default_timezone
+#### `default_timezone`
 
 Used as the default time zone for user preferences. Can be either `browser` for the browser local time zone or a time zone name from the IANA Time Zone database, such as `UTC` or `Europe/Amsterdam`.
 
-### default_week_start
+#### `default_week_start`
 
 Set the default start of the week, valid values are: `saturday`, `sunday`, `monday` or `browser` to use the browser locale to define the first day of the week. Default is `browser`.
 
-## [expressions]
+### `[time_picker]`
 
-### enabled
+This section controls system-wide defaults for the time picker, such as the default quick ranges.
+
+#### `quick_ranges`
+
+Set the default set of quick relative offset time ranges that show up in the right column of the time picker. Each configuration entry must have a `from`, `to`, and `display` field. Any configuration for this field must be in valid JSON format made up of a list of quick range configurations.
+
+The `from` and `to` fields should be valid relative time ranges. For more information the relative time formats, refer to [Time units and relative ranges.](/docs/grafana/<GRAFANA_VERSION>/dashboards/use-dashboards/#time-units-and-relative-ranges). The `from` field is required, but omitting `to` will result in the `from` value being used in both fields.
+
+If no configuration is provided, the default time ranges will be used.
+
+For example:
+
+```ini
+[time_picker]
+quick_ranges = """[
+{"from":"now-6s","to":"now","display":"Last 6 seconds"},
+{"from":"now-10m","to":"now","display":"Last 10 minutes"},
+{"from":"now-25h","to":"now","display":"Last 24 hours"},
+{"from":"now/w","to":"now/w","display":"This week"},
+{"from":"now-1w/w","to":"now-1w/w","display":"Last week"},
+{"from":"now-10d","to":"now","display":"Last 10 days"}
+]"""
+```
+
+### `[expressions]`
+
+#### `enabled`
 
 Set this to `false` to disable expressions and hide them in the Grafana UI. Default is `true`.
 
-## [geomap]
+#### `sql_expression_cell_limit`
 
-This section controls the defaults settings for Geomap Plugin.
+Set the maximum number of cells that can be passed to a SQL expression. Default is `100000`. A setting of `0` means no limit.
 
-### default_baselayer_config
+#### `sql_expression_output_cell_limit`
 
-The json config used to define the default base map. Four base map options to choose from are `carto`, `esriXYZTiles`, `xyzTiles`, `standard`.
+Set the maximum number of cells that can be returned from a SQL expression. Default is `100000`. A setting of `0` means no limit.
+
+### `sql_expression_query_length_limit`
+
+Set the maximum length of a SQL query that can be used in a SQL expression. Default is `10000` characters. A setting of `0` means no limit.
+
+#### `sql_expression_timeout`
+
+The duration a SQL expression will run before being cancelled. The default is `10s`. A setting of `0s` means no limit.
+
+### `[geomap]`
+
+This section controls the defaults settings for **Geomap Plugin**.
+
+#### `default_baselayer_config`
+
+The JSON configuration used to define the default base map. Four base map options to choose from are `carto`, `esriXYZTiles`, `xyzTiles`, `standard`.
 For example, to set cartoDB light as the default base layer:
 
 ```ini
@@ -2601,27 +2710,27 @@ default_baselayer_config = `{
 }`
 ```
 
-### enable_custom_baselayers
+#### `enable_custom_baselayers`
 
 Set this to `false` to disable loading other custom base maps and hide them in the Grafana UI. Default is `true`.
 
-## [rbac]
+### `[rbac]`
 
-Refer to [Role-based access control]({{< relref "../../administration/roles-and-permissions/access-control" >}}) for more information.
+Refer to [Role-based access control](../../administration/roles-and-permissions/access-control/) for more information.
 
-## [navigation.app_sections]
+### `[navigation.app_sections]`
 
 Move an app plugin (referenced by its id), including all its pages, to a specific navigation section. Format: `<pluginId> = <sectionId> <sortWeight>`
 
-## [navigation.app_standalone_pages]
+### `[navigation.app_standalone_pages]`
 
 Move an individual app plugin page (referenced by its `path` field) to a specific navigation section.
 Format: `<pageUrl> = <sectionId> <sortWeight>`
 
-## [public_dashboards]
+### `[public_dashboards]`
 
 This section configures the [shared dashboards](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/share-dashboards-panels/shared-dashboards/) feature.
 
-### enabled
+#### `enabled`
 
 Set this to `false` to disable the shared dashboards feature. This prevents users from creating new shared dashboards and disables existing ones.

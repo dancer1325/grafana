@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { Props } from 'react-virtualized-auto-sizer';
 import { render, waitFor } from 'test/test-utils';
 import { byRole, byTestId, byText } from 'testing-library-selector';
@@ -20,7 +20,20 @@ jest.mock('react-virtualized-auto-sizer', () => {
     });
 });
 
-beforeAll(() => {
+// Mock useMeasure from LogTimelineViewer > TimelineChart > GraphNG > VizLayout
+// so it always renders the chart
+jest.mock('react-use', () => {
+  const reactUse = jest.requireActual('react-use');
+  return {
+    ...reactUse,
+    useMeasure: () => {
+      const setRef = () => {};
+      return [setRef, { height: 300, width: 500 }];
+    },
+  };
+});
+
+beforeEach(() => {
   server.use(
     http.get('/api/v1/rules/history', () =>
       HttpResponse.json<DataFrameJSON>({

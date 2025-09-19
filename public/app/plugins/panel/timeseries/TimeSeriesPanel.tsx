@@ -1,10 +1,19 @@
 import { useMemo, useState } from 'react';
 
-import { PanelProps, DataFrameType, DashboardCursorSync } from '@grafana/data';
+import {
+  PanelProps,
+  DataFrameType,
+  DashboardCursorSync,
+  DataFrame,
+  alignTimeRangeCompareData,
+  shouldAlignTimeCompare,
+  useDataLinksContext,
+  FieldType,
+} from '@grafana/data';
 import { PanelDataErrorView } from '@grafana/runtime';
 import { TooltipDisplayMode, VizOrientation } from '@grafana/schema';
 import { EventBusPlugin, KeyboardPlugin, TooltipPlugin2, usePanelContext } from '@grafana/ui';
-import { TimeRange2, TooltipHoverMode } from '@grafana/ui/src/components/uPlot/plugins/TooltipPlugin2';
+import { TimeRange2, TooltipHoverMode } from '@grafana/ui/internal';
 import { TimeSeries } from 'app/core/components/TimeSeries/TimeSeries';
 import { config } from 'app/core/config';
 
@@ -38,13 +47,47 @@ export const TimeSeriesPanel = ({
     onThresholdsChange,
     canEditThresholds,
     showThresholds,
-    dataLinkPostProcessor,
     eventBus,
+    canExecuteActions,
   } = usePanelContext();
+
+  const { dataLinkPostProcessor } = useDataLinksContext();
+
+  const userCanExecuteActions = useMemo(() => canExecuteActions?.() ?? false, [canExecuteActions]);
   // Vertical orientation is not available for users through config.
   // It is simplified version of horizontal time series panel and it does not support all plugins.
   const isVerticallyOriented = options.orientation === VizOrientation.Vertical;
-  const frames = useMemo(() => prepareGraphableFields(data.series, config.theme2, timeRange), [data.series, timeRange]);
+  const { frames, compareDiffMs } = useMemo(() => {
+    let frames = prepareGraphableFields(data.series, config.theme2, timeRange);
+    if (frames != null) {
+      let compareDiffMs: number[] = [0];
+
+      frames.forEach((frame: DataFrame) => {
+        const diffMs = frame.meta?.timeCompare?.diffMs ?? 0;
+
+        frame.fields.forEach((field) => {
+          if (field.type !== FieldType.time) {
+            compareDiffMs.push(diffMs);
+          }
+        });
+
+        if (diffMs !== 0) {
+          // Check if the compared frame needs time alignment
+          // Apply alignment when time ranges match (no shift applied yet)
+          const needsAlignment = shouldAlignTimeCompare(frame, frames, timeRange);
+
+          if (needsAlignment) {
+            alignTimeRangeCompareData(frame, diffMs, config.theme2);
+          }
+        }
+      });
+
+      return { frames, compareDiffMs };
+    }
+
+    return { frames };
+  }, [data.series, timeRange]);
+
   const timezones = useMemo(() => getTimezones(options.timezone, timeZone), [options.timezone, timeZone]);
   const suggestions = useMemo(() => {
     if (frames?.length && frames.every((df) => df.meta?.type === DataFrameType.TimeSeriesLong)) {
@@ -106,7 +149,10 @@ export const TimeSeriesPanel = ({
                 clientZoom={true}
                 syncMode={cursorSync}
                 syncScope={eventsScope}
-                render={(u, dataIdxs, seriesIdx, isPinned = false, dismiss, timeRange2, viaSync) => {
+                getDataLinks={(seriesIdx, dataIdx) =>
+                  alignedFrame.fields[seriesIdx].getLinks?.({ valueRowIndex: dataIdx }) ?? []
+                }
+                render={(u, dataIdxs, seriesIdx, isPinned = false, dismiss, timeRange2, viaSync, dataLinks) => {
                   if (enableAnnotationCreation && timeRange2 != null) {
                     setNewAnnotationRange(timeRange2);
                     dismiss();
@@ -128,10 +174,14 @@ export const TimeSeriesPanel = ({
                       seriesIdx={seriesIdx}
                       mode={viaSync ? TooltipDisplayMode.Multi : options.tooltip.mode}
                       sortOrder={options.tooltip.sort}
+                      hideZeros={options.tooltip.hideZeros}
                       isPinned={isPinned}
                       annotate={enableAnnotationCreation ? annotate : undefined}
                       maxHeight={options.tooltip.maxHeight}
                       replaceVariables={replaceVariables}
+                      dataLinks={dataLinks}
+                      canExecuteActions={userCanExecuteActions}
+                      compareDiffMs={compareDiffMs}
                     />
                   );
                 }}
@@ -154,6 +204,8 @@ export const TimeSeriesPanel = ({
                     config={uplotConfig}
                     exemplars={data.annotations}
                     timeZone={timeZone}
+                    maxHeight={options.tooltip.maxHeight}
+                    maxWidth={options.tooltip.maxWidth}
                   />
                 )}
                 {((canEditThresholds && onThresholdsChange) || showThresholds) && (

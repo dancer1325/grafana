@@ -20,8 +20,6 @@ title: Datasource LBAC rules HTTP API
 
 # Data Source LBAC rules API
 
-> The Data Source LBAC rules are only available in Grafana Cloud. Only cloud loki data sources are supported.
-
 LBAC (Label-Based Access Control) rules can be set for teams.
 
 ## Get LBAC rules for a data source
@@ -57,13 +55,13 @@ Content-Length: 131
 {
   "rules": [
     {
-      "teamId": "1",
+      "teamUId": "fdnd1pf4m9sxvc",
       "rules": [
         "{ service_name=\"bigquery-sync-mysql\" }"
       ]
     },
     {
-      "teamId": "2",
+      "teamUid": "dfed1p2m9sxvfc",
       "rules": [
         "{ service_name=\"api\" }"
       ]
@@ -99,13 +97,13 @@ Authorization: Bearer eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk
 {
   "rules": [
     {
-      "teamId": "1",
+      "teamUId": "fdnd1pf4m9sxvc",
       "rules": [
         "{ service_name=\"bigquery-sync-mysql\" }"
       ]
     },
     {
-      "teamId": "2",
+      "teamUid": "dfed1p2m9sxvfc",
       "rules": [
         "{ service_name=\"api\" }"
       ]
@@ -127,13 +125,13 @@ Content-Length: 35
   "name": "loki",
   "rules": [
     {
-      "teamId": "1",
+      "teamUId": "fdnd1pf4m9sxvc",
       "rules": [
         "{ service_name=\"bigquery-sync-mysql\" }"
       ]
     },
     {
-      "teamId": "2",
+      "teamUid": "dfed1p2m9sxvfc",
       "rules": [
         "{ service_name=\"api\" }"
       ]

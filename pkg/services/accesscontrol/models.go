@@ -81,6 +81,7 @@ type RoleDTO struct {
 	Group       string       `xorm:"group_name" json:"group"`
 	Permissions []Permission `json:"permissions,omitempty"`
 	Delegatable *bool        `json:"delegatable,omitempty"`
+	Mapped      bool         `json:"mapped,omitempty"`
 	Hidden      bool         `json:"hidden,omitempty"`
 
 	ID    int64 `json:"-" xorm:"pk autoincr 'id'"`
@@ -327,12 +328,6 @@ const (
 	K6FolderUID      = "k6-app"
 	RoleGrafanaAdmin = "Grafana Admin"
 
-	// Permission actions
-
-	ActionAPIKeyRead   = "apikeys:read"
-	ActionAPIKeyCreate = "apikeys:create"
-	ActionAPIKeyDelete = "apikeys:delete"
-
 	// Users actions
 	ActionUsersRead  = "users:read"
 	ActionUsersWrite = "users:write"
@@ -389,9 +384,6 @@ const (
 
 	// Global Scopes
 	ScopeGlobalUsersAll = "global.users:*"
-
-	// APIKeys scope
-	ScopeAPIKeysAll = "apikeys:*"
 
 	// Users scope
 	ScopeUsersAll    = "users:*"
@@ -585,9 +577,6 @@ var OrgsCreateAccessEvaluator = EvalAll(
 	EvalPermission(ActionOrgsRead),
 	EvalPermission(ActionOrgsCreate),
 )
-
-// ApiKeyAccessEvaluator is used to protect the "Configuration > API keys" page access
-var ApiKeyAccessEvaluator = EvalPermission(ActionAPIKeyRead)
 
 type QueryWithOrg struct {
 	OrgId  *int64 `json:"orgId"`

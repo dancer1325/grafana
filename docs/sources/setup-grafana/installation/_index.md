@@ -30,16 +30,16 @@ weight: 100
 
 ## Supported operating systems
 
-- [Debian or Ubuntu]({{< relref "./debian" >}})
-- [Red Hat, RHEL, or Fedora]({{< relref "./redhat-rhel-fedora" >}})
-- [SUSE or openSUSE]({{< relref "./suse-opensuse" >}})
-- [macOS]({{< relref "./mac" >}})
-- [Windows]({{< relref "./windows" >}})
+- [Debian or Ubuntu](debian/)
+- [RHEL or Fedora](redhat-rhel-fedora/)
+- [SUSE or openSUSE](suse-opensuse/)
+- [macOS](mac/)
+- [Windows](windows/)
 
 ## Hardware recommendations
 
 - Minimum recommended memory: 512 MB
-- Minimum recommended CPU: 1
+- Minimum recommended CPU: 1 core
 
 * features / might require > memory or CPUs
 - [Alerting](/grafana/docs/sources/alerting)

@@ -19,6 +19,6 @@
     * Reason:🧠create symlink -- to -- @grafana/ui lib🧠
     * steps
       * | this path,
-        * `yarn link`
+        * `YARN_IGNORE_PATH=1 yarn link`
       * | your project,
         * `yarn link @grafana/ui`

@@ -62,8 +62,7 @@ func TraceToFrame(resourceSpans []*tracev11.ResourceSpans) (*data.Frame, error) 
 			data.NewField("tags", nil, []json.RawMessage{}),
 		},
 		Meta: &data.FrameMeta{
-			// TODO: use constant once available in the SDK
-			PreferredVisualization: "trace",
+			PreferredVisualization: data.VisTypeTrace,
 		},
 	}
 
@@ -144,7 +143,12 @@ func spanToSpanRow(span *tracev11.Span, libraryTags *commonv11.InstrumentationSc
 		return nil, fmt.Errorf("failed to marshal service tags: %w", err)
 	}
 
-	spanTags, err := json.Marshal(getSpanTags(span))
+	// Get both span tags and scope tags and combine them
+	spanTagsList := getSpanTags(span)
+	scopeTagsList := getScopeTags(libraryTags)
+	spanTagsList = append(spanTagsList, scopeTagsList...)
+
+	spanTags, err := json.Marshal(spanTagsList)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal span tags: %w", err)
 	}
@@ -265,6 +269,22 @@ func getSpanTags(span *tracev11.Span) []*KeyValue {
 		val, err := getAttributeVal(attr.Value)
 		if err != nil {
 			logger.Debug("error transforming span tags", "err", err)
+		}
+		tags[i] = &KeyValue{Key: attr.Key, Value: val}
+	}
+	return tags
+}
+
+func getScopeTags(scope *commonv11.InstrumentationScope) []*KeyValue {
+	if scope == nil || len(scope.Attributes) == 0 {
+		return nil
+	}
+
+	tags := make([]*KeyValue, len(scope.Attributes))
+	for i, attr := range scope.Attributes {
+		val, err := getAttributeVal(attr.Value)
+		if err != nil {
+			logger.Debug("error transforming scope attributes", "err", err)
 		}
 		tags[i] = &KeyValue{Key: attr.Key, Value: val}
 	}

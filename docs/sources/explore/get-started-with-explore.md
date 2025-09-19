@@ -11,6 +11,17 @@ labels:
     - enterprise
     - oss
 title: Get started with Explore
+refs:
+  saved-queries:
+    - pattern: /docs/grafana/
+      destination: /docs/grafana/<GRAFANA_VERSION>/panels-visualizations/query-transform-data/#saved-queries
+    - pattern: /docs/grafana-cloud/
+      destination: /docs/grafana-cloud/visualizations/panels-visualizations/query-transform-data/#saved-queries
+  save-query:
+    - pattern: /docs/grafana/
+      destination: /docs/grafana/<GRAFANA_VERSION>/panels-visualizations/query-transform-data/#save-a-query
+    - pattern: /docs/grafana-cloud/
+      destination: /docs/grafana-cloud/visualizations/panels-visualizations/query-transform-data/#save-a-query
 weight: 5
 ---
 
@@ -145,7 +156,7 @@ When using Explore, the URL in the browser address bar updates as you make chang
 {{% admonition type="note" %}}
 Explore may generate long URLs, which some tools, like messaging or videoconferencing applications, might truncate due to fixed message lengths. In such cases, Explore displays a warning and loads a default state.
 If you encounter issues when sharing Explore links in these applications, you can generate shortened links. See [Share shortened link](#share-shortened-link) for more information.
-{{% /admonition %}}
+{{< /admonition >}}
 
 ### Generate Explore URLs from external tools
 
@@ -215,5 +226,5 @@ Now that you are familiar with Explore you can:
 - [Build dashboards](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/build-dashboards/)
 - Create a wide variety of [visualizations](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/visualizations/)
 - [Work with logs](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/logs-integration/)
-- [Work with traces](https://grafana.com/docs/grafana/<GRAFANA_VERSION>)
+- [Work with traces](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/trace-integration/)
 - [Create and use correlations](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/correlations-editor-in-explore/)

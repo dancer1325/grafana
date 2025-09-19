@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { OrgRole } from '@grafana/data';
 import { selectors as e2eSelectors } from '@grafana/e2e-selectors';
+import { Trans, t } from '@grafana/i18n';
 import { config } from '@grafana/runtime';
 import {
   Avatar,
@@ -17,6 +18,7 @@ import {
   Stack,
   Tag,
   Text,
+  TextLink,
   Tooltip,
 } from '@grafana/ui';
 import { UserRolePicker } from 'app/core/components/RolePicker/UserRolePicker';
@@ -24,7 +26,8 @@ import { fetchRoleOptions, updateUserRoles } from 'app/core/components/RolePicke
 import { RolePickerBadges } from 'app/core/components/RolePickerDrawer/RolePickerBadges';
 import { TagBadge } from 'app/core/components/TagFilter/TagBadge';
 import { contextSrv } from 'app/core/core';
-import { AccessControlAction, OrgUser, Role } from 'app/types';
+import { AccessControlAction, Role } from 'app/types/accessControl';
+import { OrgUser } from 'app/types/user';
 
 import { OrgRolePicker } from '../OrgRolePicker';
 
@@ -113,7 +116,21 @@ export const OrgUsersTable = ({
         id: 'lastSeenAtAge',
         header: 'Last active',
         cell: ({ cell: { value } }: Cell<'lastSeenAtAge'>) => {
-          return <>{value && <>{value === '10 years' ? <Text color={'disabled'}>Never</Text> : value}</>}</>;
+          return (
+            <>
+              {value && (
+                <>
+                  {value === '10 years' ? (
+                    <Text color={'disabled'}>
+                      <Trans i18nKey="admin.org-uers.last-seen-never">Never</Trans>
+                    </Text>
+                  ) : (
+                    value
+                  )}
+                </>
+              )}
+            </>
+          );
         },
         sortType: (a, b) => new Date(a.original.lastSeenAt).getTime() - new Date(b.original.lastSeenAt).getTime(),
       },
@@ -150,7 +167,7 @@ export const OrgUsersTable = ({
             />
           ) : (
             <OrgRolePicker
-              aria-label="Role"
+              aria-label={t('admin.org-users-table.columns.aria-label-role', 'Role')}
               value={value}
               disabled={basicRoleDisabled}
               onChange={(newRole) => onRoleChange(newRole, original)}
@@ -170,18 +187,19 @@ export const OrgUsersTable = ({
                   interactive={true}
                   content={
                     <div>
-                      This user&apos;s role is not editable because it is synchronized from your auth provider. Refer to
-                      the&nbsp;
-                      <a
-                        href={
-                          'https://grafana.com/docs/grafana/latest/administration/user-management/manage-org-users/#change-a-users-organization-permissions'
-                        }
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        Grafana authentication docs
-                      </a>
-                      &nbsp;for details.
+                      <Trans i18nKey="admin.org-users.not-editable">
+                        This user&apos;s role is not editable because it is synchronized from your auth provider. Refer
+                        to the&nbsp;
+                        <TextLink
+                          href={
+                            'https://grafana.com/docs/grafana/latest/administration/user-management/manage-org-users/#change-a-users-organization-permissions'
+                          }
+                          external
+                        >
+                          Grafana authentication docs
+                        </TextLink>
+                        &nbsp;for details.
+                      </Trans>
                     </div>
                   }
                 >
@@ -197,6 +215,13 @@ export const OrgUsersTable = ({
         header: 'Origin',
         cell: ({ cell: { value } }: Cell<'authLabels'>) => (
           <>{Array.isArray(value) && value.length > 0 && <TagBadge label={value[0]} removeIcon={false} count={0} />}</>
+        ),
+      },
+      {
+        id: 'isProvisioned',
+        header: 'Provisioned',
+        cell: ({ cell: { value } }: Cell<'isProvisioned'>) => (
+          <>{value && <Tag colorIndex={14} name={'Provisioned'} />}</>
         ),
       },
       {
@@ -217,7 +242,9 @@ export const OrgUsersTable = ({
                   setUserToRemove(original);
                 }}
                 icon="times"
-                aria-label={`Delete user ${original.name}`}
+                aria-label={t('admin.org-users-table.delete-aria-label', 'Delete user: {{name}}', {
+                  name: original.name,
+                })}
               />
             )
           );
@@ -235,9 +262,11 @@ export const OrgUsersTable = ({
       </Stack>
       {Boolean(userToRemove) && (
         <ConfirmModal
-          body={`Are you sure you want to delete user ${userToRemove?.login}?`}
-          confirmText="Delete"
-          title="Delete"
+          body={t('admin.org-users-table.body-delete', 'Are you sure you want to delete user {{user}}?', {
+            user: userToRemove?.login,
+          })}
+          confirmText={t('admin.org-users-table.confirmText-delete', 'Delete')}
+          title={t('admin.org-users-table.title-delete', 'Delete')}
           onDismiss={() => {
             setUserToRemove(null);
           }}

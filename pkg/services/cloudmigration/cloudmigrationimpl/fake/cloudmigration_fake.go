@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
+	"github.com/grafana/grafana/pkg/services/authapi"
 	"github.com/grafana/grafana/pkg/services/cloudmigration"
-	"github.com/grafana/grafana/pkg/services/gcom"
 	"github.com/grafana/grafana/pkg/services/user"
 )
 
@@ -20,11 +20,11 @@ type FakeServiceImpl struct {
 
 var _ cloudmigration.Service = (*FakeServiceImpl)(nil)
 
-func (m FakeServiceImpl) GetToken(_ context.Context) (gcom.TokenView, error) {
+func (m FakeServiceImpl) GetToken(_ context.Context) (authapi.TokenView, error) {
 	if m.ReturnError {
-		return gcom.TokenView{}, fmt.Errorf("mock error")
+		return authapi.TokenView{}, fmt.Errorf("mock error")
 	}
-	return gcom.TokenView{ID: "mock_id", DisplayName: "mock_name"}, nil
+	return authapi.TokenView{ID: "mock_id", DisplayName: "mock_name"}, nil
 }
 
 func (m FakeServiceImpl) CreateToken(_ context.Context) (cloudmigration.CreateAccessTokenResponse, error) {
@@ -83,13 +83,13 @@ func (m FakeServiceImpl) GetSessionList(_ context.Context, _ int64) (*cloudmigra
 	}, nil
 }
 
-func (m FakeServiceImpl) CreateSnapshot(ctx context.Context, user *user.SignedInUser, sessionUid string) (*cloudmigration.CloudMigrationSnapshot, error) {
+func (m FakeServiceImpl) CreateSnapshot(ctx context.Context, user *user.SignedInUser, cmd cloudmigration.CreateSnapshotCommand) (*cloudmigration.CloudMigrationSnapshot, error) {
 	if m.ReturnError {
 		return nil, fmt.Errorf("mock error")
 	}
 	return &cloudmigration.CloudMigrationSnapshot{
 		UID:        "fake_uid",
-		SessionUID: sessionUid,
+		SessionUID: cmd.SessionUID,
 		Status:     cloudmigration.SnapshotStatusCreating,
 	}, nil
 }
