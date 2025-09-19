@@ -1,12 +1,23 @@
 # Services
 
-A Grafana _service_ encapsulates and exposes application logic to the rest of the application through a set of related operations.
+* Grafana _service_
+  * responsible for, about the application logic, 
+    * encapsulates 
+    * exposes it -- to the -- rest of Grafana application
 
-Grafana uses [Wire](https://github.com/google/wire), which is a code generation tool that automates connecting components using [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection). Wire represents dependencies between components as function parameters, which encourages explicit initialization instead of global variables.
+* [Wire](https://github.com/google/wire)
+  * == code generation tool /
+    * automates connecting components -- via -- [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
+  * used 
+    * by Grafana
+  * TODO:
+* Wire represents dependencies between components as function parameters, which encourages explicit initialization instead of global variables.
 
-Even though the services in Grafana do different things, they share a number of patterns. To better understand how a service works, let's build one from scratch!
+Even though the services in Grafana do different things, they share a number of patterns
+* To better understand how a service works, let's build one from scratch!
 
-Before a service can start communicating with the rest of Grafana, it needs to be registered with Wire. Refer to the `ProvideService` factory method in the following service example and note how it's being referenced in the `wire.go` example.
+Before a service can start communicating with the rest of Grafana, it needs to be registered with Wire
+* Refer to the `ProvideService` factory method in the following service example and note how it's being referenced in the `wire.go` example.
 
 When you run Wire, it inspects the parameters of `ProvideService` and makes sure that all its dependencies have been wired up and initialized properly.
 
@@ -107,13 +118,16 @@ func InitializeForTest(cla setting.CommandLineArgs, opts Options, apiOpts api.Se
 
 ## Background services
 
-A background service runs in the background of the lifecycle between Grafana startup and shutdown. To run your service in the background, it must satisfy the `registry.BackgroundService` interface. Pass it through to the `NewBackgroundServiceRegistry` call in the [ProvideBackgroundServiceRegistry](/pkg/registry/backgroundsvcs/background_services.go) function to register it.
+A background service runs in the background of the lifecycle between Grafana startup and shutdown
+* To run your service in the background, it must satisfy the `registry.BackgroundService` interface
+* Pass it through to the `NewBackgroundServiceRegistry` call in the [ProvideBackgroundServiceRegistry](/pkg/registry/backgroundsvcs/background_services.go) function to register it.
 
 For an example of the `Run` method, see the previous example.
 
 ## Disabled services
 
-If you want to guarantee that a background service is not run by Grafana when certain criteria are met, or if a service is disabled, your service must satisfy the `registry.CanBeDisabled` interface. When the `service.IsDisabled` method returns `true`, Grafana won't call the `service.Run` method.
+If you want to guarantee that a background service is not run by Grafana when certain criteria are met, or if a service is disabled, your service must satisfy the `registry.CanBeDisabled` interface
+* When the `service.IsDisabled` method returns `true`, Grafana won't call the `service.Run` method.
 
 If you want to run certain initialization code whether service is disabled or not, you need to handle this in the service factory method.
 
@@ -125,13 +139,19 @@ Running `make run` calls `make gen-go` on the first run. The `gen-go` in turn ca
 
 ## OSS vs. Enterprise
 
-Grafana OSS and Grafana Enterprise share code and dependencies. Grafana Enterprise overrides or extends certain OSS services.
+* SAME
+  * share code & dependencies
 
-There's a [`wireexts_oss.go`](/pkg/server/wireexts_oss.go) that has the `wireinject` and `oss` build tags as requirements. Here you can register services that might have other implementations, for example, Grafana Enterprise.
+* Grafana Enterprise
+  * overrides OR extends certain OSS services
+
+There's a [`wireexts_oss.go`](/pkg/server/wireexts_oss.go) that has the `wireinject` and `oss` build tags as requirements
+* Here you can register services that might have other implementations, for example, Grafana Enterprise.
 
 Similarly, there's a `wireexts_enterprise.go` file in the Enterprise source code repository where you can override or register other service implementations.
 
-To extend an OSS background service, create a specific background interface for that type and inject that type to [`ProvideBackgroundServiceRegistry`](/pkg/registry/backgroundsvcs/background_services.go) instead of the concrete type. Next, add a Wire binding for that interface in [`wireexts_oss.go`](/pkg/server/wireexts_oss.go) and in the enterprise `wireexts` file.
+To extend an OSS background service, create a specific background interface for that type and inject that type to [`ProvideBackgroundServiceRegistry`](/pkg/registry/backgroundsvcs/background_services.go) instead of the concrete type
+* Next, add a Wire binding for that interface in [`wireexts_oss.go`](/pkg/server/wireexts_oss.go) and in the enterprise `wireexts` file.
 
 ## Methods
 

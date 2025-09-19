@@ -1,5 +1,7 @@
-# Grafana Data Library
+# Grafana Data Library -- @grafana/data --
 
-> **@grafana/data is currently in BETA**.
-
-This package holds the root data types and functions used within Grafana.
+* BETA
+* goal
+  * holds the
+    * root data types
+    * functions / used | Grafana

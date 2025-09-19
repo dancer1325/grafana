@@ -1,5 +1,6 @@
-# Grafana Schema Library
+# Grafana Schema Library -- @grafana/schema --
 
-> **@grafana/schema is currently in ALPHA**.
+* ALPHA version
 
-This package holds the definitions for objects that should be stored in JSON configuration files
+* goal
+  * object definitions / should be stored | .json

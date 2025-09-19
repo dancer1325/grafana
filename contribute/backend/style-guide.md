@@ -1,12 +1,13 @@
 # Backend style guide
 
-Grafana's backend has been developed for a long time with a mix of code styles. This guide explains how we want to write Go code in the future.
+* goal
+  * how to write Go code | Grafana Backend
 
-Unless stated otherwise, use the guidelines listed in the following articles:
-
-- [Effective Go](https://golang.org/doc/effective_go.html)
-- [Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
-- [Go: Best Practices for Production Environments](http://peter.bourgon.org/go-in-production/#formatting-and-style)
+* recommendations
+  * follow
+    * [Effective Go](https://golang.org/doc/effective_go.html)
+    * [Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
+    * [Go: Best Practices for Production Environments](http://peter.bourgon.org/go-in-production/#formatting-and-style)
 
 ## Linting and formatting
 
@@ -202,23 +203,32 @@ Valid reasons to use a pointer include (but not necessarily limited to):
 
 ## Database
 
-In database related code, we follow certain patterns.
+* goal
+  * database's patterns
 
 ### Foreign keys
 
-While they can be useful, we don't generally use foreign key constraints in Grafana, for historical and
-technical reasons. See this [comment](https://github.com/grafana/grafana/issues/3269#issuecomment-383328548) by Torkel
-for context.
+* recommendations
+  * ❌NOT use ❌
+    * Reason: 🧠historical & technical reasons🧠
+    * [comment](https://github.com/grafana/grafana/issues/3269#issuecomment-383328548)
 
 ### Unique columns
 
+* TODO:
 If a column, or column combination, should be unique, add a corresponding uniqueness constraint through a migration.
 
-### Usage of XORM Session.Insert() and Session.InsertOne()
+### take care using XORM Session.Insert() & Session.InsertOne()
 
-The [Session.Insert()](https://pkg.go.dev/github.com/go-xorm/xorm#Session.Insert) and [Session.InsertOne()](https://pkg.go.dev/github.com/go-xorm/xorm#Session.InsertOne) are poorly documented and return the number of affected rows contrary to a common mistake that they return the newly introduced primary key. Therefore, contributors should be extra cautious when using them.
+* [Session.Insert()](https://pkg.go.dev/github.com/go-xorm/xorm#Session.Insert) & [Session.InsertOne()](https://pkg.go.dev/github.com/go-xorm/xorm#Session.InsertOne)
+  * poorly documented
+  * 's return
+    * ⚠️number of affected rows⚠️
+      * ❌NOT the NEW introduced primary key❌
 
-The same applies for the respective [Engine.Insert()](https://pkg.go.dev/github.com/go-xorm/xorm#Engine.Insert) and [Engine.InsertOne()](https://pkg.go.dev/github.com/go-xorm/xorm#Engine.InsertOne)
+* [Engine.Insert()](https://pkg.go.dev/github.com/go-xorm/xorm#Engine.Insert) and [Engine.InsertOne()](https://pkg.go.dev/github.com/go-xorm/xorm#Engine.InsertOne)
+  * 's return
+    * ⚠️number of affected rows⚠️
 
 ## JSON
 

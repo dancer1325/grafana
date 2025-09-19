@@ -57,6 +57,7 @@
 ## Documentation
 
 * [docs](docs)
+* [architecture](contribute/architecture)
 * [play.grafana.org](https://play.grafana.org/)
 
 ## Community

@@ -51,11 +51,18 @@ cards:
 
 ## Overview
 
-Monitor your incoming metrics data or log entries and set up your Grafana Alerting system to watch for specific events or circumstances.
+* goal
+  * monitor your 
+    * incoming metrics data OR
+    * log entries
+  * set up your Grafana Alerting system
+    * -- based on -- specific events or circumstances
 
-In this way, you eliminate the need for manual monitoring and provide a first line of defense against system outages or changes that could turn into major incidents.
-
-Using Grafana Alerting, you create queries and expressions from multiple data sources — no matter where your data is stored — giving you the flexibility to combine your data and alert on your metrics and logs in new and unique ways. You can then create, manage, and take action on your alerts from a single, consolidated view, and improve your team’s ability to identify and resolve issues quickly.
+* pros  
+  * eliminate manual monitoring
+  * notice system outages OR changes
+  * create queries & expressions -- from -- 👀MULTIPLE data sources👀
+    * _Examples:_ metrics + logs + profiling issues
 
 ## Explore
 

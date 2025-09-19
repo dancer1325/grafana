@@ -1,5 +1,12 @@
-# Grafana Runtime library
+# Grafana Runtime library -- @grafana/runtime -- 
 
-> **@grafana/runtime is currently in BETA**.
+* CURRENTLY,
+  * BETA
 
-This package allows access to grafana services. It requires Grafana to be running already and the functions to be imported as externals.
+* requirements
+  * Grafana ALREADY running
+  * [functions](src/index.ts) imported -- as -- externals 
+
+* allows
+  * access -- to -- grafana services
+

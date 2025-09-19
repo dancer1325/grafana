@@ -1,13 +1,16 @@
 # Grafana frontend packages
 
-This document contains information about Grafana frontend package versioning and releases.
+* goal
+  * Grafana frontend package's versioning & releases
 
 ## Versioning
 
-We use [Lerna](https://github.com/lerna/lerna) for packages versioning and releases.
+* follow
+  * [Lerna](https://github.com/lerna/lerna)
 
-All packages are versioned according to the current Grafana version:
+* Grafana FE packages' version == CURRENT Grafana version 
 
+* TODO:
 - Grafana v6.3.0-alpha1 -> @grafana/\* packages @ 6.3.0-alpha.1
 - Grafana v6.2.5 -> @grafana/\* packages @ 6.2.5
 - Grafana - main branch version (based on package.json, i.e. 6.4.0-pre) -> @grafana/\* packages @ 6.4.0-pre-<COMMIT-SHA> (see details below about packages publishing channels)

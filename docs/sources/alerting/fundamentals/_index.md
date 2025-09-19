@@ -62,17 +62,11 @@ refs:
 
 # Introduction to Alerting
 
-Whether you’re just starting out or you're a more experienced user of Grafana Alerting, learn more about the fundamentals and available features that help you create, manage, and respond to alerts; and improve your team’s ability to resolve issues quickly.
+* [tutorial to get started with Grafana Alerting](http://grafana.com/tutorials/alerting-get-started/)
 
-{{< admonition type="tip" >}}
-For a hands-on introduction, refer to our [tutorial to get started with Grafana Alerting](http://grafana.com/tutorials/alerting-get-started/).
-{{< /admonition  >}}
+* Grafana Alerting
 
-The following diagram gives you an overview of Grafana Alerting and introduces you to some of the fundamental features that are the principles of how Grafana Alerting works.
-
-<br/>
-
-{{< figure src="/media/docs/alerting/alerting-configure-notifications-v2.png" max-width="750px" alt="How Grafana Alerting works" >}}
+![](/grafana/media/docs/alerting/alerting-configure-notifications-v2.png)
 
 ## How it works at a glance
 
@@ -136,14 +130,16 @@ Each notification policy decides where to send the alert (contact point) and whe
 
 ### Architecture
 
-Grafana Alerting is built on the Prometheus model of designing alerting systems. Prometheus-based alerting systems have two main components:
+Grafana Alerting is built on the Prometheus model of designing alerting systems
+* Prometheus-based alerting systems have two main components:
 
 - An alert generator that [evaluates alert rules](ref:alert-rule-evaluation) and sends firing and resolved alerts to the alert receiver.
 - An alert receiver (also known as Alertmanager) that receives the alerts and is responsible for sending their [notifications](ref:notifications).
 
 ## Design your Alerting system
 
-Monitoring complex IT systems and understanding whether everything is up and running correctly is a difficult task. Setting up an effective alert management system is therefore essential to inform you when things are going wrong before they start to impact your business outcomes.
+Monitoring complex IT systems and understanding whether everything is up and running correctly is a difficult task
+* Setting up an effective alert management system is therefore essential to inform you when things are going wrong before they start to impact your business outcomes.
 
 Designing and configuring an alert management set up that works takes time.
 
@@ -157,7 +153,8 @@ Here are some tips on how to create an effective alert management set up for you
 
 **How do you want to organize your alerts and notifications?**
 
-- Be selective about who you set to receive alerts. Consider sending them to the right teams, whoever is on call, and the specific channels.
+- Be selective about who you set to receive alerts
+* Consider sending them to the right teams, whoever is on call, and the specific channels.
 - Think carefully about priority and severity levels.
 - Automate as far as possible provisioning Alerting resources with the API or Terraform.
 
@@ -170,5 +167,6 @@ Here are some tips on how to create an effective alert management set up for you
 **How can you reduce alert fatigue?**
 
 - Avoid noisy, unnecessary alerts by using silences, mute timings, or pausing alert rule evaluation.
-- Continually tune your alert rules to review effectiveness. Remove alert rules to avoid duplication or ineffective alerts.
+- Continually tune your alert rules to review effectiveness
+* Remove alert rules to avoid duplication or ineffective alerts.
 - Continually review your thresholds and evaluation rules.

@@ -1,4 +1,4 @@
-This directory contains the code for the Grafana backend.
+* goal
+  * Grafana backend 
 
-The contributor documentation for Grafana's backend is in
-[/contribute/backend/README.md](/contribute/backend/README.md).
+* [Grafana Backend general guidelines](/grafana/contribute/backend/README.md)

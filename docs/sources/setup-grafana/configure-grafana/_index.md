@@ -1402,11 +1402,24 @@ Grafana logging options.
 
 ### mode
 
-Options are "console", "file", and "syslog". Default is "console" and "file". Use spaces to separate multiple modes, e.g. `console file`.
+* ALLOWED values
+  * "console",
+    * default one
+  * "file",
+    * default one
+  * "syslog" 
+* `mode1 mode2 mode3`
+  * way to specify your desired modes
 
 ### level
 
-Options are "debug", "info", "warn", "error", and "critical". Default is `info`.
+* ALLOWED values
+  * "debug"
+  * "info"
+    * default one
+  * "warn"
+  * "error"
+  * "critical"
 
 ### filters
 
