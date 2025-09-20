@@ -120,56 +120,62 @@ refs:
 
 # Configure contact points
 
-Use contact points to specify where to receive alert notifications. Contact points contain the configuration for sending alert notifications, including destinations like email, Slack, IRM, webhooks, and their notification messages.
+* | Grafana UI,
+  * Alerting, Contact Points tab
 
-A contact point can have one or multiple destinations, known as [contact point integrations](#supported-contact-point-integrations). Alert notifications are sent to each integration within the chosen contact point.
+![](static/grafanaUIContactPoints.png)
 
-On the **Contact Points** tab, you can:
+* allows
+  * about contact points & integrations,
+    * add,
+    * edit,
+    * view
+    * search
+    * export
+    * delete
+      * ❌if SOME is being used -> can NOT be deleted❌
+        * Solution: 🧠update / use ANOTHER contact point🧠
+  * about notification deliveries,
+    * view 's status
+  * view notification policies / use SAME contact point
 
-- Add, edit, and view contact points and integrations.
-- Search for name and type of contact points and integrations.
-- View how many notification policies each contact point is being used for and navigate directly to the linked notification policies.
-- View the status of notification deliveries.
-- Export individual contact points or all contact points in JSON, YAML, or Terraform format.
-- Delete contact points. Note that you cannot delete contact points that are in use by a notification policy. To proceed, either delete the notification policy or update it to use another contact point.
-
-{{< admonition type="note" >}}
-Contact points are assigned to a [specific Alertmanager](ref:configure-alertmanager) and cannot be used by notification policies in other Alertmanagers.
-{{< /admonition >}}
+* Contact points
+  * ⚠️are assigned -- to -- [1! specific Alertmanager](ref:configure-alertmanager)⚠️
+    * ❌can NOT be used -- by -- notification policies | OTHER Alertmanagers❌
 
 ## Supported contact point integrations
 
-Each contact point integration has its own configuration options and setup process. The following list shows the contact point integrations supported by Grafana.
+* / EACH contact point integration, OWN
+  * configuration options
+  * setup process
 
-{{< column-list >}}
-
-- [Alertmanager](ref:alertmanager)
-- [AWS SNS](ref:sns)
-- Cisco Webex Teams
-- DingDing
-- [Discord](ref:discord)
-- [Email](ref:email)
-- [Google Chat](ref:gchat)
-- [Grafana IRM](ref:irm)
-- Kafka REST Proxy
-- [Jira](ref:jira)
-- Line
-- [Microsoft Teams](ref:teams)
-- [MQTT](ref:mqtt)
-- [Opsgenie](ref:opsgenie)
-- [PagerDuty](ref:pagerduty)
-- Pushover
-- Sensu Go
-- [Slack](ref:slack)
-- [Telegram](ref:telegram)
-- Threema Gateway
-- VictorOps
-- [Webhook](ref:webhook)
-- WeCom
-
-{{< /column-list >}}
-
-Some of the integrations above are not supported by Prometheus Alertmanager. For the list of supported integrations, refer to the [Prometheus Alertmanager receiver settings](https://prometheus.io/docs/alerting/latest/configuration/#receiver-integration-settings).
+* contact point integrations / 
+  * supported -- by -- Grafana
+    - [Alertmanager](ref:alertmanager)
+    - [AWS SNS](ref:sns)
+    - Cisco Webex Teams
+    - DingDing
+    - [Discord](ref:discord)
+    - [Email](ref:email)
+    - [Google Chat](ref:gchat)
+    - [Grafana IRM](ref:irm)
+    - Kafka REST Proxy
+    - [Jira](ref:jira)
+    - Line
+    - [Microsoft Teams](ref:teams)
+    - [MQTT](ref:mqtt)
+    - [Opsgenie](ref:opsgenie)
+    - [PagerDuty](ref:pagerduty)
+    - Pushover
+    - Sensu Go
+    - [Slack](ref:slack)
+    - [Telegram](ref:telegram)
+    - Threema Gateway
+    - VictorOps
+    - [Webhook](ref:webhook)
+    - WeCom
+  * supported -- by -- Prometheus Alertmanager
+    * [here](https://prometheus.io/docs/alerting/latest/configuration/#receiver-integration-settings)
 
 ## Add a contact point
 

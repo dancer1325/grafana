@@ -47,7 +47,8 @@ refs:
 
 # Configure alert rules
 
-[Alert rules](ref:alert-rules) are the central component of your alerting system.
+* [Alert rules](ref:alert-rules)
+  * == your alerting system's central component  
 
 An alert rule consists of one or more queries and expressions that select the data you want to measure. It contains a condition to trigger the alert, an evaluation period that determines how often the rule is evaluated, and additional options to manage alert events and their notifications.
 

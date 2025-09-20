@@ -30,40 +30,44 @@ refs:
 
 # Contact points
 
-Contact points contain the configuration for sending alert notifications. You can assign a contact point either in the alert rule or notification policy options.
+* == 👀configuration👀
+  * -- for -- sending alert notifications
+  * ways to assign
+    * | alert rule, OR
+    * | notification policy options
+  * ⚠️requirements⚠️
+    * \>=1 contact point integrations
+      * ❌== if you configure a contact point / NO integrations -> notifications are NOT sent❌
+  * [how to configure](ref:configure-contact-points)
 
-A contact point includes one or more contact point integrations for sending alert notifications, such as:
+* supported contact point integrations
+  - Alertmanager
+  - Amazon SNS
+  - Cisco Webex Teams
+  - DingDing
+  - Discord
+  - Email
+  - Google Chat
+  - Grafana IRM
+  - Jira
+  - Kafka REST Proxy
+  - Line
+  - Microsoft Teams
+  - MQTT
+  - Opsgenie
+  - PagerDuty
+  - Pushover
+  - Sensu Go
+  - Slack
+  - Telegram
+  - Threema Gateway
+  - VictorOps
+  - Webhook
+  - WeCom
 
-{{< column-list >}}
-
-- Alertmanager
-- Amazon SNS
-- Cisco Webex Teams
-- DingDing
-- Discord
-- Email
-- Google Chat
-- Grafana IRM
-- Jira
-- Kafka REST Proxy
-- Line
-- Microsoft Teams
-- MQTT
-- Opsgenie
-- PagerDuty
-- Pushover
-- Sensu Go
-- Slack
-- Telegram
-- Threema Gateway
-- VictorOps
-- Webhook
-- WeCom
-
-{{< /column-list >}}
-
-For example, a contact point could contain a PagerDuty integration; an email and Slack integration; or a PagerDuty integration, a Slack integration, and two email integrations. You can also configure a contact point with no integrations; in which case no notifications are sent.
-
-Each contact point integration can also define the notification message to be sent, which can use the predefined message, a custom message, or notification templates.
-
-For a complete list of supported integrations and more details about contact points, refer to [Configure contact points](ref:configure-contact-points).
+* contact point integration's configuration
+  * message / send
+    * ALLOWED ones
+      * predefined message,
+      * custom message,
+      * template message

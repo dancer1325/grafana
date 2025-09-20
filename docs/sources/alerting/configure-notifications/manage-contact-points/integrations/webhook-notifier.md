@@ -42,23 +42,27 @@ refs:
 
 # Configure webhook notifications
 
-Use the webhook integration in contact points to send alert notifications to your webhook.
+* allows
+  * send alert notifications -- to -- your webhook
 
-The webhook integration is a flexible way to integrate alerts into your system. When a notification is triggered, it sends a JSON request with alert details and additional data to the webhook endpoint.
+* webhook integration
+  * flexible
+  * | trigger a notification,
+    * sends a JSON request (alert details + additional data) -- to the -- webhook endpoint
 
 ## Configure webhook for a contact point
 
-To create a contact point with webhook integration, complete the following steps.
+* steps
+  1. Navigate to **Alerts & IRM** -> **Alerting** -> **Contact points**.
+  1. Click **+ Add contact point**.
+  1. Enter a name for the contact point.
+  1. From the **Integration** list, select **Webhook**.
+  1. In the **URL** field, copy in your Webhook URL.
+  1. Configure [additional settings](#webhook-settings)
+     2. OPTIONAL
+  1. Click **Save contact point**.
 
-1. Navigate to **Alerts & IRM** -> **Alerting** -> **Contact points**.
-1. Click **+ Add contact point**.
-1. Enter a name for the contact point.
-1. From the **Integration** list, select **Webhook**.
-1. In the **URL** field, copy in your Webhook URL.
-1. (Optional) Configure [additional settings](#webhook-settings).
-1. Click **Save contact point**.
-
-For more details on contact points, including how to test them and enable notifications, refer to [Configure contact points](ref:configure-contact-points).
+* [how to configure contact points](ref:configure-contact-points)
 
 ## Webhook settings
 
@@ -69,22 +73,20 @@ For more details on contact points, including how to test them and enable notifi
 #### Optional settings
 
 | Option                            | Description                                                                                                                                                                               |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| HTTP Method                       | Specifies the HTTP method to use: `POST` or `PUT`.                                                                                                                                        |
+| --------------------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| HTTP Method                       | ALLOWED ones: `POST` OR `PUT`                                                                                                                                                             |
 | Basic Authentication Username     | Username for HTTP Basic Authentication.                                                                                                                                                   |
 | Basic Authentication Password     | Password for HTTP Basic Authentication.                                                                                                                                                   |
 | Authentication Header Scheme      | Scheme for the `Authorization` Request Header. Default is `Bearer`.                                                                                                                       |
 | Authentication Header Credentials | Credentials for the `Authorization` Request header.                                                                                                                                       |
 | Extra Headers                     | Additional HTTP headers to include in the request. You can also override the default `Content-Type: application/json` header to specify a different content type for the request payload. |
 | Max Alerts                        | Maximum number of alerts to include in a notification. Any alerts exceeding this limit are ignored. `0` means no limit.                                                                   |
-| TLS                               | TLS configuration options, including CA certificate, client certificate, and client key.                                                                                                  |
+| TLS                               | TLS configuration options (CA certificate, client certificate, and client key)                                                                                                            |
 | HMAC Signature                    | HMAC signature configuration options.                                                                                                                                                     |
 
-{{< admonition type="note" >}}
-
-You can configure either HTTP Basic Authentication or the Authorization request header, but not both.
-
-{{< /admonition >}}
+* ⚠️HTTP Basic Authentication OR Authorization request header⚠️
+  * == exclusive
+  * == ❌NOT BOTH❌
 
 #### HMAC signature
 

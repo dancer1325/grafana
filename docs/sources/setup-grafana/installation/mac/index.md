@@ -48,15 +48,11 @@ brew services start grafana
 ## -- via -- macOS binaries
 
 1. [Grafana download page](https://grafana.com/grafana/download)
-1. Select the Grafana version you want to install.
-   - The **Version** field displays only tagged releases
-   - If you want to install a nightly build, click **Nightly Builds** and then select a version.
-1. Select an **Edition**.
+2. Select an **Edition**
    - **Enterprise:**
-     - recommended version
+     - 👀recommended version👀
      - have Enterprise features
-   - **Open Source:** 
-1. Click **Mac**.
+   - **Open Source:**
 1. Copy & paste the code / provided -- from the -- [download page](https://grafana.com/grafana/download) & run it | your CL
 1. Untar the `gz` file
 1. start Grafana service

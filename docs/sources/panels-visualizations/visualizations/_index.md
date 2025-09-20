@@ -153,16 +153,19 @@ refs:
 
 # Visualizations
 
-Grafana offers a variety of visualizations to support different use cases. This section of the documentation highlights the built-in visualizations, their options and typical usage.
+* goal
+  * Grafana visualizations 
+    * built-in
+    * uses
 
-{{< youtube id="JwF6FgeotaU" >}}
-
-{{< admonition type="note" >}}
-If you are unsure which visualization to pick, Grafana can provide visualization suggestions based on the panel query. When you select a visualization, Grafana will show a preview with that visualization applied.
-{{< /admonition >}}
+* Grafana visualizations built-in
+  * DIFFERENT use cases
+  * suggested -- , based on the panel query, by -- Grafana
+  * [Youtube](https://www.youtube.com/watch?v=JwF6FgeotaU)
 
 - Graphs & charts
-  - [Time series](ref:time-series) is the default and main graph visualization. Alerts are supported in this panel.
+  - [Time series](ref:time-series)
+    - default & main one
   - [State timeline](ref:state-timeline) for state changes over time.
   - [Status history](ref:status-history) for periodic state over time.
   - [Bar chart](ref:bar-chart) shows any categorical data.
@@ -192,21 +195,28 @@ If you are unsure which visualization to pick, Grafana can provide visualization
   - [Text](ref:text) can show markdown and html.
   - [News](ref:news) can show RSS feeds.
 
-The following video shows you how to create gauge, time series line graph, stats, logs, and node graph visualizations:
-
-{{< youtube id="yNRnLyVntUw" >}}
+* [Youtube](https://www.youtube.com/watch?v=yNRnLyVntUw)
+  * goal
+    * how to create visualizations
+      * gauge, 
+      * time series line graph,
+      * stats, 
+      * logs,
+      * node graph
 
 ## Get more
 
-You can add more visualization types by installing [panel plugins](https://grafana.com/grafana/plugins/?type=panel).
+* installing [panel plugins](https://grafana.com/grafana/plugins/?type=panel)
 
 ## Examples
 
-Below you can find some good examples for how all the visualizations in Grafana can be configured. You can also explore [play.grafana.org](https://play.grafana.org) which has a large set of demo dashboards that showcase all the different visualizations.
+Below you can find some good examples for how all the visualizations in Grafana can be configured
+* You can also explore [play.grafana.org](https://play.grafana.org) which has a large set of demo dashboards that showcase all the different visualizations.
 
 ### Graphs
 
-For time based line, area and bar charts we recommend the default [time series](ref:time-series) visualization. [This public demo dashboard](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1) contains many different examples for how this visualization can be configured and styled.
+For time based line, area and bar charts we recommend the default [time series](ref:time-series) visualization
+* [This public demo dashboard](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1) contains many different examples for how this visualization can be configured and styled.
 
 {{< figure src="/static/img/docs/time-series-panel/time_series_small_example.png" max-width="700px" caption="Time series" >}}
 
@@ -216,13 +226,15 @@ For categorical data use a [bar chart](ref:bar-chart).
 
 ### Big numbers & stats
 
-A [stat](ref:stat) shows one large stat value with an optional graph sparkline. You can control the background or value color using thresholds or color scales.
+A [stat](ref:stat) shows one large stat value with an optional graph sparkline
+* You can control the background or value color using thresholds or color scales.
 
 {{< figure src="/static/img/docs/v66/stat_panel_dark3.png" max-width="1025px" caption="Stat" >}}
 
 ### Gauge
 
-If you want to present a value as it relates to a min and max value you have two options. First a standard radial [gauge](ref:gauge) shown below.
+If you want to present a value as it relates to a min and max value you have two options
+* First a standard radial [gauge](ref:gauge) shown below.
 
 {{< figure src="/static/img/docs/v66/gauge_panel_cover.png" max-width="700px" alt="A gauge visualization" >}}
 

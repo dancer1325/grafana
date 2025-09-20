@@ -37,7 +37,3 @@
         * AFTER installing plugins, required to restart Grafana
       * `/opt/homebrew/opt/grafana/bin/grafana cli --config /opt/homebrew/etc/grafana/grafana.ini --homepath /opt/homebrew/opt/grafana/share/grafana --pluginsDir "/opt/homebrew/var/lib/grafana/plugins" plugins ls`
         * check installed plugins
-
-# install -- via -- macOs binaries
-
-* TODO:

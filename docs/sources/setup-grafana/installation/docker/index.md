@@ -11,10 +11,9 @@ title: Run Grafana Docker image
 weight: 400
 ---
 
-{{< admonition type="caution" >}}
-Starting with Grafana release `12.4.0` , the `grafana/grafana-oss` Docker Hub repository will no longer be updated.
-Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. These two repositories have the same Grafana OSS docker images.
-{{< /admonition >}}
+* | Grafana v12.4.0,
+  * ❌[Docker Hub repository `grafana/grafana-oss`](https://hub.docker.com/r/grafana/grafana-oss) NO longer updated❌
+  * use [Docker Hub repository `grafana/grafana`](https://hub.docker.com/r/grafana/grafana) 
 
 # Run Grafana Docker image
 
@@ -32,117 +31,53 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
     - **Grafana Open Source**: `grafana/grafana-oss`
   * [MORE](../../configure-docker)
 
-## Run Grafana via Docker CLI
-
-This section shows you how to run Grafana using the Docker CLI.
-
-> **Note:** If you are on a Linux system (for example, Debian or Ubuntu), you might need to add `sudo` before the command or add your user to the `docker` group
-* For more information, refer to [Linux post-installation steps for Docker Engine](https://docs.docker.com/engine/install/linux-postinstall/).
-
-To run the latest stable version of Grafana, run the following command:
-
-```bash
-docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise
-```
-
-Where:
-
-- [`docker run`](https://docs.docker.com/engine/reference/commandline/run/) is a Docker CLI command that runs a new container from an image
-- `-d` (`--detach`) runs the container in the background
-- `-p <host-port>:<container-port>` (`--publish`) publish a container's port(s) to the host, allowing you to reach the container's port via a host port
-* In this case, we can reach the container's port `3000` via the host's port `3000`
-- `--name` assign a logical name to the container (e.g. `grafana`)
-* This allows you to refer to the container by name instead of by ID.
-- `grafana/grafana-enterprise` is the image to run
-
-### Stop the Grafana container
-
-To stop the Grafana container, run the following command:
-
-```bash
-# The `docker ps` command shows the processes running in Docker
-docker ps
-
-# This will display a list of containers that looks like the following:
-CONTAINER ID   IMAGE  COMMAND   CREATED  STATUS   PORTS    NAMES
-cd48d3994968   grafana/grafana-enterprise   "/run.sh"   8 seconds ago   Up 7 seconds   0.0.0.0:3000->3000/tcp   grafana
-
-# To stop the grafana container run the command
-# docker stop CONTAINER-ID or use
-# docker stop NAME, which is `grafana` as previously defined
-docker stop grafana
-```
+* steps
+  * | any terminal
+    * `docker run -d -p 3000:3000 --name=grafana grafana/grafana-enterprise`
+  * | browser,
+    * http://localhost:3000/login
+      * admin/admin
+  * | any terminal
+    * `docker stop grafana`
 
 ### Save your Grafana data
 
-By default, Grafana uses an embedded SQLite version 3 database to store configuration, users, dashboards, and other data
-* When you run Docker images as containers, changes to these Grafana data are written to the filesystem within the container, which will only persist for as long as the container exists
-* If you stop and remove the container, any filesystem changes (i.e. the Grafana data) will be discarded
-* To avoid losing your data, you can set up persistent storage using [Docker volumes](https://docs.docker.com/storage/volumes/) or [bind mounts](https://docs.docker.com/storage/bind-mounts/) for your container.
+* ways
+  * [common ones](/grafana/docs/sources/shared/back-up)
+  * using Docker
+  * -- via -- [Docker volumes](https://docs.docker.com/storage/volumes/)
+  * -- via -- [bind mounts](https://docs.docker.com/storage/bind-mounts/)
 
-> **Note:** Though both methods are similar, there is a slight difference
-* If you want your storage to be fully managed by Docker and accessed only through Docker containers and the Docker CLI, you should choose to use persistent storage
-* However, if you need full control of the storage and want to allow other processes besides Docker to access or modify the storage layer, then bind mounts is the right choice for your environment.
+#### -- via -- Docker volumes (recommended)
 
-#### Use Docker volumes (recommended)
+* restrictions
+  * ONLY accessible -- through --
+    * Docker containers
+    * Docker CLI
 
-Use Docker volumes when you want the Docker Engine to manage the storage volume.
+#### -- via -- bind mounts
 
-To use Docker volumes for persistent storage, complete the following steps:
+* pros
+  * accessible -- by -- ANY process 
+    * == ❌NOT ONLY Docker❌
 
-1. Create a Docker volume to be used by the Grafana container, giving it a descriptive name (e.g. `grafana-storage`). Run the following command:
+* restrictions
+  * start the container / user has read & write permission to write | directory
 
-   ```bash
-   # create a persistent volume for your data
-   docker volume create grafana-storage
+### configure Grafana -- via -- environment variables
 
-   # verify that the volume was created correctly
-   # you should see some JSON output
-   docker volume inspect grafana-storage
-   ```
+* [environment variables](../../configure-grafana/_index.md#override-configuration-with-environment-variables)
+  * allows
+    * configuring Grafana's custom configuration settings
 
-1. Start the Grafana container by running the following command:
-   ```bash
-   # start grafana
-   docker run -d -p 3000:3000 --name=grafana \
-     --volume grafana-storage:/var/lib/grafana \
-     grafana/grafana-enterprise
-   ```
+## Install plugins | Docker container
 
-#### Use bind mounts
+* 
+* see 
+  * [Plugin Management](../../../administration/plugin-management/)
+  * [Community Plugins](https://grafana.com/grafana/plugins/)
 
-If you plan to use directories on your host for the database or configuration when running Grafana in Docker, you must start the container with a user with permission to access and write to the directory you map.
-
-To use bind mounts, run the following command:
-
-```bash
-# create a directory for your data
-mkdir data
-
-# start grafana with your user id and using the data directory
-docker run -d -p 3000:3000 --name=grafana \
-  --user "$(id -u)" \
-  --volume "$PWD/data:/var/lib/grafana" \
-  grafana/grafana-enterprise
-```
-
-### Use environment variables to configure Grafana
-
-Grafana supports specifying custom configuration settings using [environment variables](../../configure-grafana/#override-configuration-with-environment-variables).
-
-```bash
-# enable debug logs
-
-docker run -d -p 3000:3000 --name=grafana \
-  -e "GF_LOG_LEVEL=debug" \
-  grafana/grafana-enterprise
-```
-
-## Install plugins in the Docker container
-
-You can install plugins in Grafana from the official and community [plugins page](/grafana/plugins) or by using a custom URL to install a private plugin. These plugins allow you to add new visualization types, data sources, and applications to help you better visualize your data.
-
-Grafana currently supports three types of plugins: panel, data source, and app. For more information on managing plugins, refer to [Plugin Management](../../../administration/plugin-management/).
+* For more information on managing plugins, refer to 
 
 To install plugins in the Docker container, complete the following steps:
 
@@ -182,7 +117,7 @@ To install plugins in the Docker container, complete the following steps:
 
 ## Example
 
-The following example runs the latest stable version of Grafana, listening on port 3000, with the container named `grafana`, persistent storage in the `grafana-storage` docker volume, the server root URL set, and the official [clock panel](/grafana/plugins/grafana-clock-panel) plugin installed.
+ volume, the server root URL set, and the official [clock panel](/grafana/plugins/grafana-clock-panel) plugin installed.
 
 ```bash
 # create a persistent volume for your data
@@ -381,15 +316,3 @@ volumes:
 {{< admonition type="note" >}}
 If you want to specify the version of a plugin, add the version number to the `GF_PLUGINS_PREINSTALL` environment variable. For example: `-e "GF_PLUGINS_PREINSTALL=grafana-clock-panel@1.0.1,grafana-simple-json-datasource@1.3.5"`. If you do not specify a version number, the latest version is used.
 {{< /admonition >}}
-
-## Next steps
-
-Refer to the [Getting Started](../../../getting-started/build-first-dashboard/) guide for information about logging in, setting up data sources, and so on.
-
-## Configure Docker image
-
-Refer to [Configure a Grafana Docker image](../../configure-docker/) page for details on options for customizing your environment, logging, database, and so on.
-
-## Configure Grafana
-
-Refer to the [Configuration](../../configure-grafana/) page for details on options for customizing your environment, logging, database, and so on.

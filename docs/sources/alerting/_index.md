@@ -49,10 +49,6 @@ cards:
       height: 24
 ---
 
-{{< docs/hero-simple key="hero" >}}
-
----
-
 ## Overview
 
 * goal
@@ -67,7 +63,3 @@ cards:
   * notice system outages OR changes
   * create queries & expressions -- from -- 👀MULTIPLE data sources👀
     * _Examples:_ metrics + logs + profiling issues
-
-## Explore
-
-{{< card-grid key="cards" type="simple" >}}

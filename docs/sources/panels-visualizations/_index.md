@@ -55,10 +55,6 @@ refs:
       destination: /docs/grafana-cloud/visualizations/panels-visualizations/query-transform-data/
 ---
 
-{{< docs/hero-simple key="hero" >}}
-
----
-
 ## Overview
 
 * Panels
@@ -77,7 +73,3 @@ refs:
   * uses
     * get the information -- to optimize -- performance
   * -- communicate, via queries, with -- data sources
-
-## Explore
-
-{{< card-grid key="cards" type="simple" >}}

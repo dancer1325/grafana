@@ -15,5 +15,3 @@ weight: 10
   * Grafana
     * up
     * running
-
-{{< section >}}
