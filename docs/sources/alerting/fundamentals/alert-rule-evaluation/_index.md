@@ -42,8 +42,10 @@ refs:
 * == criteria / fires the alert
   - [Evaluation group](#evaluation-group)
     - == FREQUENCY / alert rule is evaluated
-  - [Pending period](#pending-period): how long the condition must be met to start firing.
-  - [Keep firing for](#pending-period): how long the alert continues to fire after the condition is no longer met.
+  - [Pending period](#pending-period)
+    - == how long the condition MUST be met / start firing
+  - [Keep firing for](#pending-period)
+    - == how long the alert continues to fire after the condition is no longer met.
 
 ![](/grafana/media/docs/alerting/alert-rule-evaluation-2.png)
 

@@ -104,7 +104,7 @@ killercoda:
 
 * steps
   1. Navigate to **Alerts & IRM > Alerting > Alert rules**
-  2. **+ New alert rule**
+  2. **New alert rule**
   3. Enter alert rule name
 
 ### Define query and alert condition
@@ -131,7 +131,7 @@ killercoda:
 
 1. | **Folder**, **+ New folder**, enter a name
 
-![](static/test-metrics.png)
+  ![](static/test-metrics.png)
 
 ### Set evaluation behavior
 
@@ -187,27 +187,3 @@ To edit the Alert rule:
 1. Click **Save rule and exit**.
 
 By incrementing the threshold, the condition is no longer met, and after the evaluation interval has concluded (1 minute approx.), you should receive an alert notification with status **“Resolved”**.
-
-<!-- INTERACTIVE page step4.md END -->
-
-<!-- INTERACTIVE page finish.md START -->
-
-## Learn more in [Grafana Alerting: Multi-dimensional alerts and how to route them](http://www.grafana.com/tutorials/alerting-get-started-pt2/)
-
-<!-- INTERACTIVE ignore START -->
-
-{{< admonition type="tip" >}}
-
-In [Grafana Alerting: Multi-dimensional alerts and how to route them](http://www.grafana.com/tutorials/alerting-get-started-pt2/) you'll learn to use alert instances and route notifications by labels to contacts
-
-{{< /admonition >}}
-
-<!-- INTERACTIVE ignore END -->
-
-{{< docs/ignore >}}
-
-In [Grafana Alerting: Multi-dimensional alerts and how to route them](http://www.grafana.com/tutorials/alerting-get-started-pt2/) you'll learn to use alert instances and route notifications by labels to contacts.
-
-{{< /docs/ignore >}}
-
-<!-- INTERACTIVE page finish.md END -->
