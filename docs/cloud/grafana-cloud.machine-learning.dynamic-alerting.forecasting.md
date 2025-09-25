@@ -34,6 +34,7 @@ https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecas
   * percentile
   * yhat
     * == low & upper limits
+* TODO: upload gift
 
 * [record](static/forecasting-create.mp4)
 
@@ -41,3 +42,4 @@ https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecas
 * [Grafana Sandbox](https://play.grafana.org/a/grafana-ml-app/metric-forecast)
   * training runs & window
   * forecasted values
+* TODO: upload gift
