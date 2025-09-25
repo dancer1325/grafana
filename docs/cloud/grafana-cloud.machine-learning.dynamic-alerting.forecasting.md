@@ -35,6 +35,8 @@ https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecas
   * yhat
     * == low & upper limits
 
+* [record](static/forecasting-create.mp4)
+
 ## view forecasts
 * [Grafana Sandbox](https://play.grafana.org/a/grafana-ml-app/metric-forecast)
   * training runs & window
