@@ -8,7 +8,8 @@
     * [RBAC](grafana-cloud.machine-learning.dynamic-alerting.rbac.md)
     * [Forecasts & anomaly detection](grafana-cloud.machine-learning.dynamic-alerting.forecasting.md)
       * [Advanced model configuration](grafana-cloud.machine-learning.dynamic-alerting.forecasting.models.md)
-      * TODO:
+      * [Model configuration](grafana-cloud.machine-learning.dynamic-alerting.forecasting.config.md)
+      * [Holidays](grafana-cloud.machine-learning.dynamic-alerting.forecasting.holidays.md)
     * Query results
     * Outlier detection
   * TODO:
