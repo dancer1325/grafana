@@ -1,6 +1,7 @@
 https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecasting/holidays/
 
 * [documentation](https://github.com/facebook/prophet/blob/main/docs/_docs/holiday_effects.md)
+
 ## how to create?
 * steps
   * AI & machine learning > metric forecasts > holidays > create
@@ -12,4 +13,4 @@ https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecas
 
 # _Examples:_
 ## how to create?
-* TODO:
+* [record](static/forecasting-holidays.mp4)
