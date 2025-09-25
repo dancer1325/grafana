@@ -83,11 +83,6 @@ refs:
 
 ![](/grafana/media/docs/alerting/alerting-configure-notifications-v2.png)
 
-1. Grafana Alerting periodically evaluates alert rules by executing their data source queries and checking their conditions.
-1. Each alert rule can produce multiple alert instances—one per time series or dimension.
-1. If a condition is breached, an alert instance fires.
-1. Firing (and resolved) alert instances are sent for notifications, either directly to a contact point or through notification policies for more flexibility.
-
 ## Fundamentals
 
 ### Alert rules
@@ -106,44 +101,50 @@ refs:
   * 👀are FREQUENTLY evaluated👀
     * Reason:🧠alert instance's status == data sources are real-time changing🧠
 
-### Alert instances
+### Alert instances OR Alerts
 
-Each alert rule can produce multiple alert instances (also known as alerts) - one alert instance for each time series or dimension
-* This is allows you to observe multiple resources in a single expression.
+* alert instances == alerts
 
-```promql
-sum by(cpu) (
-  rate(node_cpu_seconds_total{mode!="idle"}[1m])
-)
-```
+* EACH alert rule can produce >= 1 alert instances
+  * 1 alert instance / EACH time series OR dimension
+  * allows
+    * 👀observe >=1 resources | 1! expression👀
 
-A rule using the PromQL expression above creates as many alert instances as the amount of CPUs after the first evaluation, enabling a single rule to report the status of each CPU.
+* _Examples:_ alert rule / create 1  alert instance / EACH CPU
 
-{{< figure src="/static/img/docs/alerting/unified/multi-dimensional-alert.png" alt="Multiple alert instances from a single alert rule" >}}
+  ```promql
+  sum by(cpu) (
+    rate(node_cpu_seconds_total{mode!="idle"}[1m])
+  )
+  ```
 
-_For a demo, see the [multi-dimensional alerts example](ref:multi-dimensional-alerts-example)._
+  ![](/grafana/media/docs/alerting/multi-dimensional-alert.png)
 
 ### Contact points
 
-[Contact points](ref:contact-points) 
-determine the notification message and where notifications are sent
-* For example, you might have a contact point that sends notifications to an email address, to Slack, to an incident management system (IRM) such as Grafana IRM or PagerDuty, or to a webhook.
+* [Contact points](ref:contact-points) 
+  * == notification message & where notifications are sent
+
+* _Example:_ have a contact point that sends notifications to an email address
+to Slack, to an incident management system (IRM) such as Grafana IRM or PagerDuty, or to a webhook.
 
 ### Notification messages
 
-By default, notification messages include alert details, such as the number of alerts, their status, and annotations to help responders address alert issues
+* By default, notification messages include alert details, such as the number of alerts, 
+their status, and annotations to help responders address alert issues
 * Notification messages can also be customized.
 
 In the alert rule, you can choose a contact point to receive the alert notifications or use notification policies instead.
 
 ### Notification policies
 
-[Notification policies](ref:notification-policies) are an advanced option for handling alert notifications by distinct scopes, such as by team or service—ideal for managing large alerting systems.
+[Notification policies](ref:notification-policies) are an advanced option for handling alert notifications by distinct scopes
+such as by team or service—ideal for managing large alerting systems.
 
 Notification policies routes alerts to contact points via label matching
 * They are defined in a tree structure, where the root of the notification policy tree is the **Default notification policy**, which ensures all alert instances are handled.
 
-{{< figure src="/media/docs/alerting/notification-routing.png" max-width="750px" alt="A diagram displaying how the notification policy tree routes alerts" caption="Routing firing alert instances through notification policies" >}}
+![](/media/docs/alerting/notification-routing.png)
 
 <br/>
 

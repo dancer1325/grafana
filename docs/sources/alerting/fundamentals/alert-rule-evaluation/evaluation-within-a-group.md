@@ -24,14 +24,21 @@ refs:
 
 # How rules are evaluated within a group
 
-Each evaluation group contains an **evaluation interval** that determines how frequently the rule is evaluated. For instance, the evaluation may occur every `10s`, `30s`, `1m`, `10m`, etc.
+* evaluation group
+  * contains
+    * **evaluation interval**
+      * == how FREQUENTLY the rule is evaluated
 
-Rules in different evaluation groups can be evaluated simultaneously.
-
-Rules within the same evaluation group can be evaluated simultaneously or sequentially, depending on the rule type:
-
-- **Grafana-managed** rules within the same group are evaluated concurrently—they are evaluated at different times over the same evaluation interval but display the same evaluation timestamp.
-
-- **Data source-managed** rules within the same group are evaluated sequentially, one after the other—this is useful to ensure that recording rules are evaluated before alert rules.
-
-- **Grafana-managed rules [imported from data source-managed rules](ref:import-ds-rules)** are also evaluated sequentially.
+* rules | 
+  * DIFFERENT evaluation groups, 
+    * can be evaluated SIMULTANEOUSLY
+  * SAME evaluation group,
+    * are evaluated -- based on the -- rule type
+      - **Grafana-managed** rules
+        - CONCURRENTLY | DIFFERENT times
+      - **Data source-managed** rules
+        - SEQUENTIALLY
+        - uses
+          - ensure recording rules are evaluated BEFORE alert rules
+      - **Grafana-managed rules / [imported -- from -- data source-managed rules](ref:import-ds-rules)**
+        - SEQUENTIALLY

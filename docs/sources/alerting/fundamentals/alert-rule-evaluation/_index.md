@@ -45,92 +45,81 @@ refs:
   - [Pending period](#pending-period)
     - == how long the condition MUST be met / start firing
   - [Keep firing for](#pending-period)
-    - == how long the alert continues to fire after the condition is no longer met.
+    - == AFTER the condition is NO longer met, 
+      - how long the alert continues to fire 
 
 ![](/grafana/media/docs/alerting/alert-rule-evaluation-2.png)
 
-These settings affect how alert instances progress through their lifecycle.
-
 ## Alerting lifecycle
 
-Each alert rule can generate one or more alert instances.
+* 1 alert rule can generate >= 1 alert instances—one /
+  * 1 / EACH series OR dimension produced -- by the -- rule's query
+  * alert instance1's state (may be) != alert instance2's state
 
-An alert instance transitions between these common states based on how long the alert condition remains met or not met.
+| Alert instance transiction's state | Description                                                                                                                                   |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| **Normal**                         | == alert's state \| condition (threshold) is NOT met                                                                                          |
+| **Pending**                        | == alert's state / threshold has been breached BUT < [pending period](#pending-period)                                                        |
+| **Alerting**                       | == alert's state / threshold has been breached > [pending period](#pending-period) <br/> 👀notification is triggered 👀                       |
+| **Recovering**                     | == firing alert's state <br/> &nbsp;&nbsp; \| threshold is NO longer breached <br/> &nbsp;&nbsp; < [keep firing for](#keep-firing-for) period |
 
-| State          | Description                                                                                                                             |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| **Normal**     | The state of an alert when the condition (threshold) is not met.                                                                        |
-| **Pending**    | The state of an alert that has breached the threshold but for less than the [pending period](#pending-period).                          |
-| **Alerting**   | The state of an alert that has breached the threshold for longer than the [pending period](#pending-period).                            |
-| **Recovering** | The state of a firing alert when the threshold is no longer breached, but for less than the [keep firing for](#keep-firing-for) period. |
+![](/grafana/media/docs/alerting/alert-rule-evaluation-basic-statediagram.png)
 
-{{< figure src="/media/docs/alerting/alert-rule-evaluation-basic-statediagram.png" alt="A diagram of the lifecyle of a firing alert instance." max-width="750px" >}}
-
-If an alert rule changes (except for updates to annotations, the evaluation interval, or other internal fields), its alert instances reset to the **Normal** state, and update accordingly during the next evaluation.
-
-{{< admonition type="note" >}}
-
-To learn about additional alert instance states, see [No Data and Error states](ref:nodata-and-error-states).
-
-{{< /admonition >}}
+* if an alert rule changes (EXCEPT FOR: updates to annotations, evaluation interval, OR OTHER internal fields) -> its alert instances 
+  * 👀reset -- to the -- **NORMAL** state👀
+  * update accordingly
 
 ## Notification routing
 
-Alert instances are routed for [notifications](ref:notifications) in two scenarios:
-
-1. When they transition to the **Alerting** state.
-2. When they transition to **Normal** state and marked as `Resolved`, either from the **Alerting** or **Recovering** state.
+* 👀use cases | alert instances are routed -- for -- [notifications](ref:notifications)👀
+  1. transition -- to the -- **Alerting** state
+  2. transition -- to -- **Normal** state & marked as `Resolved`
 
 ## Evaluation group
 
-{{< shared id="evaluation-group-basics" >}}
+* 👀EVERY alert rule & recording rule is assigned -- to an -- evaluation group👀
 
-Every alert rule and recording rule is assigned to an evaluation group. Each evaluation group contains an **evaluation interval** that determines how frequently the rule is checked. For instance, the evaluation may occur every `10s`, `30s`, `1m`, `10m`, etc.
+* EXIST **evaluation interval** / EACH evaluation group
+  * uses
+    * how frequently the rule is checked
+  * _Examples:_ `10s`, `30s`, `1m`, `10m`, etc.
 
-{{< /shared >}}
+* Evaluation interval
+  * == how frequently the alert rule is checked
 
-Rules can be evaluated concurrently or sequentially. For details, see [How rules are evaluated within a group](ref:evaluation-within-a-group).
+* ways to evaluate the rules
+  * concurrently OR
+  * sequentially
 
 ## Pending period
 
-{{< shared id="pending-period-basics" >}}
+* **Pending period**
+  * == how long the condition must be met -- to -- trigger the alert rule
+  * 👀prevent unnecessary notifications / caused -- by -- temporary issues👀
 
-You can set a **Pending period** to prevent unnecessary notifications caused by temporary issues.
-
-When the alert condition is met, the alert instance enters the **Pending** state. It remains in this state until the condition has been continuously true for the entire **Pending period**.
-
-This ensures the condition breach is stable before the alert transitions to the **Alerting** state and routed for notification.
-
-{{< /shared >}}
+* Pending state
+  * requirements
+    * alert condition is met
+  * if you set **Pending period=0** -> skip the **Pending** state
+    * == transition DIRECTLY -- to -- **Alerting** immediately
 
 - **Normal** -> **Pending** -> **Alerting**<sup>\*</sup>
 
-You can also set the **Pending period** to zero to skip the **Pending** state entirely and transition to **Alerting** immediately.
-
 ## Keep firing for
 
-{{< shared id="keep-firing-for" >}}
-
-You can set a **Keep firing for** period to avoid repeated firing-resolving-firing notifications caused by flapping conditions.
-
-When the alert condition is no longer met during the **Alerting** state, the alert instance enters the **Recovering** state.
-
-{{< /shared >}}
+* **Keep firing for** period
+  * 👀avoid repeated firing-resolving-firing notifications / caused -- by -- flapping conditions 👀
+  * AFTER **Keep firing for** period -> alert transitions -- to the -- **Normal** state & marked as **Resolved**
+  * if **Keep firing for** period == zero -> transition -- DIRECTLY to -- Normal
+    * == skip the **Recovering** state 
 
 - **Alerting** → **Recovering** → **Normal (Resolved)**<sup>\*</sup>
-- After the **Keep firing for** period elapses, the alert transitions to the **Normal** state and is marked as **Resolved**.
-- If the alert condition is met again, the alert transitions back to the **Alerting** state, and no new notifications are sent.
-
-You can also set the **Keep firing for** period to zero to skip the **Recovering** state entirely.
 
 ## Evaluation example
 
-Keep in mind:
-
-- One alert rule can generate multiple alert instances—one for each series or dimension produced by the rule's query. Alert instances from the same alert rule may be in different states.
-- Only alert instances in the **Alerting** and **Normal (Resolved)** state are routed for [notifications](ref:notifications).
-
-Consider an alert rule with an **evaluation interval** set at every 30 seconds and a **pending period** of 90 seconds. The evaluation occurs as follows:
+* _Example:_ alert rule / 
+  * **evaluation interval** = 30 seconds
+  * **pending period** = 90 seconds
 
 | Time                      | Condition | Alert instance state | Pending counter |
 | ------------------------- | --------- | -------------------- | --------------- |
@@ -140,7 +129,7 @@ Consider an alert rule with an **evaluation interval** set at every 30 seconds a
 | 02:00 (fourth evaluation) | Breached  | Pending              | 60s             |
 | 02:30 (fifth evaluation)  | Breached  | Alerting 📩          | 90s             |
 
-With a **keep firing for** period of 0 seconds, the alert instance transitions immediately from **Alerting** to **Normal**, and marked as `Resolved`:
+* **keep firing for** period == 0 seconds
 
 | Time                       | Condition | Alert instance state          | Pending counter |
 | -------------------------- | --------- | ----------------------------- | --------------- |

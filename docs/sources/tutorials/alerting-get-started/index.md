@@ -136,31 +136,12 @@ killercoda:
 ### Set evaluation behavior
 
 * [alert rule evaluation](https://grafana.com/docs/grafana/latest/alerting/fundamentals/alert-rules/rule-evaluation/)
-  * defines the conditions under which an alert rule triggers, based on the following settings:
-
-- **Evaluation group**: every alert rule is assigned to an evaluation group. You can assign the alert rule to an existing evaluation group or create a new one.
-- **Evaluation interval**: determines how frequently the alert rule is checked. For instance, the evaluation may occur every 10s, 30s, 1m, 10m, etc.
-- **Pending period**: how long the condition must be met to trigger the alert rule.
-- **Keep firing for**: defines how long an alert should remain in the Firing state after the alert condition stops being true. During this time, the alert enters a _Recovering_ state, suppressing additional notifications but keeping the alert active. It helps prevent alert flapping, where alerts rapidly switch between firing and resolved due to noisy or unstable metrics.
-
-To set up the evaluation:
-
-1. In the **Evaluation group and interval**, enter a name. For example: `1m-evaluation`.
-1. Choose an **Evaluation interval** (how often the alert are evaluated).
-   For example, every `1m` (1 minute).
-1. Set the **pending period** to, `0s` (zero seconds), so the alert rule fires the moment the condition is met.
-1. Set **Keep firing for** to, `0s`, so the alert stops firing immediately after the condition is no longer true. Use this when you want alerts to be resolved as soon as the system is healthy again.
 
 ### Configure notifications
 
-Choose the contact point where you want to receive your alert notifications.
-
-1. Under **Contact point**, select **Webhook** from the drop-down menu.
-1. Click **Save rule and exit** at the top right corner.
-
-<!-- INTERACTIVE page step3.md END -->
-
-<!-- INTERACTIVE page step4.md START -->
+* steps
+  * **Contact point**, **Webhook**
+  * **Save rule and exit**
 
 ## Trigger and resolve an alert
 

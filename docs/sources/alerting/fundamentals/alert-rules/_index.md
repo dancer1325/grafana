@@ -57,15 +57,18 @@ refs:
 
 # Alert rules
 
-An alert rule is a set of evaluation criteria for when an alert rule should fire. An alert rule consists of:
+* alert rule
+  * == set of evaluation criteria | alert should fire
+  * == 
+    * [Queries](ref:queries-and-conditions)
+      * == dataset / evaluate
+    * [alert condition (threshold)](ref:alert-condition)
+      * uses
+        * exceed -- to -- trigger the alert instance
+    * [alert rule evaluation](ref:alert-rule-evaluation)
+    * OTHER options (expressions + labels + annotations + error and no data handling + notification routing)
 
-1. [Queries](ref:queries-and-conditions) that select the dataset to evaluate.
-1. An [alert condition](ref:alert-condition) (the threshold) that the query must meet or exceed to trigger the alert instance.
-
-   {{< figure src="/media/docs/alerting/alerting-query-conditions-default-options.png" max-width="750px" alt="Alert query using the Prometheus query editor and alert condition" >}}
-
-1. An interval that specifies the frequency of [alert rule evaluation](ref:alert-rule-evaluation) and a duration indicating how long the condition must be met to trigger the alert instance.
-1. Other customizable options, including expressions, labels, annotations, error and no data handling, notification routing, and more.
+![](/grafana/media/docs/alerting/alerting-query-conditions-default-options.png)
 
 ## Alert rule types
 
