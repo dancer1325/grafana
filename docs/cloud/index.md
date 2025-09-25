@@ -7,6 +7,7 @@
   * [Dynamic alerting](grafana-cloud.machine-learning.dynamic-alerting.md)
     * [RBAC](grafana-cloud.machine-learning.dynamic-alerting.rbac.md)
     * [Forecasts & anomaly detection](grafana-cloud.machine-learning.dynamic-alerting.forecasting.md)
+      * [Advanced model configuration](grafana-cloud.machine-learning.dynamic-alerting.forecasting.models.md)
       * TODO:
     * Query results
     * Outlier detection
