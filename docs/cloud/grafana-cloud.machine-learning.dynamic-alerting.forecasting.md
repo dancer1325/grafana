@@ -34,8 +34,10 @@ https://grafana.com/docs/grafana-cloud/machine-learning/dynamic-alerting/forecas
   * percentile
   * yhat
     * == low & upper limits
+* TODO: upload gift
 
 ## view forecasts
 * [Grafana Sandbox](https://play.grafana.org/a/grafana-ml-app/metric-forecast)
   * training runs & window
   * forecasted values
+* TODO: upload gift
