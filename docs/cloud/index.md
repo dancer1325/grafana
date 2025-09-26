@@ -11,7 +11,7 @@
       * [Model configuration](grafana-cloud.machine-learning.dynamic-alerting.forecasting.config.md)
       * [Holidays](grafana-cloud.machine-learning.dynamic-alerting.forecasting.holidays.md)
     * [Query results](grafana-cloud.machine-learning.dynamic-alerting.querying.md)
-    * Outlier detection
+    * [Outlier detection](grafana-cloud.machine-learning.dynamic-alerting.outlier-detection.md)
   * TODO:
   * [Sift](grafana-cloud.machine-learning.sift.md)
     * TODO:
