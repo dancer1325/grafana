@@ -12,7 +12,8 @@
       * [Holidays](grafana-cloud.machine-learning.dynamic-alerting.forecasting.holidays.md)
     * [Query results](grafana-cloud.machine-learning.dynamic-alerting.querying.md)
     * [Outlier detection](grafana-cloud.machine-learning.dynamic-alerting.outlier-detection.md)
-  * TODO:
+  * [LLM plugin](grafana-cloud.machine-learning.llm.md)
+    * [Enable LLM features](grafana-cloud.machine-learning.llm.llm-setup.md)
   * [Sift](grafana-cloud.machine-learning.sift.md)
     * TODO:
   * TODO:
