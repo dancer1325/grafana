@@ -58,20 +58,40 @@ refs:
 
 ## Overview
 
-{{< shared id="dashboard-overview" >}}
+* Grafana dashboard
+  * == set of [panelS](ref:panels)
+    * placed | rows
+  * goal
+    * place related information | at-glance view
+  * provide
+    * query editor
+      * Reason: 🧠accommodate different query languages / data source🧠
+  * uses
+    * data source's data is 
+      * queried
+      * transformed | visualizations
 
-A Grafana dashboard is a set of one or more [panels](ref:panels), organized and arranged into one or more rows, that provide an at-a-glance view of related information. These panels are created using components that query and transform raw data from a data source into visualizations.
+* Data sources
+  * _Examples:_ SQL databases, Grafana Loki, Grafana Mimir, API endpoints, CSV files
+  * 's plugins
+    * built-int +150
+    * functionality by steps
+      * Grafana's query is translated -- to -- native Data source's query
+      * retrieve data from data source
+      * return result / translated -- to -- Grafana's data model
 
-A data source can be an SQL database, Grafana Loki, Grafana Mimir, or an API endpoint. It can even be a basic CSV file. Data source plugins take a query you want answered, retrieve the data from the data source, and reconcile the differences between the data model of the data source and the data model of Grafana dashboards.
+* Queries
+  * allow:
+    * reduce data -- to -- specific dataset
+      * == filter in data
 
-{{< /shared >}}
+* Panels
+  * == 👀container / displays visualization👀
+    * allows
+      * manipulate visualization
+  * 's options
+    * customize visualization aspects
+    * -- depend on -- visualization type
+  * if data does NOT meet format's requirements -> apply [transformations](../panels-visualizations/query-transform-data/transform-data/)
 
-Queries allow you to reduce the entirety of your data to a specific dataset, providing a more manageable visualization. Since data sources have their own distinct query languages, Grafana dashboards provide you with a query editor to accommodate these differences.
-
-A panel is the container that displays the visualization and provides you with various controls to manipulate it. Panel options let you customize many aspects of a visualization and the options differ based on which visualization you select. When the data format in a visualization doesn't meet your requirements, you can apply a transformation that manipulates the data returned by a query.
-
-With 150+ data source plugins, you can unify all your data sources into a single dashboard to streamline data monitoring and troubleshooting. With Grafana, you can translate, transform, and visualize data in flexible and versatile dashboards.
-
-## Explore
-
-{{< card-grid key="cards" type="simple" >}}
+    ![](static/transformation.png)

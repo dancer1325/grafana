@@ -2,7 +2,10 @@
 
 * [Grafana](http://grafana.com/)
   * == analytics & visualization platform
-    * open-source
+    * EXISTING versions
+      * open-source
+      * enterprise
+      * cloud
   * features
     * **Visualizations:** 
       * == client side graphs /
@@ -11,6 +14,10 @@
         * multitude of options
       * panel plugins
         * enable DIFFERENT ways -- to -- visualize metrics & logs
+      * ALLOWED ones
+      
+        ![](media/builtInVisualizations.png)
+
     * **Dynamic Dashboards:**
       * you can customize -- via -- template variables / appear -- as -- dropdowns | top of the dashboard
     * Explore

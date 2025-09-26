@@ -112,7 +112,3 @@ cards:
 ## Guidance and help
 
 {{< guide name="whichgrafana" title="Which Grafana is right for you?" text="Answer a few questions and Grot will help you decide." >}}
-
-## Learn
-
-{{< card-grid key="cards" type="simple" >}}

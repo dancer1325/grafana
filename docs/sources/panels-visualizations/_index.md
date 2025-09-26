@@ -73,3 +73,9 @@ refs:
   * uses
     * get the information -- to optimize -- performance
   * -- communicate, via queries, with -- data sources
+
+# _Example:_ 
+* Grafana cloud
+
+  ![](static/panel.gif)
+
