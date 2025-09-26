@@ -15,6 +15,9 @@
   * [LLM plugin](grafana-cloud.machine-learning.llm.md)
     * [Enable LLM features](grafana-cloud.machine-learning.llm.llm-setup.md)
   * [Sift](grafana-cloud.machine-learning.sift.md)
+    * [configuration](grafana-cloud.machine-learning.sift.config.md)
+    * [investigations](grafana-cloud.machine-learning.sift.sift.md)
+    * [analyses](grafana-cloud.machine-learning.sift.analyses.md)
     * TODO:
   * TODO:
   * [Grafana Assistant](grafana-cloud.machine-learning.assistant.md)
