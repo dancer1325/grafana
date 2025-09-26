@@ -15,3 +15,7 @@ https://grafana.com/docs/grafana-cloud/machine-learning/llm/
     * Administration > Plugins and data > Plugins > LLM
 
 ![](static/grafanaLLMApp.png)
+
+# _Examples:_
+## view
+* Grafana cloud
