@@ -34,10 +34,11 @@ weight: 800
   * _Example:_ [Grafana sandbox](https://play.grafana.org/goto/aez99iak7arcwb?orgId=1)
 
 * [Youtube](https://www.youtube.com/watch?v=mMUJ3iwIYwc)
+  * TODO:
 
 * uses |
   - Data source queries
-  - [Panel repeating options](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/configure-panel-options/#configure-repeating-panels)
+  - [Panel repeating options](/grafana/docs/sources/panels-visualizations/configure-panel-options/index.md#configure-repeating-panels)
   - [Dashboard and panel links](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/build-dashboards/manage-dashboard-links/)
   - Titles
   - Descriptions

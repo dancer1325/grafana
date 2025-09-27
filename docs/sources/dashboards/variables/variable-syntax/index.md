@@ -22,7 +22,7 @@ weight: 300
 
 # Variable syntax
 
-Panel titles and metric queries can refer to variables using two different syntaxes:
+* varPanel titles and metric queries can refer to variables using two different syntaxes:
 
 - `$varname`
   This syntax is easy to read, but it does not allow you to use a variable in the middle of a word.

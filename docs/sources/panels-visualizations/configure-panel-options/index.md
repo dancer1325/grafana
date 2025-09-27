@@ -56,46 +56,50 @@ refs:
 
 # Configure panel options
 
-There are settings common to all visualizations, which you set in the **Panel options** section of the panel editor pane. The following sections describe these options as well as how to set them.
+* | panel editor's panel options,
+  * == settings / COMMON | ALL visualizations 
+
+![](static/panelOptions.png)
 
 ## Panel options
 
-Set the following options to provide basic information about a panel and define basic display elements:
+* allows
+  * provide panel's basic information
+  * define basic display elements
 
-| Option                 | Description                                                                                                                                                                                                                                                                                                                                               |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Title                  | Text entered in this field appears at the top of your panel in the panel editor and in the dashboard. You can use [variables you have defined](ref:variables-you-have-defined) in the **Title** field, but not [global variables](ref:global-variables).                                                                                                  |
-| Description            | Text entered in this field appears in a tooltip in the upper-left corner of the panel. Add a description to a panel to share with users any important information about it, such as its purpose. You can use [variables you have defined](ref:variables-you-have-defined) in the **Description** field, but not [global variables](ref:global-variables). |
-| Transparent background | Toggle this switch on and off to control whether or not the panel has the same background color as the dashboard.                                                                                                                                                                                                                                         |
-| Panel links            | Add [links to the panel](ref:links-to-the-panel) to create shortcuts to other dashboards, panels, and external websites. Access panel links by clicking the icon next to the panel title.                                                                                                                                                                 |
-| Repeat options         | Set whether to repeat the panel for each value in the selected variable. For more information, refer to [Configure repeating panels](#configure-repeating-panels).                                                                                                                                                                                        |
+| Option                 | Description                                                                                                                                                                                                                        |
+| ---------------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Title                  | == text / appears \| top of your (panel editor's panel & dashboard's panel) <br/> ALLOWED to use: [variables you have defined](ref:variables-you-have-defined) <br/> ❌NOT ALLOWED to use [global variables](ref:global-variables)❌ |
+| Description            | == text / appears \| panel's upper-left corner tooltip <br/> ALLOWED to use: [variables you have defined](ref:variables-you-have-defined) <br/> ❌NOT ALLOWED to use [global variables](ref:global-variables)❌                      |
+| Transparent background | panel's background color == OR != dashboard's background color                                                                                                                                                                     |
+| Panel links            | [links to the panel](ref:links-to-the-panel) <br/> == shortcuts -- to -- OTHER dashboards, panels, and external websites <br/> == iconS \| panel title                                                                             |
+| Repeat options         | repeat the panel / EACH selected variable's value <br/> [see](#configure-repeating-panels)                                                                                                                                 |
 
-You can use generative AI to populate the **Title** and **Description** fields with the [Grafana LLM plugin](ref:grafana-llm-plugin), which is currently in public preview. To enable this, refer to [Set up generative AI features for dashboards](ref:set-up-generative-ai-features-for-dashboards).
+* if you want to populate **Title** & **Description** fields -- via -- generative AI -> use [Grafana LLM plugin](ref:grafana-llm-plugin)
+  * [how to set up](ref:set-up-generative-ai-features-for-dashboards)
+
+![](static/panelOptions.gif)
 
 ## Configure repeating panels
 
-You can configure Grafana to dynamically add panels or rows to a dashboard. A dynamic panel is a panel that the system creates based on the value of a variable. Variables dynamically change your queries across all panels in a dashboard. For more information about repeating rows, refer to [Configure repeating rows](ref:configure-repeating-rows).
+* dynamic panel
+  * == panel / created -- based on the -- variable's value
+    * variables dynamically change your queries | ALL dashboard's panels 
+  * [how to configure repeating rows](ref:configure-repeating-rows)
+  * _Example:_ [dashboard / repeating panels](https://play.grafana.org/goto/yfZOReUNR?orgId=1)
 
-To see an example of repeating panels, refer to [this dashboard with repeating panels](https://play.grafana.org/d/testdata-repeating/testdata-repeating-panels?orgId=1).
+* requirements
+  * query / has multi-value variable 
+* steps
+  1. | panels' panel options > repeat options
+  1. TODO: Under **Repeat options**, select a variable in the **Repeat by variable** drop-down list.
+  1. Under **Repeat direction**, choose one of the following:
+     - **Horizontal** - Arrange panels side-by-side. Grafana adjusts the width of a repeated panel. You can't mix other panels on a row with a repeated panel.
+     - **Vertical** - Arrange panels in a column. The width of repeated panels is the same as the original, repeated panel.
 
-**Before you begin:**
-
-- Ensure that the query includes a multi-value variable.
-
-To configure repeating panels, follow these steps:
-
-1. Navigate to the panel you want to update.
-1. Hover over any part of the panel to display the menu on the top right corner.
-1. Click the menu and select **Edit**.
-1. Open the **Panel options** section of the panel editor pane.
-1. Under **Repeat options**, select a variable in the **Repeat by variable** drop-down list.
-1. Under **Repeat direction**, choose one of the following:
-   - **Horizontal** - Arrange panels side-by-side. Grafana adjusts the width of a repeated panel. You can't mix other panels on a row with a repeated panel.
-   - **Vertical** - Arrange panels in a column. The width of repeated panels is the same as the original, repeated panel.
-
-1. If you selected **Horizontal** in the previous step, select a value in the **Max per row** drop-down list to control the maximum number of panels that can be in a row.
-1. Click **Save dashboard**.
-1. Click **Back to dashboard** and then **Exit edit**.
-1. To propagate changes to all panels, reload the dashboard.
+  1. If you selected **Horizontal** in the previous step, select a value in the **Max per row** drop-down list to control the maximum number of panels that can be in a row.
+  1. Click **Save dashboard**.
+  1. Click **Back to dashboard** and then **Exit edit**.
+  1. To propagate changes to all panels, reload the dashboard.
 
 You can stop a panel from repeating by selecting **Disable repeating** in the **Repeat by variable** drop-down list.

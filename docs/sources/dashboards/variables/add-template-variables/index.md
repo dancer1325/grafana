@@ -90,105 +90,116 @@ refs:
 
 # Add variables
 
-<!-- vale Grafana.Spelling = NO -->
+* built-in types of variables
 
-The following table lists the types of variables shipped with Grafana.
+| Variable type     | Description                                                                                                                                                                                 |
+| :---------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Query             | Query-generated list of values <br/> _Examples:_ metric names, server names, sensor IDs, data centers, ... <br/> [Add a query variable](#add-a-query-variable)                              |
+| Custom            | Define the variable options manually using a comma-separated list. [Add a custom variable](#add-a-custom-variable).                                                                         |
+| Text box          | Display a free text input field with an optional default value. [Add a text box variable](#add-a-text-box-variable).                                                                        |
+| Constant          | Define a hidden constant. [Add a constant variable](#add-a-constant-variable).                                                                                                              |
+| Data source       | Quickly change the data source for an entire dashboard. [Add a data source variable](#add-a-data-source-variable).                                                                          |
+| Interval          | Interval variables represent time spans. [Add an interval variable](#add-an-interval-variable).                                                                                             |
+| Ad hoc filters    | Key/value filters that are automatically added to all metric queries for a data source (Prometheus, Loki, InfluxDB, and Elasticsearch only). [Add ad hoc filters](#add-ad-hoc-filters).     |
+| Global variables  | Built-in variables that can be used in expressions in the query editor. Refer to [Global variables](#global-variables).                                                                     |
+| Chained variables | Variable queries can contain other variables. Refer to [Chained variables](#chained-variables).                                                                                             |
 
-| Variable type     | Description                                                                                                                                                                             |
-| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Query             | Query-generated list of values such as metric names, server names, sensor IDs, data centers, and so on. [Add a query variable](#add-a-query-variable).                                  |
-| Custom            | Define the variable options manually using a comma-separated list. [Add a custom variable](#add-a-custom-variable).                                                                     |
-| Text box          | Display a free text input field with an optional default value. [Add a text box variable](#add-a-text-box-variable).                                                                    |
-| Constant          | Define a hidden constant. [Add a constant variable](#add-a-constant-variable).                                                                                                          |
-| Data source       | Quickly change the data source for an entire dashboard. [Add a data source variable](#add-a-data-source-variable).                                                                      |
-| Interval          | Interval variables represent time spans. [Add an interval variable](#add-an-interval-variable).                                                                                         |
-| Ad hoc filters    | Key/value filters that are automatically added to all metric queries for a data source (Prometheus, Loki, InfluxDB, and Elasticsearch only). [Add ad hoc filters](#add-ad-hoc-filters). |
-| Global variables  | Built-in variables that can be used in expressions in the query editor. Refer to [Global variables](#global-variables).                                                                 |
-| Chained variables | Variable queries can contain other variables. Refer to [Chained variables](#chained-variables).                                                                                         |
+## Variable's GENERAL options
 
-## Enter General options
+* steps
+  1. | dashboard's top-right corner **Edit** > **Settings** > **Variables** > **Add variable**
+  1. choose **Select variable type** drop-down list
+  1. Enter 
+     1. **Name**
+     1. **Label**
+        1. OPTIONAL
+        2. == display name | variable drop-down list
+           1. if you do NOT enter it -> drop-down list label == variable name
+  1. Hide
+     - **Label**
+       - == variable's **Label** value
+     - **Variable:**
+       - == selected variable value 
+     - **Nothing:**
+       - default one
+       - == NO variable drop-down list is displayed | dashboard
 
-You must enter general options for any type of variable that you create.
-To create a variable, follow these steps:
-
-1. Click **Edit** in the top-right corner of the dashboard.
-1. Click **Settings**.
-1. Go to the **Variables** tab.
-1. Click **Add variable**, or if there are already existing variables, **+ New variable**.
-1. Choose an option in the **Select variable type** drop-down list.
-1. Enter a **Name** for the variable.
-1. (Optional) In the **Label** field, enter the display name for the variable drop-down list.
-
-   If you don't enter a display name, then the drop-down list label is the variable name.
-
-1. Choose a **Show on dashboard** option:
-   - **Label and value** - The variable drop-down list displays the variable **Name** or **Label** value. This is the default.
-   - **Value:** The variable drop-down list only displays the selected variable value and a down arrow.
-   - **Nothing:** No variable drop-down list is displayed on the dashboard.
-
-1. Click one of the following links to complete the steps for adding your selected variable type:
-   - [Query](#add-a-query-variable)
-   - [Custom](#add-a-custom-variable)
-   - [Textbox](#add-a-text-box-variable)
-   - [Constant](#add-a-constant-variable)
-   - [Data source](#add-a-data-source-variable)
-   - [Interval](#add-an-interval-variable)
-   - [Ad hoc filters](#add-ad-hoc-filters)
-
-<!-- vale Grafana.Spelling = YES -->
+![](static/generalOptions.png)
 
 ### Variable best practices
 
-- Variable drop-down lists are displayed in the order in which they're listed in the **Variables** in dashboard settings, so put the variables that you will change often at the top, so they will be shown first (far left on the dashboard).
-- By default, variables don't have a default value. This means that the topmost value in the drop-down list is always preselected. If you want to pre-populate a variable with an empty value, you can use the following workaround in the variable settings:
+- Variable drop-down lists
+  - | top,
+    - put MORE FREQUENTLY used variables
+      - Reason: 🧠shown FIRST🧠
+
+* TODO:      
+- By default, variables don't have a default value
+* This means that the topmost value in the drop-down list is always preselected
+* If you want to pre-populate a variable with an empty value, you can use the following workaround in the variable settings:
   1. Select the **Include All Option** checkbox.
   2. In the **Custom all value** field, enter a value like `+`.
 
 ## Add a query variable
 
-Query variables enable you to write a data source query that can return a list of metric names, tag values, or keys. For example, a query variable might return a list of server names, sensor IDs, or data centers. The variable values change as they dynamically fetch options with a data source query.
+* Query variables
+  * enable you
+    * 👀data source query👀 / 
+      * 's return DIFFERENT things (metric names, tag values, or keys)
+  * restrictions
+    * strings
+      * if you need other data type -> convert them -- to -- strings / use as variables
+  * steps
+    1. [general options](#variables-general-options)
+    1. | **Query options**
+       1. select OR [add](ref:add-a-data-source) a target data source
+       1. select **Query type** drop-down list
+          - **Label names**
+          - **Label values**
+          - **Metrics**
+          - **Query result**
+          - **Series query**
+          - **Classic query**
+       1. **Query** field
+          - -- depend on the -- data source & query type
+       1. **Regex** field
+          1. OPTIONAL
+          2. == regular expression / filter OR capture specific parts
+          3. _Examples:_ [here](#filter-variables-with-regular-expressions-filter-variables-with-regex)
+       1. **Sort** drop-down list
+          1. == values sort order / displayed | dropdown list
+          2. **Disabled**
+             1. default
+             2. == order of options / returned by your data source query
+       1. **Refresh** 
+          - == when the variable should update options
+          - **On dashboard load**
+            - == | load the dashboard,
+              - query the data source 
+              - slow down dashboard loading
+                - Reason:🧠BEFORE initializing the dashboard, variable query needs to be completed🧠 
+          - **On time range change** 
+            - | dashboard loads & dashboard time range changes,
+              - query the data source 
+            - uses
+              - variable options query
+                - contains a time range filter OR
+                - -- depend on the -- dashboard time range
+       1. | [Selection Options](#configure-variable-selection-options)
+          - OPTIONAL 
+          - **Multi-value**
+            - select MULTIPLE values | SAME time
+          - **Include ALL optionS**
+            - include ALL variables
+       1. | **Preview of values** section,
+          - == list of the current variable values
+       1. **Save dashboard**, **Back to dashboard** & **Exit edit**
 
-Query variables are generally only supported for strings. If your query returns numbers or any other data type, you might need to convert them to strings to use them as variables. For the Azure data source, for example, you can use the [`tostring`](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/tostringfunction) function for this purpose.
+* Query expressions
+  * can contain references -- to -- other variables
+    * == linked variables
 
-Query expressions can contain references to other variables and in effect create linked variables. Grafana detects this and automatically refreshes a variable when one of its linked variables change.
-
-{{< admonition type="note" >}}
-Query expressions are different for each data source. For more information, refer to the documentation for your [data source](ref:data-source).
-{{< /admonition >}}
-
-1. [Enter general options](#enter-general-options).
-1. Under the **Query options** section of the page, select a target data source in the **Data source** drop-down list.
-
-   You can also click **Open advanced data source picker** to see more options, including adding a data source (Admins only).
-   For more information about data sources, refer to [Add a data source](ref:add-a-data-source).
-
-1. In the **Query type** drop-down list, select one of the following options:
-   - **Label names**
-   - **Label values**
-   - **Metrics**
-   - **Query result**
-   - **Series query**
-   - **Classic query**
-
-1. In the **Query** field, enter a query.
-   - The query field varies according to your data source. Some data sources have custom query editors.
-   - Each data source defines how the variable values are extracted. The typical implementation uses every string value returned from the data source response as a variable value. Make sure to double-check the documentation for the data source.
-   - Some data sources let you provide custom "display names" for the values. For instance, the PostgreSQL, MySQL, and Microsoft SQL Server plugins handle this by looking for fields named `__text` and `__value` in the result. Other data sources may look for `text` and `value` or use a different approach. Always remember to double-check the documentation for the data source.
-   - If you need more room in a single input field query editor, then hover your cursor over the lines in the lower right corner of the field and drag downward to expand.
-
-1. (Optional) In the **Regex** field, type a regular expression to filter or capture specific parts of the names returned by your data source query. To see examples, refer to [Filter variables with a regular expression](#filter-variables-with-regex).
-1. In the **Sort** drop-down list, select the sort order for values to be displayed in the dropdown list. The default option, **Disabled**, means that the order of options returned by your data source query is used.
-1. Under **Refresh**, select when the variable should update options:
-   - **On dashboard load** - Queries the data source every time the dashboard loads. This slows down dashboard loading, because the variable query needs to be completed before dashboard can be initialized.
-   - **On time range change** - Queries the data source every time the dashboard loads and when the dashboard time range changes. Use this option if your variable options query contains a time range filter or is dependent on the dashboard time range.
-
-1. (Optional) Configure the settings in the [Selection Options](#configure-variable-selection-options) section:
-   - **Multi-value** - Enables multiple values to be selected at the same time.
-   - **Include All option** - Enables an option to include all variables.
-
-1. In the **Preview of values** section, Grafana displays a list of the current variable values. Review them to ensure they match what you expect.
-1. Click **Save dashboard**.
-1. Click **Back to dashboard** and **Exit edit**.
+![](static/queryVariable.png)
 
 ## Add a custom variable
 
