@@ -15,9 +15,13 @@ weight: 200
 
 # Configure authentication
 
-Grafana provides many ways to authenticate users. Some authentication integrations also enable syncing user permissions and org memberships.
+* authentication integrations
+  * enable syncing user permissions -- & -- org memberships
 
-The following table shows all supported authentication methods and the features available for them. [Team sync](../configure-team-sync/) and [active sync](enhanced-ldap/#active-ldap-synchronization) are only available in Grafana Enterprise.
+* supported authentication methods
+  * those / ONLY AVAILABLE | Grafana Enterprise,
+    * [Team sync](../configure-team-sync)
+    * [active sync](enhanced-ldap/#active-ldap-synchronization) 
 
 | Authentication method               | Multi Org Mapping | Enforce Sync | Role Mapping | Grafana Admin Mapping | Team Sync | Allowed groups | Active Sync | Skip OrgRole mapping | Auto Login | Single Logout | SCIM support |
 | :---------------------------------- | :---------------- | :----------- | :----------- | :-------------------- | :-------- | :------------- | :---------- | :------------------- | :--------- | :------------ | :----------- |
