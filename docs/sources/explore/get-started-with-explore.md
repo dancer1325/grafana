@@ -41,8 +41,8 @@ weight: 5
       * allows, about queries
         * track
         * maintain
-    * [Query inspector](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/explore-inspector/)
-      * help troubleshoot query performance.
+    * [Query inspector](explore-inspector.md)
+      * help troubleshoot query performance
   * [youtube video](https://www.youtube.com/watch?v=1q3YzX2DDM4)
     * query builder
       * data source-specific
