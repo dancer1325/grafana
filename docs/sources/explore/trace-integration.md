@@ -13,44 +13,46 @@ weight: 40
 
 # Traces in Explore
 
-You can use Explore to query and visualize traces from tracing data sources. Supported data sources include:
+* supported tracing data sources
+  - [Tempo](/docs/grafana/<GRAFANA_VERSION>/datasources/tempo/)
+  - [Jaeger](/docs/grafana/<GRAFANA_VERSION>/datasources/jaeger/)
+  - [Zipkin](/docs/grafana/<GRAFANA_VERSION>/datasources/zipkin/)
+  - [X-Ray](https://grafana.com/grafana/plugins/grafana-x-ray-datasource)
+  - [Azure Monitor](/docs/grafana/latest/datasources/azure-monitor/)
+  - [ClickHouse](https://github.com/grafana/clickhouse-datasource)
+  - [New Relic](/docs/plugins/grafana-newrelic-datasource/latest/)
+  - [Infinity](/docs/plugins/yesoreyeram-infinity-datasource/latest/)
 
-- [Tempo](/docs/grafana/<GRAFANA_VERSION>/datasources/tempo/)
-- [Jaeger](/docs/grafana/<GRAFANA_VERSION>/datasources/jaeger/)
-- [Zipkin](/docs/grafana/<GRAFANA_VERSION>/datasources/zipkin/)
-- [X-Ray](https://grafana.com/grafana/plugins/grafana-x-ray-datasource)
-- [Azure Monitor](/docs/grafana/latest/datasources/azure-monitor/)
-- [ClickHouse](https://github.com/grafana/clickhouse-datasource)
-- [New Relic](/docs/plugins/grafana-newrelic-datasource/latest/)
-- [Infinity](/docs/plugins/yesoreyeram-infinity-datasource/latest/)
-
-Here are some references to learn more about traces and how you can use them:
-
-- [Introduction to tracing](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/)
-- [Trace structure](https://grafana.com/docs/tempo/<TEMPO_VERSION>/traceql/trace-structure/#trace-structure)
-- [Traces and telemetry](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/telemetry/)
-- [Using traces to find solutions to problems](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/solutions-with-traces/)
-- [Best practices for tracing](/docs/grafana/<GRAFANA_VERSION>/datasources/tempo/tracing-best-practices/)
+* see
+  - [Introduction to tracing](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/)
+  - [Trace structure](https://grafana.com/docs/tempo/<TEMPO_VERSION>/traceql/trace-structure/#trace-structure)
+  - [Traces and telemetry](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/telemetry/)
+  - [Using traces to find solutions to problems](https://grafana.com/docs/tempo/<TEMPO_VERSION>/introduction/solutions-with-traces/)
+  - [Best practices for tracing](/docs/grafana/<GRAFANA_VERSION>/datasources/tempo/tracing-best-practices/)
 
 ## Query editors
 
-You can query and search tracing data using a data source's query editor. Note that data sources in Grafana have unique query editors.
-
-For information on how to use the query editor to create queries for tracing data sources, refer to the documentation for each individual data source.
+* data source's query editor
+  * allows, about tracing data,
+    * query
+    * search
 
 ## Trace view
 
-Grafana's trace view provides an overview of a request as it travels through your system. The following sections provide detail on various elements of the trace view.
+* Grafana's trace view
+  * == overview of a request | travel through your system
 
-{{< figure src="/media/docs/tempo/screenshot-grafana-trace-view.png" class="docs-image--no-shadow" max-width= "900px" caption="Trace view" >}}
+![](/grafana/media/docs/tempo/screenshot-grafana-trace-view.png)
 
 ### Header
 
-The trace view header includes the following:
-
-- **Header title** - Shows the name of the root span and trace ID.
-- **Search** - Highlights spans containing the searched text.
-- **Metadata** - Various metadata about the trace.
+* parts
+  - **Header title**
+    - root span name + trace ID
+  - **Search** 
+    - spans / contain the searched text
+  - **Metadata** 
+    - trace's metadata 
 
 {{< figure src="/media/docs/tempo/screenshot-grafana-trace-view-header.png" class="docs-image--no-shadow" max-width= "750px" caption="Trace view header" >}}
 

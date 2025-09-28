@@ -1,0 +1,48 @@
+networks:
+  grafana:
+
+volumes:
+  grafana_data: {}
+  prometheus_data: {}
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - grafana
+    environment:
+      # Configuración básica
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+      # Configuración para query history
+      - GF_DATABASE_TYPE=sqlite3
+      - GF_DATABASE_PATH=/var/lib/grafana/grafana.db
+
+      # Configuración de usuarios y permisos
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_DEFAULT_THEME=dark
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+
+      # Configuración de logs
+      - GF_LOG_LEVEL=info
+
+      # Configuración de explore
+      - GF_EXPLORE_ENABLED=true
+
+      # Configuración de seguridad
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_SECURITY_COOKIE_SECURE=false
+
+    volumes:
+      # Volumen persistente para la base de datos y configuración
+      - grafana_data:/var/lib/grafana
+      # Datasources de configuración
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      # Dashboards de configuración (opcional)
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+
+    # Asegurar que el usuario grafana tenga permisos
+    user: "472:472"

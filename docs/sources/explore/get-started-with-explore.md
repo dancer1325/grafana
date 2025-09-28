@@ -29,7 +29,7 @@ weight: 5
 
 * Explore
   * 👀if your data source supports graph & table data -> NO need to create a dashboard 👀
-    * Reason: 🧠 Explore can display the results in both formats 🧠
+    * Reason: 🧠 Explore can display the results | BOTH formats 🧠
     * _Example:_ Pyroscope
   * key features
     * Query editor
@@ -37,7 +37,7 @@ weight: 5
       * allows, about queries
         * create
         * iterate
-    * [Query history](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/query-management/)
+    * [Query history](query-management.md)
       * allows, about queries
         * track
         * maintain
@@ -218,13 +218,3 @@ To create a short link with an absolute time:
 1. Select one of the options under **Time-Sync URL Links**.
 
 This ensures that anyone receiving the link will see the same data you see, regardless of when they open it. Your selected time range will remain unaffected.
-
-## Next steps
-
-Now that you are familiar with Explore you can:
-
-- [Build dashboards](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/build-dashboards/)
-- Create a wide variety of [visualizations](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/visualizations/)
-- [Work with logs](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/logs-integration/)
-- [Work with traces](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/trace-integration/)
-- [Create and use correlations](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/explore/correlations-editor-in-explore/)

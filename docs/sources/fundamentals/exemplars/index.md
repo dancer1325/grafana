@@ -20,42 +20,42 @@ weight: 800
 
 # Introduction to exemplars
 
-An exemplar is a specific trace representative of measurement taken in a given time interval.
-While metrics excel at giving you an aggregated view of your system, traces give you a fine grained view of a single request; exemplars are a way to link the two.
+* exemplar
+  * == specific trace / measured | time interval
+  * allows
+    * link metrics -- & -- traces
+    * isolate problems
+  * supported ONLY | Prometheus
+  * [how to configure exemplars | Prometheus?](../../datasources/prometheus/_index.md#exemplars)
+  * displayed
+    * |
+      * Explore view
+      * dashboards
+      * Loki log details
+    * -- as a -- highlighted star
 
-Suppose your company website is experiencing a surge in traffic volumes.
-While more than eighty percent of the users are able to access the website in under two seconds, some users are experiencing a higher than normal response time resulting in bad user experience.
+* metrics
+  * give you
+    * aggregated view of your system
+* traces
+  * give you
+    * fine grained view of 1! request
 
-To identify the factors that are contributing to the latency, you must compare a trace for a fast response against a trace for a slow response.
-Given the vast amount of data in a typical production environment, it's an extremely laborious and time-consuming effort.
+* compare traceS
 
-Use exemplars to help isolate problems within your data distribution by pinpointing query traces exhibiting high latency within a time interval.
-After you localize the latency problem to a few exemplar traces, you can combine it with additional system based information or location properties to perform a root cause analysis faster, leading to quick resolutions to performance issues.
+![](/grafana/media/docs/exemplars/screenshot-exemplars.png)
 
-Support for exemplars is available for the Prometheus data source only.
-After you enable the functionality, exemplar data is available by default.
-For more information on exemplar configuration and how to enable exemplars, refer to [configuring exemplars in the Prometheus data source](../../datasources/prometheus/configure-prometheus-data-source/#exemplars).
-
-Grafana shows exemplars alongside a metric in the Explore view and in dashboards.
-Each exemplar displays as a highlighted star.
-You can hover your cursor over an exemplar to view the unique trace ID, which is a combination of a key value pair.
-To investigate further, click the blue button next to the `traceID` property.
-
-{{< figure src="/media/docs/grafana/exemplars/screenshot-exemplars.png" class="docs-image--no-shadow" max-width= "750px" caption="Screenshot showing the detail window of an exemplar" >}}
-
-Refer to [View exemplar data](#view-exemplar-data) for instructions on how to drill down and view exemplar trace details from metrics and logs.
-To know more about exemplars, refer to the blog post [Intro to exemplars, which enable Grafana Tempo’s distributed tracing at massive scale](/blog/2021/03/31/intro-to-exemplars-which-enable-grafana-tempos-distributed-tracing-at-massive-scale/).
+* [enable Grafana Tempo’s distributed tracing | massive scale](/blog/2021/03/31/intro-to-exemplars-which-enable-grafana-tempos-distributed-tracing-at-massive-scale/)
 
 ## View exemplar data
 
-When support for exemplar support is enabled for a Prometheus data source, you can view exemplar data either in the Explore view or from the Loki log details.
-
 ### In Explore
 
-Explore visualizes exemplar traces as highlighted stars alongside metrics data.
-For more information on how Explore visualizes trace data, refer to [Tracing in Explore](../../explore/trace-integration/).
+* exemplar | Explore
+  * == highlighted stars + metrics data
+  * [tracing | Explore](../../explore/trace-integration.md)
 
-To examine the details of an exemplar trace:
+* TODO: To examine the details of an exemplar trace:
 
 1. Place your cursor over an exemplar (highlighted star).
    Depending on the trace data source you are using, you may see a blue button with the label `Query with <DATA SOURCE NAME>`.
@@ -68,7 +68,7 @@ To examine the details of an exemplar trace:
 
    {{< figure src="/media/docs/grafana/exemplars/screenshot-exemplar-explore-view.png" class="docs-image--no-shadow" max-width= "900px" caption="Explorer view with panel showing trace details" >}}
 
-For more information on how to drill down and analyze the trace and span details, refer to the [Analyze trace and span details](#analyze-trace-and-spans) section.
+* [analyze trace & span details](#analyze-trace-and-spans)
 
 ### In logs
 
