@@ -15,5 +15,9 @@ labels:
 * Grafana Drilldown apps
   * ORIGINALLY,
     * Grafana Explore apps
-      * _Example:_ Explore Logs -> Logs Drilldown
+      * _Examples:_ 
+        * Explore Logs -> Logs Drilldown
+        * Explore Metrics -> Metrics Drilldown
+        * Explore Trace -> Trace Drilldown
+        * Explore Profiles -> Profiles Drilldown
   * [Grafana Drilldown apps: the improved queryless experience formerly known as the Explore apps](https://grafana.com/blog/2025/02/20/grafana-drilldown-apps-the-improved-queryless-experience-formerly-known-as-the-explore-apps/)
