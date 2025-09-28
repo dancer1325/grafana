@@ -10,8 +10,11 @@ weight: 40
 
 # Administration
 
-This section includes information for Grafana administrators, team administrators, and users performing administrative tasks:
+* audience
+  * Grafana 
+    * administrators,
+    * team administrators,
+    * users / perform administrative tasks
 
-{{< section >}}
-
-For information about authorization and authentication for your Grafana Cloud Stack and Grafana Cloud Portal, refer to [Grafana Cloud Access Policies](/docs/grafana-cloud/authentication-and-permissions/access-policies/).
+* if you want authorization & authentication | Grafana Cloud Stack & Grafana Cloud Portal
+  * [Grafana Cloud Access Policies](/docs/grafana-cloud/authentication-and-permissions/access-policies/)

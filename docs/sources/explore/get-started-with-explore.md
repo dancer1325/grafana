@@ -59,11 +59,11 @@ weight: 5
   * roles  
     * `editor` or
     * `administrator` or
-    * enable [`viewers_can_edit` option](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/setup-grafana/configure-grafana/#viewers_can_edit)
+    * enable [`viewers_can_edit` option](../setup-grafana/configure-grafana/_index.md#viewers_can_edit)
 
 * roles
   * see
-    * [Role and permissions](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/administration/roles-and-permissions/)
+    * [Role and permissions](../administration/roles-and-permissions/)
     * [Role-based access control (RBAC)](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/administration/roles-and-permissions/access-control/) | Grafana Enterprise
     * if you are using Grafana Cloud -> open a [support ticket | Cloud Portal](/https://grafana.com/auth/sign-in) -- to enable the --  `viewers_can_edit` option
 

@@ -909,7 +909,16 @@ If you manage users externally you can replace the user invite button for organi
 
 ### viewers_can_edit
 
-Viewers can access and use [Explore]({{< relref "../../explore" >}}) and perform temporary edits on panels in dashboards they have access to. They cannot save their changes. Default is `false`.
+* allows
+  * viewers can
+    * | [Explore](../../explore),
+      * access
+      * use
+    * | dashboards' panels
+      * perform temporary edits 
+        * temporary == ❌can NOT save❌
+* by default,
+  * `false`
 
 ### editors_can_admin
 

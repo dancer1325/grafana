@@ -11,12 +11,21 @@ weight: 200
 
 # User management
 
-A _user_ is defined as any individual who can log in to Grafana. Each user is associated with a _role_ that includes _permissions_. Permissions determine the tasks a user can perform in the system. For example, the **Admin** role includes permissions for an administrator to create and delete users.
+* goal
+  * how to control user access -- , via use permissions, to -- data sources, dashboards, users, and teams 
 
-Watch the following video to learn how to manage users and permissions in Grafana OSS and Grafana Cloud:
+* _user_
+  * == individual / can log in | Grafana
+  * associated -- with a -- _role_ / includes _permissions_
 
-{{< youtube id="59uCGJN5hPI" >}}
+* Permissions
+  * determine
+    * the tasks / user can perform | system
 
-The following topics describe how to use permissions to control user access to data sources, dashboards, users, and teams.
-
-{{< section >}}
+* [Youtube](https://www.youtube.com/watch?v=59uCGJN5hPI)
+  * | Grafana Cloud Portal
+    ![](createUserGrafanaCloudPortal.gif)
+  * | self-managed Grafana
+    * == | Grafana UI
+    
+    ![](createUserSelfManaged.gif)
