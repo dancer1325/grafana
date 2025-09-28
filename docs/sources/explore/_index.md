@@ -49,10 +49,6 @@ cards:
       height: 24
 ---
 
-{{< docs/hero-simple key="hero" >}}
-
----
-
 ## Overview
 
 * Explore
@@ -63,7 +59,4 @@ cards:
         * building visualizations -- based on -- these queries
     * analyzing,
     * aggregating data
-
-## Explore
-
-{{< card-grid key="cards" type="simple" >}}
+      * _Example:_ Prometheus' aggregation functions
