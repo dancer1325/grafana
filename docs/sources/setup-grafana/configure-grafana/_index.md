@@ -889,9 +889,13 @@ Text used as placeholder text on login page for password input.
 
 ### default_theme
 
-Sets the default UI theme: `dark`, `light`, or `system`. The default theme is `dark`.
+* ALLOWED values
+  * `dark`
+    * default one
+  * `light`
+  * `system`
 
-`system` matches the user's system theme.
+* `system` matches the user's system theme
 
 ### default_language
 
@@ -2646,7 +2650,12 @@ Set this to `true` to have date formats automatically derived from your browser 
 
 #### `default_timezone`
 
-Used as the default time zone for user preferences. Can be either `browser` for the browser local time zone or a time zone name from the IANA Time Zone database, such as `UTC` or `Europe/Amsterdam`.
+* == user preferences' default time zone 
+* types
+  * `browser`
+    * == browser local time zone
+  * IANA Time Zone database's time zone name
+    * _Exampl:_ `UTC` OR `Europe/Amsterdam`
 
 #### `default_week_start`
 
