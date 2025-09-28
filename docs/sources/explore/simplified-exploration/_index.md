@@ -36,17 +36,17 @@ cards:
 
 # Simplified exploration
 
-The Grafana Drilldown apps are designed for effortless data exploration through intuitive, queryless interactions.
+* Grafana Drilldown apps
+  * ' design
+    * explore data (metrics - Mimir -, logs - Loki - , traces - Tempo - , profiles - Pyroscope -) -- through -- intuitive, 👀queryless interactions👀
+      * == 👀built | Grafana OS Mimir, Loki, Tempo, Pyroscope👀
+  * use cases
+    * Grafana data sources (Prometheus, Loki, Tempo, Pyroscope)
+  * allows
+    * get data WITHOUT learning query languages
+  * [history](/grafana/docs/sources/shared/plugins/rename-note.md)
+  * see 
+    * [From multi-line queries to no-code investigations: meeting Grafana users where they are](https://grafana.com/blog/2024/10/22/from-multi-line-queries-to-no-code-investigations-meeting-grafana-users-where-they-are/)
+    * [A queryless experience for exploring metrics, logs, traces, and profiles: Introducing the Drilldown apps suite for Grafana](https://grafana.com/blog/2024/09/24/queryless-metrics-logs-traces-profiles/).
 
-Easily explore telemetry signals with these specialized tools, tailored specifically for the Grafana databases to provide quick and accurate insights.
-
-{{< docs/shared source="grafana" lookup="plugins/rename-note.md" version="<GRAFANA_VERSION>" >}}
-
-To learn more, read:
-
-- [From multi-line queries to no-code investigations: meeting Grafana users where they are](https://grafana.com/blog/2024/10/22/from-multi-line-queries-to-no-code-investigations-meeting-grafana-users-where-they-are/)
-- [A queryless experience for exploring metrics, logs, traces, and profiles: Introducing the Drilldown apps suite for Grafana](https://grafana.com/blog/2024/09/24/queryless-metrics-logs-traces-profiles/).
-
-{{< youtube id="MSHeWWsHaIA" >}}
-
-{{< card-grid key="cards" type="simple" >}}
+* [Youtube](https://www.youtube.com/watch?v=MSHeWWsHaIA)
