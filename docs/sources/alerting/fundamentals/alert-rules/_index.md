@@ -72,24 +72,35 @@ refs:
 
 ## Alert rule types
 
-Grafana Alerting inherits the Prometheus Alerting model for defining alert rules and supports two alert rule types:
-
-- **Data source-managed alert rules**
-
-  These alert rules can only query Prometheus-based data sources such as Mimir, Loki, and Prometheus. The rules are stored in the data source.
-
-  Grafana Alerting supports this alert rule type for horizontal scalability with these data sources.
-
-- **Grafana-managed alert rules**
-
-  The recommended alert rule type in Grafana Alerting.
-
-  These alert rules can query a wider range of backend data sources, including multiple data sources in a single alert rule. They support expression-based transformations, advanced alert conditions, images in notifications, handling of error and no data states, and [more](ref:comparison-ds-grafana-rules).
-
-  You can find the supported public data sources in the [Grafana Plugins directory](/grafana/plugins/data-source-plugins/?features=alerting). For step-by-step instructions, see [Configure Grafana-managed alert rules](ref:configure-grafana-alerts).
+* Grafana Alerting
+  * 👀inherits the Prometheus Alerting model👀
+  * supported alert rule types
+  - **Data source-managed alert rules**
+    - requirements
+      - query Prometheus-based data sources (Mimir, Loki, Prometheus)
+    - stored | data source
+    - enable
+      - these data sources' horizontal scalability 
+  - **Grafana-managed alert rules**
+    - 👀recommended one👀
+    - support
+      - [data sources](/grafana/plugins/data-source-plugins/?features=alerting)
+        - MULTIPLE | 1! alert rule
+      - expression-based transformations,
+      - advanced alert conditions,
+      - images | notifications,
+      - handling of error & NOT data states
+      - [MORE](ref:comparison-ds-grafana-rules)
+    - [how to configure](ref:configure-grafana-alerts)
 
 ## Recording rules
 
-Similar to alert rules, recording rules are evaluated periodically. A recording rule pre-computes frequently used or computationally expensive queries, and saves the results as a new time series metric.
-
-The new recording metric can then be used in alert rules and dashboards to optimize their queries. For further details, refer to [Create recording rules](ref:create-recording-rules).
+* evaluated periodically
+* uses |
+  * frequently used OR computationally expensive queries
+* how does it work?
+  * pre-computes the queries
+  * saves the results -- as a -- NEW time series metric /
+    * NEW recording metric can be used | 
+      * alert rules
+      * dashboards

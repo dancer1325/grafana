@@ -95,100 +95,97 @@ refs:
 
 # Configure the Prometheus data source
 
-This document provides instructions for configuring the Prometheus data source and explains the available configuration options. Grafana includes built-in support for Prometheus, so you don't need to install a plugin. For general information on adding a data source to Grafana, refer to [Add a data source](ref:add-a-data-source).
+* goal
+  * configure the Prometheus data source
+  * AVAILABLE configuration options
 
 ## Before you begin
 
-- You must have the `Organization administrator` role to add a data source. Administrators can also configure a data source via YAML files.
+* requirements
+  * `Organization administrator` role
 
-- Know which Prometheus-compatible database you are using.
-
-- Familiarize yourself with your Prometheus security configuration and gather any necessary security certificates and client keys.
-
-- Verify that data from Prometheus is being written to your Grafana instance.
+* know
+  * Prometheus-compatible database / you are using
+  * Prometheus security configuration & security certificates & client keys
 
 ## Configure the data source using the UI
 
-{{< shared id="add-prom-data-source" >}}
-
-To add the Prometheus data source, complete the following steps:
-
-1. Click **Connections** in the left-side menu.
-1. Under **Connections**, click **Add new connection**.
-1. Enter `Prometheus` in the search bar.
-1. Click **Prometheus data source**.
-1. Click **Add new data source** in the upper right.
-
-{{< /shared >}}
-
-Grafana takes you to the **Settings** tab where you will set up your Prometheus configuration.
+* **Connections** > **Add new connection** > **Prometheus**
 
 ## Configuration options
 
-Following is a list of configuration options for Prometheus.
-
-- **Name** - The data source name. Sets the name you use to refer to the data source in panels and queries. Examples: prometheus-1, prom-metrics.
-- **Default** - Toggle to select as the default name in dashboard panels. When you go to a dashboard panel this will be the default selected data source.
-
-**Connection:**
-
-- **Prometheus server URL** - The URL of your Prometheus server. {{< shared id="prom-data-source-url" >}}
-  If Prometheus is running locally, use `http://localhost:9090`. If it's hosted on a networked server, provide the server’s URL along with the port where Prometheus is running. Example: `http://prometheus.example.orgname:9090`.
-
-{{< admonition type="note" >}}
-When running Grafana and Prometheus in separate containers, localhost refers to each container’s own network namespace. This means that `localhost:9090` points to port 9090 inside the Grafana container, not on the host machine.
-
-Use the IP address of the Prometheus container, or the hostname if you are using Docker Compose. Alternatively, you can use `http://host.docker.internal:9090` to reference the host machine.
-{{< /admonition >}}
-
-{{< /shared >}}
-
-**Authentication:**
-
-There are three authentication options for the Prometheus data source.
-
-- **Basic authentication** - The most common authentication method.
-  - **User** - The username you use to connect to the data source.
-  - **Password** - The password you use to connect to the data source.
-
-- **Forward OAuth identity** - Forward the OAuth access token (and also the OIDC ID token if available) of the user querying the data source.
-
-- **No authentication** - Allows access to the data source without any authentication.
-
-**TLS settings:**
-
-{{< admonition type="note" >}}
-Use TLS (Transport Layer Security) for an additional layer of security when working with Prometheus. For information on setting up TLS encryption with Prometheus refer to [Securing Prometheus API and UI Endpoints Using TLS Encryption](https://prometheus.io/docs/guides/tls-encryption/). You must add TLS settings to your Prometheus configuration file **prior** to setting these options in Grafana.
-{{< /admonition >}}
-
-- **Add self-signed certificate** - Check the box to authenticate with a CA certificate. Follow the instructions of the CA (Certificate Authority) to download the certificate file. Required for verifying self-signed TLS certificates.
-  - **CA certificate** - Add your certificate.
-- **TLS client authentication** - Check the box to enable TLS client authentication.
-  - **Server name** - Add the server name, which is used to verify the hostname on the returned certificate.
-  - **Client certificate** - The client certificate is generated from a Certificate Authority or its self-signed. Follow the instructions of the CA (Certificate Authority) to download the certificate file.
-  - **Client key** - Add your client key, which can also be generated from a Certificate Authority (CA) or be self-signed. The client key encrypts data between the client and server.
-- **Skip TLS verify** - Toggle on to bypass TLS certificate validation. Skipping TLS certificate validation is not recommended unless absolutely necessary or for testing purposes.
-
-**HTTP headers:**
-
-Pass along additional information and metadata about the request or response.
-
-- **Header** - Add a custom header. This allows custom headers to be passed based on the needs of your Prometheus instance.
-- **Value** - The value of the header.
-
-**Advanced settings:**
-
-Following are optional configuration settings you can configure for more control over your data source.
-
-- **Advanced HTTP settings:**
-  - **Allowed cookies** - Specify cookies by name that should be forwarded to the data source. The Grafana proxy deletes all forwarded cookies by default.
-  - **Timeout** - The HTTP request timeout, must be in seconds.
-
-**Alerting:**
-
-- **Manage alerts via Alerting UI** -Toggled on by default. This enables [data source-managed rules in Grafana Alerting](ref:alerting-alert-rules) for this data source. For `Mimir`, it enables managing data source-managed rules and alerts. For `Prometheus`, it only supports viewing existing rules and alerts, which are displayed as data source-managed. Change this by setting the [`default_manage_alerts_ui_toggle`](ref:manage-alerts-toggle) option in the `grafana.ini` configuration file.
-
-- **Allow as recording rules target** - Toggled on by default. This allows the data source to be selected as a target destination for writing [Grafana-managed recording rules](ref:grafana-managed-recording-rules). When enabled, this data source will appear in the target data source list when creating or importing recording rules. When disabled, the data source will be filtered out from recording rules target selection. Change this by setting the [`default_allow_recording_rules_target_alerts_ui_toggle`](ref:manage-recording-rules-toggle) option in the `grafana.ini` configuration file.
+- **Name** 
+  - == data source name
+  - uses
+    - | panels & queries
+- **Default**
+  - if on -> default data source |
+    - dashboard panels
+    - Explore
+- **Connection:**
+  - **Prometheus server URL**
+    - if Prometheus is
+      - running locally -> use http://localhost:9090
+      - hosted | networked server -> server’s URL + port | Prometheus runs
+        - _Example:_ http://prometheus.example.orgname:9090
+      - running | container -> use http://host.docker.internal:9090
+        - uses
+          - Prometheus & Grafana run | DIFFERENT containers
+- **Authentication:**
+  - options
+    - **Basic authentication**
+      - MOST COMMON one
+        - **User** 
+        - **Password**
+    - **Forward OAuth identity** 
+      - forward the OAuth access token & OIDC ID token
+    - **No authentication**
+      - == access to the data source WITHOUT authentication
+    - **TLS settings:**
+      - [secure Prometheus API & UI Endpoints](https://prometheus.io/docs/guides/tls-encryption/)
+      - **Add self-signed certificate**
+        - == authenticate -- with a -- CA certificate
+          - add **CA certificate**
+      - **TLS client authentication**
+        - **Server name**
+          - == server name / verify the hostname | returned certificate
+        - **Client certificate** 
+          - generated -- from a -- Certificate Authority
+        - **Client key** 
+          - can ALSO be generated -- from a -- Certificate Authority (CA) or be self-signed
+          - encrypts data BETWEEN the client -- & -- server
+      - **Skip TLS verify** 
+        - ❌NOT recommended❌
+- **HTTP headers:**
+  - **Header** 
+    - == custom headerS
+  - **Value** 
+    - == header's value 
+- **Advanced settings:**
+  - **Advanced HTTP settings:**
+    - **Allowed cookies**
+      - == cookies / should be forwarded -- to the -- data source
+      - by default,
+        - Grafana proxy deletes ALL 
+    - **Timeout** 
+      - == HTTP request timeout (seconds)
+- **Alerting:**
+  - **Manage alerts via Alerting UI**
+    - by default,
+      - toggled on 
+    - enables [data source-managed rules | Grafana Alerting](ref:alerting-alert-rules) / this data source
+    - | 
+      - `Mimir`,
+        - it enables managing data source-managed rules and alerts
+      - `Prometheus`,
+        - it only supports viewing existing rules and alerts, which are displayed as data source-managed
+    - Change this by setting the [`default_manage_alerts_ui_toggle`](ref:manage-alerts-toggle) option in the `grafana.ini` configuration file.
+  - **Allow as recording rules target** 
+    - Toggled on by default
+    - This allows the data source to be selected as a target destination for writing [Grafana-managed recording rules](ref:grafana-managed-recording-rules)
+    - When enabled, this data source will appear in the target data source list when creating or importing recording rules
+    - When disabled, the data source will be filtered out from recording rules target selection
+    - Change this by setting the [`default_allow_recording_rules_target_alerts_ui_toggle`](ref:manage-recording-rules-toggle) option in the `grafana.ini` configuration file.
 
 **Interval behavior:**
 
@@ -254,37 +251,6 @@ You can define and configure the data source in YAML files as part of the Grafan
 {{< admonition type="note" >}}
 After you have provisioned a data source you cannot edit it.
 {{< /admonition >}}
-
-**Example of a Prometheus data source configuration:**
-
-```yaml
-apiVersion: 1
-
-datasources:
-  - name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://localhost:9090
-    jsonData:
-      httpMethod: POST
-      manageAlerts: true
-      allowAsRecordingRulesTarget: true
-      prometheusType: Prometheus
-      prometheusVersion: 3.3.0
-      cacheLevel: 'High'
-      disableRecordingRules: false
-      timeInterval: 10s # Prometheus scrape interval
-      incrementalQueryOverlapWindow: 10m
-      exemplarTraceIdDestinations:
-        # Field with internal link pointing to data source in Grafana.
-        # datasourceUid value can be anything, but it should be unique across all defined data source uids.
-        - datasourceUid: my_jaeger_uid
-          name: traceID
-
-        # Field with external link.
-        - name: traceID
-          url: 'http://localhost:3000/explore?orgId=1&left=%5B%22now-1h%22,%22now%22,%22Jaeger%22,%7B%22query%22:%22$${__value.raw}%22%7D%5D'
-```
 
 ## Azure authentication settings
 
