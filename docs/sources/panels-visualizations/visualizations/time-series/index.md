@@ -48,39 +48,42 @@ refs:
 
 # Time series
 
-Time series visualizations are the default way to show the variations of a set of data values over time. Each data point is matched to a timestamp and this _time series_ is displayed as a graph. The visualization can render series as lines, points, or bars and it's versatile enough to display almost any type of [time-series data](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/fundamentals/timeseries/).
+* Time series visualizations
+  * == default way / show the variations of a set of data values | time
+  * == x-y graph
+    * 💡data point💡 
+      * == numerical data | axis Y
+        * if there are >1 numerical data -> EACH one is plotted | NEW line, point, or bar labeled
+    * time | axis X
+  * == 👀_time series_ / renders -- as -- lines, points, or bars👀 
 
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-time-series-v12.0.png" max-width="750px" alt="Time series visualization" >}}
+  ![](/grafana/media/docs/panels-visualizations/screenshot-time-series-v12.0.png)
+  * uses
+    * display large numbers of timed data points / hard to track | table or list
+  * _Examples:_
+    - Temperature variations | day
+    - daily progress of your retirement account
+    - distance you jog each day | course of a year
 
-{{< admonition type="note" >}}
-You can migrate from the legacy Graph visualization to the time series visualization. To migrate, open the panel and click the **Migrate** button in the side pane.
-{{< /admonition >}}
-
-A time series visualization displays an x-y graph with time progression on the x-axis and the magnitude of the values on the y-axis. This visualization is ideal for displaying large numbers of timed data points that would be hard to track in a table or list.
-
-You can use the time series visualization if you need track:
-
-- Temperature variations throughout the day
-- The daily progress of your retirement account
-- The distance you jog each day over the course of a year
+* legacy Graph visualization
+  * can be migrated -- to the -- time series visualization
 
 ## Configure a time series visualization
 
-The following video guides you through the creation steps and common customizations of time series visualizations, and is great for beginners:
-
-{{< youtube id="RKtW87cPxsw" >}}
-
-{{< docs/play title="Time Series Visualizations in Grafana" url="https://play.grafana.org/d/000000016/" >}}
+* [Youtube](https://www.youtube.com/watch?v=RKtW87cPxsw)
+  * [Grafana playground](https://play.grafana.org/d/000000016/)
 
 ## Supported data formats
 
-Time series visualizations require time-series data—a sequence of measurements, ordered in time, and formatted as a table—where every row in the table represents one individual measurement at a specific time. Learn more about [time-series data](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/fundamentals/timeseries/).
-
-The dataset must contain at least one numeric field, and in the case of multiple numeric fields, each one is plotted as a new line, point, or bar labeled with the field name in the tooltip.
+* requirements
+  * time-series data—a sequence of measurements /
+    * ordered | time
+    * formatted -- as a -- table /
+      * 's row == 1! measurement | specific time
 
 ### Example 1
 
-In the following example, there are three numeric fields represented by three lines in the chart:
+* 3 numeric fields / represented by 3 lines
 
 | Time                | value1 | value2 | value3 |
 | ------------------- | ------ | ------ | ------ |
@@ -89,13 +92,14 @@ In the following example, there are three numeric fields represented by three li
 | 2022-11-01 12:00:00 | 7      | 8      | 9      |
 | 2022-11-01 13:00:00 | 4      | 5      | 6      |
 
-![Time series line chart with multiple numeric fields](/media/docs/grafana/panels-visualizations/screenshot-grafana-11.1-timeseries-example1v2.png 'Time series line chart with multiple numeric fields')
+![](/grafana/media/docs/panels-visualizations/screenshot-grafana-11.1-timeseries-example1v2.png)
 
-If the time field isn't automatically detected, you might need to convert the data to a time format using a [data transformation](ref:panel-data-section).
+* if the time field is NOT AUTOMATICALLY detected -> you might need to convert the data to a time format -- via -- [data transformation](ref:panel-data-section)
 
 ### Example 2
 
-The time series visualization also supports multiple datasets. If all datasets are in the correct format, the visualization plots the numeric fields of all datasets and labels them using the column name of the field.
+The time series visualization also supports multiple datasets
+* If all datasets are in the correct format, the visualization plots the numeric fields of all datasets and labels them using the column name of the field.
 
 #### Query1
 
@@ -143,7 +147,8 @@ When you add the offset, the resulting visualization makes the datasets appear t
 
 ## Alert rules
 
-You can [link alert rules](ref:link-alert) to time series visualizations in the form of annotations to observe when alerts fire and are resolved. In addition, you can create alert rules from the **Alert** tab within the [panel editor](ref:panel-data-section).
+You can [link alert rules](ref:link-alert) to time series visualizations in the form of annotations to observe when alerts fire and are resolved
+* In addition, you can create alert rules from the **Alert** tab within the [panel editor](ref:panel-data-section).
 
 ## Special overrides
 
@@ -151,16 +156,20 @@ The following overrides help you further refine a time series visualization.
 
 ### Transform override property
 
-Use the **Graph styles > Transform** [override property](#field-overrides) to transform series values without affecting the values shown in the tooltip, context menu, or legend. Choose from the following transform options:
+Use the **Graph styles > Transform** [override property](#field-overrides) to transform series values without affecting the values shown in the tooltip, context menu, or legend
+* Choose from the following transform options:
 
 - **Constant** - Show the first value as a constant line.
 - **Negative Y transform** - Flip the results to negative values on the y-axis.
 
 ### Fill below to override property
 
-The **Graph styles > Fill below to** [override property](#field-overrides) fills the area between two series. When you configure the property, select the series for which you want the fill to stop.
+The **Graph styles > Fill below to** [override property](#field-overrides) fills the area between two series
+* When you configure the property, select the series for which you want the fill to stop.
 
-The following example shows three series: Min, Max, and Value. The Min and Max series have **Line width** set to 0. Max has a **Fill below to** override set to Min, which fills the area between Max and Min with the Max line color.
+The following example shows three series: Min, Max, and Value
+* The Min and Max series have **Line width** set to 0
+* Max has a **Fill below to** override set to Min, which fills the area between Max and Min with the Max line color.
 
 {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-fill-below-to-v12.0.png" max-width="600px" alt="Fill below to example" >}}
 

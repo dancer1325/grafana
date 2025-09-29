@@ -204,25 +204,30 @@ refs:
       * logs,
       * node graph
 
-## Get more
+## ADDITIONAL ones
 
 * installing [panel plugins](https://grafana.com/grafana/plugins/?type=panel)
 
 ## Examples
 
-Below you can find some good examples for how all the visualizations in Grafana can be configured
-* You can also explore [play.grafana.org](https://play.grafana.org) which has a large set of demo dashboards that showcase all the different visualizations.
+* [play.grafana.org](https://play.grafana.org)
 
 ### Graphs
 
-For time based line, area and bar charts we recommend the default [time series](ref:time-series) visualization
-* [This public demo dashboard](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1) contains many different examples for how this visualization can be configured and styled.
+* default [time series](ref:time-series) visualization
+  * uses
+    * time based line,
+    * area
+    * bar charts 
+  * _Example:_ [Grafana playground](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1)
 
-{{< figure src="/static/img/docs/time-series-panel/time_series_small_example.png" max-width="700px" caption="Time series" >}}
+![](/grafana/media/docs/time-series-panel/time_series_small_example.png)
 
-For categorical data use a [bar chart](ref:bar-chart).
+* [bar chart](ref:bar-chart)
+  * uses
+    * categorical data (!= continuous data)
 
-{{< figure src="/static/img/docs/bar-chart-panel/barchart_small_example.png" max-width="700px" caption="Bar chart" >}}
+![](/grafana/media/docs/bar-chart-panel/barchart_small_example.png)
 
 ### Big numbers & stats
 
