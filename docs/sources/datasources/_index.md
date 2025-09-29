@@ -66,10 +66,11 @@ refs:
     
         ![](pluginsDataSource.png)
         * [plugin catalog](ref:plugin-management) 
-        * [Grafana Enterprise-supported plugins](ref:grafana-enterprise)
+        * -- depend on -- Grafana's product
+          * [Grafana Enterprise-supported plugins](ref:grafana-enterprise)
     * if you need OTHER data sources & NOT exist -> create a data source plugin
-      * [build a data source plugin tutorial](/developers/plugin-tools/tutorials/build-a-data-source-plugin)
-      * [plugin tools](/developers/plugin-tools)
+      * [build a data source plugin tutorial](https://grafana.com/developers/plugin-tools/tutorials/build-a-data-source-plugin)
+      * [plugin tools](https://grafana.com/developers/plugin-tools)
   * OWN _query editor_ / EACH data source 
   * uses
     * query it -- via -- [Explore](ref:explore)
