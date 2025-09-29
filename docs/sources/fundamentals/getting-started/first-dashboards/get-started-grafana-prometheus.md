@@ -40,7 +40,7 @@ weight: 300
 * `docker compose up -d`
 
 ## Configure Prometheus for Grafana
-### | Grafana Cloud](/) or run 
+### | Grafana Cloud
 * | prometheus.yml
   ```yaml
   remote_write:
