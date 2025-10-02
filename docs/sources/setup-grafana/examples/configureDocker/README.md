@@ -1,44 +1,61 @@
 * goal
   * configure Docker
 
-# Alpine image
+# Supported Docker image variants
+## Alpine image
 * `docker run -d --name=grafana -p 3000:3000 grafana/grafana:main`
 * clean ALL
   * `docker kill grafana`
   * `docker container prune`
 
-# Ubuntu image
+## Ubuntu image
 * `docker run -d --name=grafana -p 3000:3000 grafana/grafana:main-ubuntu`
 * clean ALL
   * `docker kill grafana`
   * `docker container prune`
 
-## Enterprise
+### Enterprise
 * `docker run -d --name=grafana -p 3000:3000 grafana/grafana-enterprise:main-ubuntu`
 * clean ALL
   * `docker kill grafana`
   * `docker container prune`
 
-## Open Source
+### Open Source
 * `docker run -d --name=grafana -p 3000:3000 grafana/grafana-oss:main-ubuntu`
 * clean ALL
   * `docker kill grafana`
   * `docker container prune`
 
-# specific Grafana version
+## specific Grafana version
 * _Example:_
   * `docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:9.4.7`
 
+# Run Grafana | main branch
+* TODO:
+
 # default paths
+* `docker run -d --name=grafana -p 3000:3000 grafana/grafana-oss:main-ubuntu`
 * `docker inspect grafana | grep -A 20 "Env"`
+* `docker exec -it grafana cat /etc/grafana/grafana.ini`
 
 # install plugins -- from -- other sources
-
-```bash
-docker run -d -p 3000:3000 --name=grafana \
--e "GF_INSTALL_PLUGINS=https://github.com/grafana/piechart-panel/releases/download/v1.6.2/grafana-piechart-panel-1.6.2.zip;grafana-piechart-panel" \
-grafana/grafana-enterprise
-```
+* 
+  ```bash
+  docker run -d -p 3000:3000 --name=grafana \
+  -e "GF_INSTALL_PLUGINS=https://github.com/grafana/piechart-panel/releases/download/v1.6.2/grafana-piechart-panel-1.6.2.zip;grafana-piechart-panel" \
+  grafana/grafana-enterprise:9.5.0
+  ```
+  * Problems:
+    * Problem1: 
+      * Attempt1: 
+        ```bash
+          docker run -d -p 3000:3000 --name=grafana \
+          -e "GF_PLUGIN_ALLOW_LOADING_UNSIGNED_PLUGINS=true" \
+          -e "GF_INSTALL_PLUGINS_HTTP_TIMEOUT=120" \
+          -e "GF_INSTALL_PLUGINS=https://github.com/grafana/piechart-panel/releases/download/v1.6.2/grafana-piechart-panel-1.6.2.zip;grafana-piechart-panel" \
+          grafana/grafana-enterprise:9.5.0
+        ```
+      * Solution: TODO:
 
 # build a custom Grafana Docker image
 * | [this path](/grafana/packaging/docker/custom)

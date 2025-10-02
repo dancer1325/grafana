@@ -18,10 +18,11 @@ title: Configure a Grafana Docker image
 weight: 1800
 ---
 
-{{< admonition type="caution" >}}
-Starting with Grafana release `12.4.0`, the `grafana/grafana-oss` Docker Hub repository will no longer be updated.
-Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. These two repositories have the same Grafana OSS docker images.
-{{< /admonition >}}
+* | Grafana `v12.4.0+`,
+  * `grafana/grafana-oss` Docker Hub repository
+    * ❌NO longer updated❌
+  * recommendations
+    * use `grafana/grafana` Docker Hub repository
 
 # Configure a Grafana Docker image
 
@@ -34,16 +35,16 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
 
 ## Supported Docker image variants
 
-- **Grafana Enterprise**: `grafana/grafana-enterprise`
+- **Grafana Enterprise**: [`grafana/grafana-enterprise`](https://hub.docker.com/r/grafana/grafana-enterprise)
   - variants
     - Alpine
     - Ubuntu
-- **Grafana Open Source**: `grafana/grafana-oss`
+- **Grafana Open Source**: [`grafana/grafana-oss`](https://hub.docker.com/r/grafana/grafana-oss)
   - variants
     - Alpine
     - Ubuntu
 
-## Alpine image (recommended)
+### Alpine image (recommended)
 
 * [Alpine Linux](https://alpinelinux.org/about/)
   * == Linux distribution /
@@ -60,7 +61,7 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
       * -> SOME software might encounter problems
     * _Example:_ [here](https://hub.docker.com/layers/grafana/grafana/main/images/sha256-c905e269ee455b2ee6d4281fef85fc1a78e70bfadba8a01a0dbb7047fa20e973)
 
-## Ubuntu image
+### Ubuntu image
 
 * built -- based on -- [Ubuntu](https://ubuntu.com/) base image
   * see [Ubuntu docker repo](https://hub.docker.com/_/ubuntu)
@@ -72,7 +73,7 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
   - **Grafana Enterprise**: `grafana/grafana-enterprise:<version>-ubuntu`
   - **Grafana Open Source**: `grafana/grafana-oss:<version>-ubuntu`
 
-## Run a specific version of Grafana
+### specific Grafana version
 
 * [Grafana releases](https://github.com/grafana/grafana/releases)
 
@@ -86,7 +87,7 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
     * add your user | `docker` group
       * [run Docker WITHOUT non-root user](https://docs.docker.com/engine/install/linux-postinstall/)
 
-## Run the Grafana | main branch
+## Run Grafana | main branch
 
 * AFTER successful build of the main branch,
   * generated tags -- [grafana/grafana-oss](https://hub.docker.com/r/grafana/grafana-oss/tags/) --
@@ -126,7 +127,7 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
 | GF_PATHS_PROVISIONING | /etc/grafana/provisioning |
 
 * | run Grafana in Docker,
-  * if you want to change the configurations -> -- via -- [environment variables](configure-grafana/_index.md#override-configuration-with-environment-variables) 
+  * 👀if you want to change the configurations -> -- via -- [environment variables](configure-grafana/_index.md#override-configuration-with-environment-variables)👀 
     * ❌NOT valid, -- via -- `conf/grafana.ini`❌
 
 ## Install plugins | Docker container
@@ -135,7 +136,7 @@ Instead, we encourage you to use the `grafana/grafana` Docker Hub repository. Th
   * private
   * community 
 
-* [how to install plugins | Docker container](./installation/docker/index.md#install-plugins-in-the-docker-container)
+* [how to install plugins | Docker container](./installation/docker/index.md#install-plugins--docker-container)
 
 ### Install plugins -- from -- other sources
 
