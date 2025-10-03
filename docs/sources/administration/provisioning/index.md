@@ -20,7 +20,7 @@ Grafana has an active provisioning system that uses configuration files. You can
 
 ## Configuration file
 
-Refer to [Configuration](../../setup-grafana/configure-grafana/) for more information on what you can configure in `grafana.ini`.
+* [`grafana.ini`](../../setup-grafana/configure-grafana/) 
 
 ### Configuration file locations
 

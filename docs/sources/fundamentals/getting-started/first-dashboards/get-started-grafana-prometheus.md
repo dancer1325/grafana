@@ -48,6 +48,11 @@ weight: 300
       basic_auth:
         username: <your user name>
         password: <Your Grafana.com API Key>
+  remote_read:
+    - url: <https://your-remote-read-endpoint>
+      basic_auth:
+        username: <your user name>
+        password: <Your Grafana.com API Key>
   ```
 
 ### Grafana locally

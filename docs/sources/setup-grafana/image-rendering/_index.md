@@ -18,22 +18,43 @@ weight: 1000
 
 # Set up image rendering
 
-Grafana supports automatic rendering of panels as PNG images. This allows Grafana to automatically generate images of your panels to include in alert notifications, [PDF export](../../dashboards/create-reports/#export-dashboard-as-pdf), and [Reporting](../../dashboards/create-reports/). PDF Export and Reporting are available only in [Grafana Enterprise](../../introduction/grafana-enterprise/) and [Grafana Cloud](/docs/grafana-cloud/).
+* Grafana
+  * supports
+    * AUTOMATIC rendering of panels -- as -- PNG images
+      * -> Grafana can AUTOMATICALLY generate images of your panels / include | 
+        * alert notifications,
+        * [PDF export](../../dashboards/create-reports/#export-dashboard-as-pdf),
+          * requirements
+            * [Grafana Enterprise](../../introduction/grafana-enterprise/) 
+            * [Grafana Cloud](/docs/grafana-cloud/) 
+        * [Reporting](../../dashboards/create-reports/)
+          * requirements
+            * [Grafana Enterprise](../../introduction/grafana-enterprise/)
+            * [Grafana Cloud](/docs/grafana-cloud/)
 
-While an image is being rendered, the PNG image is temporarily written to the file system. When the image is rendered, the PNG image is temporarily written to the `png` folder in the Grafana `data` folder.
 
-A background job runs every 10 minutes and removes temporary images. You can configure how long an image should be stored before being removed by configuring the [temp_data_lifetime](../configure-grafana/#temp_data_lifetime) setting.
+* render an image vs render a PNG image
+  * render a PNG image
+    * temporarily written | Grafana `data/png`
+      * [temporal_data_lifetime](../configure-grafana/#temp_data_lifetime) setting 
+      * EACH 10', 
+        * background job removes temporary images
 
-You can also render a PNG by hovering over the panel to display the actions menu in the top-right corner, and then clicking **Share > Share link**. The **Render image** option is displayed in the link settings.
+* way to render a PNG
+  * steps
+    * hover | top-right corner's panel
+    * **Share > Share link > link settings**
 
 ## Alerting and render limits
 
-Alert notifications can include images, but rendering many images at the same time can overload the server where the renderer is running. For instructions of how to configure this, see [max_concurrent_screenshots](../configure-grafana/#max_concurrent_screenshots).
+* TODO:Alert notifications can include images, but rendering many images at the same time can overload the server where the renderer is running
+* For instructions of how to configure this, see [max_concurrent_screenshots](../configure-grafana/#max_concurrent_screenshots).
 
 ## Install Grafana Image Renderer plugin
 
 {{< admonition type="note" >}}
-All PhantomJS support has been removed. Instead, use the Grafana Image Renderer plugin or remote rendering service.
+All PhantomJS support has been removed
+* Instead, use the Grafana Image Renderer plugin or remote rendering service.
 {{< /admonition >}}
 
 To install the plugin, refer to the [Grafana Image Renderer Installation instructions](/grafana/plugins/grafana-image-renderer/?tab=installation#installation).

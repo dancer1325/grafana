@@ -1,0 +1,41 @@
+services:
+  grafana:
+    image: grafana/grafana-enterprise:9.5.0     # Linux-based docker image
+    container_name: grafana
+    # user: "472:472"  # Comentado para evitar problemas de permisos
+    ports:
+      - "3000:3000"
+    volumes:
+      # NOT valid
+      #- ./grafana.ini:/usr/share/grafana/conf/grafana.ini
+      # - ./grafana.ini:/usr/share/grafana/conf/custom.ini
+      # - ./grafana.ini:/etc/grafana/custom.ini
+
+      # valid NEXT one  -- Reason: Linux-based docker image --
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      #- grafana-data:/var/lib/grafana
+
+      # 3.3 [paths]
+#      - ./grafana-local/data/:/var/lib/grafana
+#      - ./grafana-local/logs/:/var/log/grafana
+#      - ./grafana-local/provisioning/:/etc/grafana/provisioning
+
+    environment:
+      # 2. override configuration -- via -- environment variables
+      GF_SECURITY_ADMIN_EMAIL: bb@a.com
+
+      # 3. Configuration options
+      # 3.1 app_mode:development
+      GF_DEFAULT_APP_MODE: development
+      # 3.2 [explore]
+      # 3.2.1 enabled
+      #GF_EXPLORE_ENABLED: false
+      # 3.2.2 defaultTimeOffset
+      GF_EXPLORE_DEFAULT_TIME_OFFSET: 30m # TODO: NOT working
+
+      # 4. variable expansion
+      MY_HOSTNAME: alfred
+    restart: unless-stopped
+
+volumes:
+  grafana-data:

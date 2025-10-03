@@ -19,224 +19,235 @@ weight: 200
   * 's configuration files types
     * default
     * custom 
-  * ways to customize your Grafana instance
-    * modify the custom configuration file
-      * -> restart Grafana
-    * use environment variables
+  * ways to customize your Grafana instance / 👀HIGH -> LOW priority👀
+    * environment variables
+    * custom configuration file
+    * default configuration file
   * ['s settings](../../administration/stats-and-license/index.md#view-server-settings)
 
 ## Configuration file location
 
-The default settings for a Grafana instance are stored in the `$WORKING_DIR/conf/defaults.ini` file
-* _Do not_ change this file.
-The default settings for a Grafana instance are stored in the `<WORKING DIRECTORY>/conf/defaults.ini` file.
-_Don't_ change this file.
+* `$WORKING_DIR/conf/defaults.ini` OR `<WORKING DIRECTORY>/conf/defaults.ini`
+  * Grafana's default settings
+  * `$WORKING_DIR` & `<WORKING DIRECTORY>`
+    * == directory | Grafana is installed
 
-Depending on your OS, your custom configuration file is either the `$WORKING_DIR/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file
-* The custom configuration file path can be overridden using the `--config` parameter.
-Depending on your OS, your custom configuration file is either the `<WORKING DIRECTORY>/conf/custom.ini` file or the `/usr/local/etc/grafana/grafana.ini` file.
-You can use a custom configuration path with the `--config` option.
+* (`$WORKING_DIR/conf/custom.ini` OR `<WORKING DIRECTORY>/conf/custom.ini`) OR `/usr/local/etc/grafana/grafana.ini`
+  * Grafana's custom configuration file
+    * -- based on -- your OS
+    * 👀override defaults.ini's configuration👀
+    * recommendations
+      * ⚠️if you want to override -> use `--config`⚠️
 
 ### Linux
 
-If you installed Grafana using the `deb` or `rpm` packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used
-* This path is specified in the Grafana init.d script using `--config` file parameter.
-If you installed Grafana using the deb or RPM packages, then your configuration file is located at `/etc/grafana/grafana.ini` and a separate `custom.ini` is not used.
-This path is specified in the Grafana init.d script using `--config` option.
+* | `deb` or `rpm` packages,
+  * configuration file is located | `/etc/grafana/grafana.ini`
+    * uses
+      * | Grafana init.d script, -- via -- `--config`
 
 ### Docker
 
-Refer to [Configure a Grafana Docker image](/docs/grafana/<GRAFANA_VERSION>/setup-grafana/configure-docker/) for information about environmental variables, persistent storage, and building custom Docker images.
+* [Configure a Grafana Docker image](../configure-docker.md)
 
 ### Windows
 
-On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file
-* It contains all the settings commented out
-* Copy `sample.ini` and name it `custom.ini`.
-On Windows, the `sample.ini` file is located in the same directory as `defaults.ini` file.
-It contains all the settings commented out.
-Copy `sample.ini` and name it `custom.ini`.
+* `sample.ini` file
+  * location == `defaults.ini` file location
+  * == ALL settings commented out
+  * recommendations
+    * rename `sample.ini` -- as -- `custom.ini`
 
 ### macOS
 
-By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`
-* For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly. Otherwise, add a configuration file named `custom.ini` to the `conf` folder to override the settings defined in `conf/defaults.ini`.
-By default, the configuration file is located at `/opt/homebrew/etc/grafana/grafana.ini` or `/usr/local/etc/grafana/grafana.ini`.
-For a Grafana instance installed using Homebrew, edit the `grafana.ini` file directly.
-Otherwise, add a configuration file named `custom.ini` to the `conf` directory to override the settings defined in `conf/defaults.ini`.
+* `/opt/homebrew/etc/grafana/grafana.ini` OR `/usr/local/etc/grafana/grafana.ini`
+  * default configuration file location 
+
+* if you want to override `conf/defaults.ini` -> add `conf/custom.ini` 
 
 ### Grafana Cloud
 
-There is no local configuration file for Grafana Cloud stacks, but many of these settings are still configurable. To edit configurable settings, open a support ticket.
+* ❌NO local configuration file❌ 
+* | Grafana Cloud portal,
+  * if you want to edit configurable settings -> open a support ticket
 
-## Remove comments in the .ini files
+## comments | ".ini" files
 
-* | ".ini"
-  * `;` char
-    * 👀comment out lines 👀
+* | ".ini",
+  * ways to add commentaries
+    * `;`
+    * `#`
 
 ## Override configuration with environment variables
 
-Do not use environment variables to _add_ new configuration settings
-* Instead, use environmental variables to _override_ existing options.
-Don't use environment variables to _add_ new configuration settings.
-Instead, use environmental variables to _override_ existing options.
+* environment variables
+  * `GF_<SECTION NAME>_<KEY>`
+    * syntax /
+      * ALL should be uppercase
+      * `.` & `-` should be replaced -- by -- `_`
+    * `SECTION NAME`
+      * 👀== configuration file's `[textHere]`👀
+        * _Example:_
+            ```bash
+            export GF_DEFAULT_INSTANCE_NAME=my-instance
+            export GF_SECURITY_ADMIN_USER=owner
+            export GF_AUTH_GOOGLE_CLIENT_SECRET=newS3cretKey
+            export GF_PLUGIN_GRAFANA_IMAGE_RENDERER_RENDERING_IGNORE_HTTPS_ERRORS=true
+            export GF_FEATURE_TOGGLES_ENABLE=newNavigation
+            ```
 
-To override an option:
-
-```bash
-GF_<SECTION NAME>_<KEY>
-```
-
-Where the section name is the text within the brackets
-* Everything should be uppercase, `.` and `-` should be replaced by `_`
-* For example, if you have these configuration settings:
-Where _`<SECTION NAME>`_ is the text within the square brackets (`[` and `]`) in the configuration file.
-All letters must be uppercase, periods (`.`) and dashes (`-`) must replaced by underscores (`_`).
-For example, if you have these configuration settings:
-
-```ini
-# default section
-instance_name = ${HOSTNAME}
-
-[security]
-admin_user = admin
-
-[auth.google]
-client_secret = 0ldS3cretKey
-
-[plugin.grafana-image-renderer]
-rendering_ignore_https_errors = true
-
-[feature_toggles]
-enable = newNavigation
-```
-
-You can override variables on Linux machines with:
-
-```bash
-export GF_DEFAULT_INSTANCE_NAME=my-instance
-export GF_SECURITY_ADMIN_USER=owner
-export GF_AUTH_GOOGLE_CLIENT_SECRET=newS3cretKey
-export GF_PLUGIN_GRAFANA_IMAGE_RENDERER_RENDERING_IGNORE_HTTPS_ERRORS=true
-export GF_FEATURE_TOGGLES_ENABLE=newNavigation
-```
+  * ❌NOT use cases❌
+    * add NEW configuration settings
+  * use cases
+    * override existing options
 
 ## Variable expansion
 
-If any of your options contains the expression `$__<PROVIDER>{<ARGUMENT>}`or `${<ENVIRONMENT VARIABLE>}`, then Grafana evaluates them.
-The evaluation runs the provider with the provided argument to get the final value of the option.
-
-There are three providers: `env`, `file`, and `vault`.
+* 💡`$__<PROVIDER>{<ARGUMENT>}` OR `${<ENVIRONMENT VARIABLE>}`💡
+  * Grafana evaluates them
+  * 👀ALLOWED providers👀
+    * [`env`](#env-provider)
+    * [`file`](#file-provider)
+    * [`vault`](#vault-provider)
 
 ### `env` provider
 
-The `env` provider expands environment variables.
-If you set an option to `$__env{PORT}` the value of the `PORT` environment variable replaces it.
-For environment variables you can also use the short-hand syntax `${PORT}`.
-
-The following example sets the log directory to the path in the `LOGDIR` environment variable:
-
-```ini
-[paths]
-logs = $__env{LOGDIR}/grafana
-```
+* `env` provider
+  * read environment variables
+  * syntax
+    * `$__env{ENVIRONMENTVARIABLE}`
+      * replaced -- by -- `ENVIRONMENTVARIABLE`'s value
+      * _Example:_
+        ```ini
+        [paths]
+        logs = $__env{LOGDIR}/grafana
+        ```
+    * `${PORT}`
+      * == short-hand syntax
+      * _Example:_ 
+        ```ini
+        [paths]
+        logs = ${LOGDIR}/grafana
+        ``` 
 
 ### `file` provider
 
-The `file` provider reads a file from the filesystem.
-It trims whitespace from the beginning and the end of files.
+* `file` provider
+  * reads a filesystem's file /
+    * trims whitespace | files' beginning & files' end 
+  * _Example:_
 
-The following example sets the database password to the contents of the `/etc/secrets/gf_sql_password` file:
-
-```ini
-[database]
-password = $__file{/etc/secrets/gf_sql_password}
-```
+    ```ini
+    [database]
+    password = $__file{/etc/secrets/gf_sql_password}
+    ```
 
 ### `vault` provider
 
-The `vault` provider lets manage your secrets with [Hashicorp Vault](https://www.hashicorp.com/products/vault).
-
-{{< admonition type="note" >}}
-The `vault` provider is only available in Grafana Enterprise.
-
-For more information, refer to [Integrate Grafana with Hashicorp Vault](/docs/grafana/<GRAFANA_VERSION>/setup-grafana/configure-security/configure-database-encryption/integrate-with-hashicorp-vault).
-
-{{< /admonition >}}
+* `vault` provider
+  * lets
+    * manage your secrets -- via -- [Hashicorp Vault](https://www.hashicorp.com/products/vault)
+  * requirements
+    * Grafana Enterprise
+  * [MORE](../configure-security/configure-database-encryption/integrate-with-hashicorp-vault)
 
 ## Configuration options
 
-The following headings describe the sections and configuration options of the Grafana configuration file.
-
 ### `app_mode`
 
-Options are `production` and `development`.
-Default is `production`. _Don't_ change this option unless you are working on Grafana development.
+* ALLOWED values
+  * `production` 
+    * default one
+  * `development`
+    * uses
+      * work | Grafana development
 
 ### `instance_name`
 
-Set the name of the Grafana server instance.
-Used in logging, internal metrics, and clustering info.
-Defaults to: `${HOSTNAME}`, which uses the value of the environment variable `HOSTNAME`, if that is empty or doesn't exist Grafana tries to use system calls to get the machine name.
-
-<hr />
+* Grafana server instance name 
+* uses
+  * logging,
+  * internal metrics,
+  * clustering info.
+* by default,
+  * `${HOSTNAME}`
+    * == environment variable `HOSTNAME`'s value
+    * if it does NOT exist -> Grafana tries to get -- , via system calls, -- the machine name
 
 ### `[paths]`
 
 #### `data`
 
-Path to where Grafana stores the sqlite3 database (if used), file-based sessions (if used), and other data.
-This path is usually specified via command line in the init.d script or the systemd service file.
+* path | Grafana stores 
+  * sqlite3 database (if used),
+    * by default, `/usr/local/var/lib/grafana` 
+  * file-based sessions (if used),
+  * other data
 
-**macOS:** The default SQLite database is located at `/usr/local/var/lib/grafana`
+* recommendations
+  * specify -- via -- 
+    * CL's init.d script
+    * systemd service file
 
 #### `temp_data_lifetime`
 
-How long temporary images in `data` directory should be kept. Defaults to: `24h`. Supported modifiers: `h` (hours),
-`m` (minutes), for example: `168h`, `30m`, `10h30m`. Use `0` to never clean up temporary files.
+* time / temporary images are stored | `data` directory
+  * by defaults, `24h`
+  * ALLOWED values
+    * `h` (hours),
+    * `m` (minutes)
+    * if you use `0` -> NEVER clean up temporary files
 
 #### `logs`
 
-Path to where Grafana stores logs.
-This path is usually specified via command line in the init.d script or the systemd service file.
-You can override it in the configuration file or in the default environment variable file.
+* path | Grafana stores logs
+  * recommendations
+    * specify -- via --
+      * CL's init.d script
+      * systemd service file
+  * if you override it | configuration file OR default environment variable file -> TILL Grafana FULLY started, logs | default log pat
+    * override -- via -- CL argument `cfg:default.paths.logs`
 
-{{< admonition type="note" >}}
-When overriding the default log path in the configuration file or environment variable file, Grafana still logs to the default log path until it has fully started.
-{{< /admonition >}}
+      ```bash
+      ./grafana-server --config /custom/config.ini --homepath /custom/homepath cfg:default.paths.logs=/custom/path
+      ```
 
-Override log path using the command line argument `cfg:default.paths.logs`:
-
-```bash
-./grafana-server --config /custom/config.ini --homepath /custom/homepath cfg:default.paths.logs=/custom/path
-```
-
-**macOS:** By default, the log file should be located at `/usr/local/var/log/grafana/grafana.log`.
+  * | **macOS:**,
+    * by default, `/usr/local/var/log/grafana/grafana.log`
 
 #### `plugins`
 
-Directory where Grafana automatically scans and looks for plugins. For information about manually or automatically installing plugins, refer to [Install Grafana plugins](../../administration/plugin-management/#install-grafana-plugins).
+* directory | Grafana AUTOMATICALLY scans & looks for plugins
+  * | **macOS:**
+    * by default, `/usr/local/var/lib/grafana/plugins`
 
-**macOS:** By default, the Mac plugin location is: `/usr/local/var/lib/grafana/plugins`.
+* built-in plugins | /usr/share/grafana/public
 
 #### `provisioning`
 
-Directory that contains [provisioning](../../administration/provisioning/) configuration files that Grafana applies on startup.
-Dashboards are reloaded when the JSON files change.
+* directory / contains [provisioning configuration files](../../administration/provisioning/)
+  * applied | startup Grafana
 
-<hr />
+* | change JSON files,
+  * Dashboards are reloaded 
 
 ### `[server]`
 
 #### `protocol`
 
-`http`,`https`,`h2` or `socket`
+* ALLOWED values
+  * `http`,
+  * `https`,
+  * `h2`
+  * `socket`
 
 #### `min_tls_version`
 
-The TLS Handshake requires a minimum TLS version. The available options are TLS1.2 and TLS1.3.
-If you do not specify a version, the system uses TLS1.2.
+* minimum TLS version / required -- by -- TLS Handshake
+* ALLOWED values
+  * TLS1.2
+    * by default
+  * TLS1.3
 
 ### http_addr
 
@@ -643,20 +654,27 @@ Set to `false` to remove all feedback links from the UI. Default is `true`.
 
 ### disable_initial_admin_creation
 
-Disable creation of admin user on first start of Grafana. Default is `false`.
+* | FIRST start of Grafana,
+  * disable creation of admin user
+    * use cases
+      * users managed externally
+    * by default, `false`
 
 ### admin_user
 
-The name of the default Grafana Admin user, who has full permissions.
-Default is `admin`.
+* default Grafana Admin user's name
+  * FULL permissions
+  * by default, `admin`
 
 ### admin_password
 
-The password of the default Grafana Admin. Set once on first-run. Default is `admin`.
+* default Grafana Admin user's password
+  * by default, `admin`
 
 ### admin_email
 
-The email of the default Grafana Admin, created on startup. Default is `admin@localhost`.
+* default Grafana Admin user's email
+  * by default, `admin@localhost`
 
 ### secret_key
 
@@ -1152,7 +1170,7 @@ Refer to [Anonymous authentication]({{< relref "../configure-security/configure-
 
 ## [auth.github]
 
-Refer to [GitHub OAuth2 authentication]({{< relref "../configure-security/configure-authentication/github" >}}) for detailed instructions.
+* [GitHub OAuth2 authentication](../configure-security/configure-authentication/github)
 
 <hr />
 
@@ -1939,16 +1957,20 @@ Configures max number of API annotations that Grafana keeps. Default value is 0,
 
 ## [explore]
 
-For more information about this feature, refer to [Explore]({{< relref "../../explore" >}}).
+* see [Explore](../../explore)
 
 ### enabled
 
-Enable or disable the Explore section. Default is `enabled`.
+* enable OR disable the Explore section
+* by default, `true`
 
 ### defaultTimeOffset
 
-Set a default time offset from now on the time picker. Default is 1 hour.
-This setting should be expressed as a duration. Examples: 1h (hour), 1d (day), 1w (week), 1M (month).
+* | time picker,
+  * default time offset FROM now
+    * `:duration`
+      * _Example:_ 1h (hour), 1d (day), 1w (week), 1M (month) 
+  * by default, 1 hour
 
 ## [help]
 
@@ -2388,7 +2410,9 @@ If set to true Grafana will allow script tags in text panels. Not recommended as
 
 ### enable_alpha
 
-Set to `true` if you want to test alpha plugins that are not yet ready for general usage. Default is `false`.
+* if `true` -> let test alpha plugins / NOT ready for general usage
+* by default,
+  * `false`
 
 ### allow_loading_unsigned_plugins
 
@@ -2400,7 +2424,7 @@ We do _not_ recommend using this option. For more information, refer to [Plugin 
 
 Available to Grafana administrators only, enables installing / uninstalling / updating plugins directly from the Grafana UI. Set to `true` by default. Setting it to `false` will hide the install / uninstall / update controls.
 
-For more information, refer to [Plugin catalog]({{< relref "../../administration/plugin-management#plugin-catalog" >}}).
+* see [Plugin catalog](../../administration/plugin-management#plugin-catalog)
 
 ### plugin_admin_external_manage_enabled
 
@@ -2499,7 +2523,7 @@ Experimental. Requires the feature toggle `externalCorePlugins` to be enabled.
 
 ## [plugin.grafana-image-renderer]
 
-For more information, refer to [Image rendering]({{< relref "../image-rendering" >}}).
+* see [Image rendering](../image-rendering)
 
 ### rendering_timezone
 
@@ -2517,7 +2541,14 @@ Default is `1`. Using a higher value will produce more detailed images (higher D
 
 ### rendering_ignore_https_errors
 
-Instruct headless browser instance whether to ignore HTTPS errors during navigation. Per default HTTPS errors are not ignored. Due to the security risk, we do not recommend that you ignore HTTPS errors.
+* plugin image render
+  * -- based on -- headless (!= UI) browser
+
+* if headless browser navigates | HTTPS -> ignore HTTP errors
+  * by default, NOT ignored
+  * recommendations
+    * NOT ignore
+      * Reason:🧠security risk🧠
 
 ### rendering_verbose_logging
 
