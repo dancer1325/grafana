@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/grafana-enterprise:latest     # Linux-based docker image
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      # 2. disable basic auth
+      GF_AUTH_BASIC_ENABLED: false
+
+      # 3. password policy
+      GF_AUTH_BASIC_PASSWORD_POLICY: true
+
+      # 4. disable login form
+      #GF_AUTH_DISABLE_LOGIN_FORM: true
+    restart: unless-stopped

@@ -1,6 +1,7 @@
 services:
   grafana:
-    image: grafana/grafana-enterprise:9.5.0     # Linux-based docker image
+    #image: grafana/grafana-enterprise:9.5.0     # Linux-based docker image
+    image: grafana/grafana-enterprise:latest     # Linux-based docker image
     container_name: grafana
     # user: "472:472"  # Comentado para evitar problemas de permisos
     ports:

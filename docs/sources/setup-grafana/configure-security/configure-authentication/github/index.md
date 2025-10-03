@@ -19,43 +19,38 @@ weight: 900
 
 # Configure GitHub OAuth authentication
 
-{{< docs/shared lookup="auth/intro.md" source="grafana" version="<GRAFANA VERSION>" >}}
-
-This topic describes how to configure GitHub OAuth authentication.
-
-{{< admonition type="note" >}}
-If Users use the same email address in GitHub that they use with other authentication providers (such as Grafana.com), you need to do additional configuration to ensure that the users are matched correctly. Please refer to the [Using the same email address to login with different identity providers](../#using-the-same-email-address-to-login-with-different-identity-providers) documentation for more information.
-{{< /admonition >}}
+* if you use SAME email address | login -- via -- DIFFERENT identity providers -> see [here](../#using-the-same-email-address-to-login-with-different-identity-providers)
 
 ## Before you begin
 
-Ensure you know how to create a GitHub OAuth app. Consult GitHub's documentation on [creating an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) for more information.
+* [create an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
+  * steps
+    * | GitHub account
+      * **Profile > Settings > Developer settings**, select **OAuth Apps**
+      * **New OAuth App**
+      * Fill out the fields
+        * **Authorization callback URL** field == `https://<YOUR-GRAFANA-URL>/login/github` 
+      * Note your client ID
+      * Generate + note your client secret
 
-### Create a GitHub OAuth App
+## Configure GitHub authentication client
+### -- via -- Grafana UI
 
-1. Log in to your GitHub account.
-   In **Profile > Settings > Developer settings**, select **OAuth Apps**.
-1. Click **New OAuth App**.
-1. Fill out the fields, using your Grafana homepage URL when appropriate.
-   In the **Authorization callback URL** field, enter the following: `https://<YOUR-GRAFANA-URL>/login/github` .
-1. Note your client ID.
-1. Generate, then note, your client secret.
+* requirements
+  * Grafana Admin
+  * Grafana v10.?
 
-## Configure GitHub authentication client using the Grafana UI
+* steps
+  * **Administration > Authentication > GitHub**
+    * fill in
+    * if you have Grafana's configuration -> this form is pre-populated -- with -- those values
+    * AFTER filling -> click **Save**
 
-As a Grafana Admin, you can configure GitHub OAuth client from within Grafana using the GitHub UI. To do this, navigate to **Administration > Authentication > GitHub** page and fill in the form. If you have a current configuration in the Grafana configuration file, the form will be pre-populated with those values. Otherwise the form will contain default values.
+* if you run Grafana | high availability mode -> configuration changes may take some minutes
 
-After you have filled in the form, click **Save**. If the save was successful, Grafana will apply the new configurations.
+* see [configuration options](#configuration-options)
 
-If you need to reset changes you made in the UI back to the default values, click **Reset**. After you have reset the changes, Grafana will apply the configuration from the Grafana configuration file (if there is any configuration) or the default values.
-
-{{< admonition type="note" >}}
-If you run Grafana in high availability mode, configuration changes may not get applied to all Grafana instances immediately. You may need to wait a few minutes for the configuration to propagate to all Grafana instances.
-{{< /admonition >}}
-
-Refer to [configuration options](#configuration-options) for more information.
-
-## Configure GitHub authentication client using the Terraform provider
+### -- via -- Terraform provider
 
 ```terraform
 resource "grafana_sso_settings" "github_sso_settings" {
@@ -77,21 +72,15 @@ resource "grafana_sso_settings" "github_sso_settings" {
 
 Go to [Terraform Registry](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/sso_settings) for a complete reference on using the `grafana_sso_settings` resource.
 
-## Configure GitHub authentication client using the Grafana configuration file
+### -- via -- Grafana configuration file
 
-Ensure that you have access to the [Grafana configuration file](../../../configure-grafana/#configuration-file-location).
+#### Configure GitHub authentication
 
-### Configure GitHub authentication
-
-To configure GitHub authentication with Grafana, follow these steps:
-
-1. Create an OAuth application in GitHub.
-1. Set the callback URL for your GitHub OAuth app to `http://<my_grafana_server_name_or_ip>:<grafana_server_port>/login/github`.
-
-   Ensure that the callback URL is the complete HTTP address that you use to access Grafana via your browser, but with the appended path of `/login/github`.
-
-   For the callback URL to be correct, it might be necessary to set the `root_url` option in the `[server]`section of the Grafana configuration file. For example, if you are serving Grafana behind a proxy.
-
+* steps
+  1. GitHub OAuth app's callback URL == `http://<my_grafana_server_name_or_ip>:<grafana_server_port>/login/github`
+     * callback URL == Grafana's complete HTTP address + `/login/github`
+     * For the callback URL to be correct, it might be necessary to set the `root_url` option in the `[server]`section of the Grafana configuration file
+     * For example, if you are serving Grafana behind a proxy.
 1. Refer to the following table to update field values located in the `[auth.github]` section of the Grafana configuration file:
 
    | Field                        | Description                                                                         |
@@ -107,7 +96,7 @@ To configure GitHub authentication with Grafana, follow these steps:
 
    You should now see a GitHub login button on the login page and be able to log in or sign up with your GitHub accounts.
 
-### Configure role mapping
+#### Configure role mapping
 
 Unless the `skip_org_role_sync` option is enabled, the user's role will be set to the role retrieved from GitHub upon user login.
 
@@ -122,11 +111,11 @@ You can use the `org_mapping` configuration options to assign the user to organi
 
 To ease configuration of a proper JMESPath expression, go to [JMESPath](http://jmespath.org/) to test and evaluate expressions with custom payloads.
 
-#### Role mapping examples
+##### _Examples:_
 
 This section includes examples of JMESPath expressions used for role mapping.
 
-##### Org roles mapping example
+###### Org roles mapping example
 
 The GitHub integration uses the external users' teams in the `org_mapping` configuration to map organizations and roles based on their GitHub team membership.
 
@@ -140,7 +129,7 @@ Config:
 org_mapping = @my-github-organization/my-github-team-1:org_foo:Viewer @my-github-organization/my-github-team-2:org_bar:Editor *:org_baz:Editor
 ```
 
-##### Map roles using GitHub user information
+###### Map roles using GitHub user information
 
 In this example, the user with login `octocat` has been granted the `Admin` role.
 All other users are granted the `Viewer` role.
@@ -149,7 +138,7 @@ All other users are granted the `Viewer` role.
 role_attribute_path = [login=='octocat'][0] && 'Admin' || 'Viewer'
 ```
 
-##### Map roles using GitHub teams
+###### Map roles using GitHub teams
 
 In this example, the user from GitHub team `my-github-team` has been granted the `Editor` role.
 All other users are granted the `Viewer` role.
@@ -158,7 +147,7 @@ All other users are granted the `Viewer` role.
 role_attribute_path = contains(groups[*], '@my-github-organization/my-github-team') && 'Editor' || 'Viewer'
 ```
 
-##### Map roles using multiple GitHub teams
+###### Map roles using multiple GitHub teams
 
 In this example, the users from GitHub teams `admins` and `devops` have been granted the `Admin` role,
 the users from GitHub teams `engineers` and `managers` have been granted the `Editor` role,
@@ -169,7 +158,7 @@ all other users are granted the `None` role.
 role_attribute_path = contains(groups[*], '@my-github-organization/admins') && 'Admin' || contains(groups[*], '@my-github-organization/devops') && 'Admin' || contains(groups[*], '@my-github-organization/engineers') && 'Editor' || contains(groups[*], '@my-github-organization/managers') && 'Editor' || contains(groups[*], '@my-github-organization/qa') && 'Viewer' || 'None'
 ```
 
-##### Map server administrator role
+###### Map server administrator role
 
 In this example, the user with login `octocat` has been granted the `Admin` organization role as well as the Grafana server admin role.
 All other users are granted the `Viewer` role.
@@ -178,7 +167,7 @@ All other users are granted the `Viewer` role.
 role_attribute_path = [login=='octocat'][0] && 'GrafanaAdmin' || 'Viewer'
 ```
 
-##### Map one role to all users
+###### Map one role to all users
 
 In this example, all users will be assigned `Viewer` role regardless of the user information received from the identity provider.
 
@@ -187,7 +176,7 @@ role_attribute_path = "'Viewer'"
 skip_org_role_sync = false
 ```
 
-### Example of GitHub configuration in Grafana
+#### Example of GitHub configuration in Grafana
 
 This section includes an example of GitHub configuration in the Grafana configuration file.
 

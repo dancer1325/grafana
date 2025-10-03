@@ -1,0 +1,13 @@
+GET {{GRAFANA_HOST}}/api/frontend/settings
+Accept: application/json
+Content-Type: application/json
+Authorization: {{BEARER_TOKEN}}
+
+###
+GET {{GRAFANA_HOST}}/api/health
+
+###
+GET {{GRAFANA_HOST}}/api/login/ping
+Accept: application/json
+Content-Type: application/json
+Authorization: {{BEARER_TOKEN}}

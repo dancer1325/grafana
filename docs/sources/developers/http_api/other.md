@@ -18,99 +18,41 @@ title: 'Other HTTP API '
 
 # Frontend Settings API
 
-## Get Settings
-
-`GET /api/frontend/settings`
-
-**Example Request**:
-
-```http
-GET /api/frontend/settings HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk
-```
-
-**Example Response**:
-
-```http
-HTTP/1.1 200
-Content-Type: application/json
-
-{
-  "allowOrgCreate":true,
-  "appSubUrl":"",
-  "buildInfo":{
-    "buildstamp":xxxxxx,
-    "commit":"vyyyy",
-    "version":"zzzzz"
-  },
-  "datasources":{
-    "datasourcename":{
-      "index":"grafana-dash",
-      "meta":{
-        "annotations":true,
-        "module":"plugins/datasource/grafana/datasource",
-        "name":"Grafana",
-        "partials":{
-          "annotations":"app/plugins/datasource/grafana/partials/annotations.editor.html",
-          "config":"app/plugins/datasource/grafana/partials/config.html"
-        },
-        "pluginType":"datasource",
-        "serviceName":"Grafana",
-        "type":"grafanasearch"
-      }
-    }
-  },
-  "defaultDatasource": "Grafana"
-}
-```
+## `GET /api/frontend/settings`
+* get Settings
+* 's request
+  ```
+  Accept: application/json
+  Content-Type: application/json
+  Authorization: Bearer eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk
+  ```
+  * Bearer Token:
+    * Problems:
+      * Problem1: how to get?
+        * Attempt1: Grafana UI > Administration > Authentication
+        * Solution: TODO: 
 
 # Login API
 
-## Renew session based on remember cookie
+## `GET /api/login/ping`
+* allows
+  * renew -- , based on remember cookie, -- session 
+* 's request
+  ```
+  Accept: application/json
+  Content-Type: application/json
+  Authorization: Bearer eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk
+  ```
 
-`GET /api/login/ping`
-
-**Example Request**:
-
-```http
-GET /api/login/ping HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer eyJrIjoiT0tTcG1pUlY2RnVKZTFVaDFsNFZXdE9ZWmNrMkZYbk
-```
-
-**Example Response**:
-
-```http
-HTTP/1.1 200
-Content-Type: application/json
-
-{"message": "Logged in"}
-```
+* 's return
+  * `message`
 
 # Health API
 
-## Returns health information about Grafana
-
-`GET /api/health`
-
-**Example Request**
-
-```http
-GET /api/health
-Accept: application/json
-```
-
-**Example Response**:
-
-```http
-HTTP/1.1 200 OK
-
-{
-  "commit": "087143285",
-  "database": "ok",
-  "version": "5.1.3"
-}
-```
+## `GET /api/health`
+* 's return
+  * Grafana's health information 
+* 's response
+  * `commit`
+  * `database`
+  * `version`

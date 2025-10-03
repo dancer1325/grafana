@@ -1172,8 +1172,6 @@ Refer to [Anonymous authentication]({{< relref "../configure-security/configure-
 
 * [GitHub OAuth2 authentication](../configure-security/configure-authentication/github)
 
-<hr />
-
 ## [auth.gitlab]
 
 Refer to [Gitlab OAuth2 authentication]({{< relref "../configure-security/configure-authentication/gitlab" >}}) for detailed instructions.

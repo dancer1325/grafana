@@ -1,0 +1,17 @@
+### Public endpoint (always works)
+GET {{GRAFANA_HOST}}/api/health
+
+### Private endpoint without auth (should fail)
+GET {{GRAFANA_HOST}}/api/admin/settings
+
+### Private endpoint with Basic Auth (fails if basic auth disabled)
+GET {{GRAFANA_HOST}}/api/admin/settings
+Authorization: Basic admin admin
+
+### Private endpoint with Bearer Token (should work)
+GET {{GRAFANA_HOST}}/api/admin/settings
+Authorization: Bearer {{BEARER_TOKEN}}  # TODO: Get bearer token
+
+### Another private endpoint test
+GET {{GRAFANA_HOST}}/api/dashboards/home
+Authorization: Bearer {{BEARER_TOKEN}}  # TODO: Get bearer token
