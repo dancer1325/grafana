@@ -1164,9 +1164,7 @@ Set to `true` to enable the use of managed service accounts for plugin authentic
 
 ## [auth.anonymous]
 
-Refer to [Anonymous authentication]({{< relref "../configure-security/configure-authentication/grafana#anonymous-authentication" >}}) for detailed instructions.
-
-<hr />
+* [Anonymous authentication](../configure-security/configure-authentication/anonymous-auth)
 
 ## [auth.github]
 
