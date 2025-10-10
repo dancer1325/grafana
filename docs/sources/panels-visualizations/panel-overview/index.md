@@ -106,89 +106,95 @@ refs:
 
 # Panel overview
 
-A Grafana panel is a visual representation of data composed of a [query](ref:query) and a [visualization](ref:visualization). Within panels, you can apply [transformations](ref:transformations), which process the results of a query before they're passed on for visualization. You can also further customize a panel by formatting data and configuring visualization options.
-
-Each panel has a query editor specific to the data source selected in the panel. The query editor allows you to build a query that returns the data you want to visualize.
-
-Panels offer a wide variety of formatting and styling options, from applying colors based on field values to creating custom units. Each visualization also comes with options specific to it that give you further control over how your data is displayed. Panels can also be dragged, dropped, and resized to rearrange them on the dashboard.
-
-To get started adding panels, ensure that you have configured a data source:
-
-- For details about using data sources, refer to [Data sources](ref:data-sources).
-- For more information about managing data sources as an administrator, refer to [Data source management](ref:data-source-management).
-
-  {{< admonition type="note" >}}
-  [Data source management](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/administration/data-source-management/) is only available in [Grafana Enterprise](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/introduction/grafana-enterprise/) and [Grafana Cloud](https://grafana.com/docs/grafana-cloud/).
-  {{< /admonition >}}
+* Grafana panel
+  * == visual representation OF ([query](ref:query) + [visualization](ref:visualization))
+  * ALLOWED customizations
+    * apply [transformations](ref:transformations)
+    * display options
+  * | dashboards,
+    * can be
+      * dragged, 
+      * dropped,
+      * resize
+  * [panel editor](../panel-editor-overview)
 
 ## Panel feature overview
 
-The following image and descriptions highlight the panel features:
+![Annotated panel with time series visualization](/grafana/media/docs/panels-visualizations/screenshot-panel-overview-ann-v11.0.png)
 
-![Annotated panel with time series visualization](/media/docs/grafana/panels-visualizations/screenshot-panel-overview-ann-v11.0.png)
-
-1. **Panel title** - You can create your own panel titles or have Grafana create them for you using [generative AI features](ref:ai).
-1. **Panel description** - You can create your own panel descriptions or have Grafana create them for you using [generative AI features](ref:ai)
-1. **Links** - Add [panel links](ref:panel-links) to other dashboards, panels, or external sites.
-1. **Panel menu** - In the [panel menu](#panel-menu), access actions such as **View**, **Edit**, **Inspect**, and **Remove**.
-1. **Legend** - Change series colors, y-axis, and series visibility directly from the [legend](ref:legend).
-1. **Tooltips** - View [tooltips](ref:tooltips) to get more information about data points.
+1. **Panel title** 
+   1. ways to create
+      1. manually
+      2. -- via -- [generative AI features](ref:ai)
+1. **Panel description** 
+   1. ways to create
+      1. manually
+      2. -- via -- [generative AI features](ref:ai)
+1. **Links** 
+   2. add [panel links](ref:panel-links) -- to -- other dashboards, panels, or external sites
+1. **Panel menu** 
+   1. allows
+      1. access actions -- _Example:_ **View**, **Edit**, **Inspect**, and **Remove** --
+1. **Legend**
+   2. Change series colors, y-axis, and series visibility directly from the [legend](ref:legend).
+1. **Tooltips**
+   2. View [tooltips](ref:tooltips) to get more information about data points.
 
 ## Panel menu
 
-To access the panel editor, hover over the top-right corner of any panel. Click the panel menu icon that appears and select **Edit**. The panel menu gives you access to the following actions:
+* valid actions
+  - **View**
+    - view the panel | full screen
+  - **Edit**
+    - [panel editor](../panel-editor-overview)
+  - **Share**
+    - share the panel -- as a -- link, embed, or snapshot
+  - **Explore**
+    - open the panel | **Explore**,
+      - == focus | your query
+  - **Inspect**: 
+    - [open the **Inspect** drawer](../panel-inspector)
+  - **Extensions**
+    - requirements
+      - app plugins installed / contribute an [extension](https://grafana.com/developers/plugin-tools/key-concepts/ui-extensions) | panel menu 
+    - allows
+      - accessing other actions / provided -- by -- installed applications
+        - _Example:_ declaring an incident
+  - **More**: 
+    - **Duplicate**
+    - **Copy**
+      - Copy the panel | clipboard
+    - **New library panel**
+      - create a panel / can be imported | OTHER dashboards
+    - **New alert rule**
+      - open the alert rule configuration page | **Alerting** 
+        - enable [create a Grafana-managed alert](ref:create) -- based on the -- panel queries
+    - **Hide legend**
+    - **Get help**
+      - Send a snapshot or panel data -- to -- Grafana Labs Technical Support
+  - **Remove**: Remove the panel from the dashboard.
 
-- **View**: View the panel in full screen.
-- **Edit**: Open the panel editor to edit panel and visualization options.
-- **Share**: Share the panel as a link, embed, or snapshot.
-- **Explore**: Open the panel in **Explore**, where you can focus on your query.
-- **Inspect**: Open the **Inspect** drawer, where you can review the panel data, stats, metadata, JSON, and query.
-  - **Data**: Open the **Inspect** drawer in the **Data** tab.
-  - **Query**: Open the **Inspect** drawer in the **Query** tab.
-  - **Panel JSON**: Open the **Inspect** drawer in the **JSON** tab.
-- **Extensions**: Access other actions provided by installed applications, such as declaring an incident. Note that this option doesn't appear unless you have app plugins installed which contribute an [extension](https://grafana.com/developers/plugin-tools/key-concepts/ui-extensions) to the panel menu.
-- **More**: Access other panel actions.
-  - **Duplicate**: Make a copy of the panel. Duplicated panels query data separately from the original panel. You can use the special `Dashboard` data source to [share the same query results across panels](ref:share) instead.
-  - **Copy**: Copy the panel to the clipboard.
-  - **New library panel**: Create a panel that can be imported into other dashboards.
-  - **New alert rule**: Open the alert rule configuration page in **Alerting**, where you can [create a Grafana-managed alert](ref:create) based on the panel queries.
-  - **Hide legend**: Hide the panel legend.
-  - **Get help**: Send a snapshot or panel data to Grafana Labs Technical Support.
-- **Remove**: Remove the panel from the dashboard.
+![](/grafana/media/docs/panels-visualizations/panelMenu.png)
 
-## Keyboard shortcuts
+* _Example:_ [here](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=now-1h&to=now&timezone=browser)
 
-Grafana has a number of keyboard shortcuts available specifically for panels. Press `?` on your keyboard to display all keyboard shortcuts available in your version of Grafana.
+## Keyboard shortcuts | panels
 
-By hovering over a panel with the mouse you can use some shortcuts that will target that panel.
+* `?`
+  * display ALL AVAILABLE keyboard shortcuts
 
-- `e`: Toggle panel edit view
-- `v`: Toggle panel fullscreen view
-- `pu`: Share link
-- `pe`: Share embed
-- `ps`: Share snapshot
-- `px`: Open panel in **Explore**
-- `pd`: Duplicate Panel
-- `i`: Inspect
-- `pl`: Hide or show legend
-- `pr`: Remove Panel
+## Add a panel | Dashboard
 
-## Add a panel
+* if there is
+  * NO visualization, **+ Add visualization**
 
-To add a panel in a new dashboard click **+ Add visualization** in the middle of the dashboard:
+    ![Empty dashboard state](/grafana/media/docs/panels-visualizations/addPanelEmptyVisualization.png)
+  * some visualization
+    * **Edit** > **Add** > **Visualization**
 
-![Empty dashboard state](/media/docs/grafana/dashboards/empty-dashboard-10.2.png)
-
-To add a panel to an existing dashboard, follow these steps:
-
-1. Click **Edit** in the top-right corner of the dashboard.
-1. Click the **Add** drop-down and select **Visualization**:
-
-   ![Add dropdown](/media/docs/grafana/panels-visualizations/screenshot-add-dropdown-11.2.png)
+   ![Add dropdown](/grafana/media/docs/panels-visualizations/addPanelNoEmpty.png)
 
 ## Panel configuration
-
-To configure panels, refer to the following subtopics:
 
 - [Configure panel options](ref:configure-panel-options)
 - [Configure standard options](ref:configure-standard-options)
