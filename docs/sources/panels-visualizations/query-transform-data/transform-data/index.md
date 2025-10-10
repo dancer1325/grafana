@@ -81,30 +81,25 @@ refs:
 
 # Transform data
 
-Transformations are a powerful way to manipulate data returned by a query before the system applies a visualization. Using transformations, you can:
-
-- Rename fields
-- Join time series/SQL-like data
-- Perform mathematical operations across queries
-- Use the output of one transformation as the input to another transformation
-
-{{< docs/learning-journeys title="Transform data in a Grafana Cloud dashboard" url="https://grafana.com/docs/learning-journeys/data-transformation/" >}}
-
-For users that rely on multiple views of the same dataset, transformations offer an efficient method of creating and maintaining numerous dashboards.
-
-You can also use the output of one transformation as the input to another transformation, which results in a performance gain.
-
-> Sometimes the system cannot graph transformed data. When that happens, click the `Table view` toggle above the visualization to switch to a table view of the data. This can help you understand the final result of your transformations.
+* Transformations
+  * == manipulate data / returned by a query BEFORE visualizing
+  * allows
+    - Rename fields
+    - Join time series/SQL-like data
+    - Perform mathematical operations
+    - Use transformation1's output -- as -- transformation2's input
+  * [learning journey | Grafana Cloud](https://grafana.com/docs/learning-journeys/data-transformation/)
+  * use cases
+    * if you use multiple views | same dataset -> create & maintain numerous dashboards
 
 ## Transformation types
 
-Grafana provides a number of ways that you can transform data. For a complete list of transformations, refer to [Transformation functions](#transformation-functions).
+* [Transformation functions](#transformation-functions)
 
 ## Order of transformations
 
-When there are multiple transformations, Grafana applies them in the order they are listed. Each transformation creates a result set that then passes on to the next transformation in the processing pipeline.
-
-The order in which Grafana applies transformations directly impacts the results. For example, if you use a Reduce transformation to condense all the results of one column into a single value, then you can only apply transformations to that single value.
+* follow the order / they are listed
+* impact | results
 
 ## Dashboard variables in transformations
 
@@ -171,14 +166,12 @@ We recommend that you remove transformations that you don't need. When you delet
 
 ## Transformation functions
 
-You can perform the following transformations on your data.
-
 ### Add field from calculation
 
-Use this transformation to add a new field calculated from two other fields. Each transformation allows you to add one new field.
+* FROM 2 other fields, add a NEW field
 
 - **Mode** - Select a mode:
-  - **Reduce row** - Apply selected calculation on each row of selected fields independently.
+  - **Reduce row** - apply selected calculation / EACH row
   - **Binary operation** - Apply basic binary operations (for example, sum or multiply) on values in a single row from two selected fields.
   - **Unary operation** - Apply basic unary operations on values in a single row from a selected field. The available operations are:
     - **Absolute value (abs)** - Returns the absolute value of a given expression. It represents its distance from zero as a positive number.

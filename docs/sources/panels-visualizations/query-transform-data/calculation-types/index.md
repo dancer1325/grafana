@@ -16,12 +16,21 @@ weight: 1100
 
 # Calculation types
 
-The following table contains a list of calculations you can perform in Grafana. You can find these calculations in the **Transform** tab and in the bar gauge, gauge, stat, and table visualizations.
+* ⚠️requirements⚠️
+  * visualizations
+    * bar gauge, 
+    * gauge,
+    * stat,
+    * table visualizations
+
+* ways to apply calculation types
+  * Transformations > Reduce > Calculations
+  * Value options > Calculate > Calculation
 
 | Calculation        | Description                                               |
-| :----------------- | :-------------------------------------------------------- |
+| :----------------- |:----------------------------------------------------------|
 | 1st % - 99th %     | 1st - 99th percentile value.                              |
-| All nulls          | True when all values are null                             |
+| All nulls          | if ALL values are null -> true                            |
 | All unique values  | Array with all unique values                              |
 | All values         | Array with all values                                     |
 | All zeros          | True when all values are 0                                |
