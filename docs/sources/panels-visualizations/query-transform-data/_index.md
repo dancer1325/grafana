@@ -106,46 +106,28 @@ refs:
 
 ### Saved queries
 
-{{< admonition type="note" >}}
-Saved queries is currently in [public preview](https://grafana.com/docs/release-life-cycle/). Grafana Labs offers limited support, and breaking changes might occur prior to the feature being made generally available.
+* requirements
+  * Grafana Enterprise & Grafana Cloud
 
-This feature is only available on Grafana Enterprise and Grafana Cloud.
-{{< /admonition >}}
+* current status
+  * [public preview](https://grafana.com/docs/release-life-cycle/)
 
-You can save queries that you've created so they can be reused by you and others in your organization.
-This helps users across your organization create dashboards or find insights in Explore without having to create their own queries or know a query language.
-It also helps you avoid having several users build the same queries for the same data sources multiple times.
+* allows
+  * being reused -- by -- you & OTHERS | your organization
 
-You can see a list of these queries in the **Saved queries** drawer:
+* uses
+  * reuse queries
 
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-saved-queries-v12.2png.png" max-width="550px" alt="List of saved queries and the edit query form" caption="The Saved queries drawer accessed from Dashboards" >}}
+* **Saved queries** drawer
+  * * Explore > Add from saved queries
+  * enable filter by
+    * if you filter by MULTIPLE
+      * datasource -> `OR` operator
+      * user name -> `OR` operator
+      * tag -> `AND` operator
+  * duplicate, lock, unlock saved queries
 
-When you first open the drawer, the list of queries in the **All** tab is filtered by the data source of the panel.
-However, you can clear that filter to display all saved queries.
-
-The list in the **Favorites** tab is also filtered by data source, by default.
-The **Recent** tab displays the last 20 queries across all data sources from your **Query history** in Explore.
-From this tab, you can save queries for reuse as well.
-
-In the **Saved queries** drawer, you can:
-
-- Search for queries by data source name, query content, title, or description.
-- Sort queries alphabetically or by creation date.
-- Filter by data source name, author name, and tags (the tag filter uses the `OR` operator, while the others use the `AND` operator).
-- Set queries as favorites.
-- Duplicate, lock and unlock a query for editing, or delete a saved query.
-- Edit a query title, description, tags, or the availability of the query to other users in your organization. By default, saved queries are locked for editing.
-- When you access the **Saved queries** drawer from Explore, you can use the **Edit in Explore** option to edit the body of a query.
-
-Access the duplicate, lock, unlock, and delete query options through the menu in the top-right corner of the query form next to the **Edit** button.
-
-To access your saved queries, click **+ Add from saved queries** in the query editor:
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-add-from-saved-2-v12.2.png" max-width="750px" alt="Add a saved query" >}}
-
-If you've already entered a query, you also have the option to replace it with a saved one:
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-replace-w-saved-v12.2.png" max-width="750px" alt="Replace a query with a saved one" >}}
+![](/grafana/media/docs/panels-visualizations/SavedQuery.png)
 
 #### Save a query
 
@@ -194,36 +176,18 @@ For details, refer to [Data sources](ref:data-sources)
 
 ## Add a query
 
-* TODO:
-**To add a query:**
+1. Dashboard > choose 1 > choose 1 panel's Edit (== go to panel editor)
+1. | Data section > **Queries** tab
+   1. select a **Data source**
+   1. configure [Query options](#query-options)
+1. ways to add a query
+   - **Add query** by yourself
+   - **Add from saved queries**
+   - **Replace EXISTING query -- with -- saved query**
+1. [Save query](#saved-queries)
+   2. OPTIONAL
 
-1. Hover the cursor over any part of the panel to which you're adding a query to display the menu icon in the top-right corner.
-1. Click the menu and select **Edit**.
-1. In the panel editor, click the **Queries** tab.
-1. Click the **Data source** drop-down menu and select a data source.
-
-   If you're creating a new dashboard, you'll be prompted to select a data source when you add the first panel.
-
-1. Click **Query options** to configure the maximum number of data points you need.
-
-   For more information about query options, refer to [Query options](#query-options).
-
-1. To add a query, do one of the following:
-   - Write or construct a query in the query language of your data source.
-   - Click **+ Add from saved queries** to add a previously saved query.
-   - If you've already written a query, you can click the **Replace with saved query** icon to use a previously saved query instead.
-
-1. (Optional) To save the query for reuse, click the **Save query** icon.
-
-   {{< admonition type="note" >}}
-   [Saved queries](#saved-queries) is currently in [public preview](https://grafana.com/docs/release-life-cycle/). Grafana Labs offers limited support, and breaking changes might occur prior to the feature being made generally available.
-
-   This feature is only available on Grafana Enterprise and Grafana Cloud.
-   {{< /admonition >}}
-
-1. Click **Run queries**.
-
-Grafana queries the data source and visualizes the data.
+![](/grafana/media/docs/panels-visualizations/queryTransformAddQuery.png)
 
 ## Manage queries
 
