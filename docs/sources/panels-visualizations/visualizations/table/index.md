@@ -94,9 +94,8 @@ Annotations and alerts are not currently supported for tables.
 The following video provides a visual walkthrough of the options you can set in a table visualization.
 If you want to see a configuration in action, check out the video:
 
-{{< youtube id="PCY7O8EJeJY" >}}
-
-{{< docs/play title="Table Visualizations in Grafana" url="https://play.grafana.org/d/OhR1ID6Mk/" >}}
+* [Youtube](https://www.youtube.com/watch?v=PCY7O8EJeJY)
+* _Example:_ [here](https://play.grafana.org/d/OhR1ID6Mk/)
 
 ## Supported data formats
 

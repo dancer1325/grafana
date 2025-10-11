@@ -43,9 +43,9 @@ You can use gauges if you need to track:
 
 The following video provides beginner steps for creating gauge panels. You'll learn the data requirements and caveats, special customizations, and much more:
 
-{{< youtube id="QwXj3y_YpnE" >}}
+* [youtube](https://www.youtube.com/watch?v=QwXj3y_YpnE)
 
-{{< docs/play title="Grafana Gauge Visualization" url="https://play.grafana.org/d/KIhkVD6Gk/" >}}
+* _Example:_ [Grafana playground](https://play.grafana.org/d/KIhkVD6Gk/)
 
 ## Supported data formats
 

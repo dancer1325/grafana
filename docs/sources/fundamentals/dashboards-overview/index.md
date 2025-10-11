@@ -27,10 +27,11 @@ refs:
 
 * dashboard
   * == panelS / display data | beautiful visualizations (graphs, charts, ...) 
-    * gates | pass data
+    * gates | pass data in order
       * plugin, 
       * query,
-      * OPTIONAL transformation 
+      * transformation
+        * OPTIONAL
 
       ![](/grafana/media/docs/dashboards-overview/dashboard-component-architecture.png)
 

@@ -52,9 +52,8 @@ You can use the bar chart visualization if you need to show:
 
 The following video shows you how to create and configure a bar chart visualization:
 
-{{< youtube id="qyKE9-71KkE" >}}
-
-{{< docs/play title="Grafana Bar Charts and Pie Charts" url="https://play.grafana.org/d/ktMs4D6Mk/" >}}
+* [Youtube](https://www.youtube.com/watch?v=qyKE9-71KkE)
+* _Example:_ [here](https://play.grafana.org/d/ktMs4D6Mk/)
 
 ## Supported data formats
 

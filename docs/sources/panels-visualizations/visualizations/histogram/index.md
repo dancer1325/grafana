@@ -43,9 +43,8 @@ You can use a histogram visualization if you need to:
 
 After you've created a [dashboard](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/build-dashboards/create-dashboard/), the following video shows you how to configure a histogram visualization:
 
-{{< youtube id="QfJ480j9-KM" >}}
-
-{{< docs/play title="Histogram Examples" url="https://play.grafana.org/d/histogram_tests/" >}}
+* [Youtube](https://www.youtube.com/watch?v=QfJ480j9-KM)
+* _Example:_ [here](https://play.grafana.org/d/histogram_tests/)
 
 ## Supported data formats
 

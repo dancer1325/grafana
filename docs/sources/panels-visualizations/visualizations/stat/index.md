@@ -48,7 +48,7 @@ Use a stat visualization when you need to:
 - Display aggregated data, such as the average response time of your services.
 - Highlight values above your normal thresholds to quickly identify if any metrics are outside your expected range.
 
-{{< docs/play title="Stat Visualizations in Grafana" url="https://play.grafana.org/d/Zb3f4veGk/" >}}
+* _Example:_ [Grafana playground](https://play.grafana.org/d/Zb3f4veGk/)
 
 ## Configure a stat visualization
 

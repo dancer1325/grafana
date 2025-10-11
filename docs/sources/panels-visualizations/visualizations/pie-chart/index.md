@@ -45,9 +45,8 @@ You can use a pie chart if you need to compare:
 
 The following video guides you through the creation steps and common customizations of pie chart visualizations and is great for beginners:
 
-{{< youtube id="A_lDhM9w4_g" >}}
-
-{{< docs/play title="Grafana Bar Charts and Pie Charts" url="https://play.grafana.org/d/ktMs4D6Mk/" >}}
+* [Youtube](https://www.youtube.com/watch?v=A_lDhM9w4_g)
+* _Example:_ [here](https://play.grafana.org/d/ktMs4D6Mk/)
 
 ## Supported data formats
 
