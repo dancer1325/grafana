@@ -246,37 +246,22 @@ You can also remove a connection by clicking **Delete**.
 
 ## Provision the Prometheus data source
 
-You can define and configure the data source in YAML files as part of the Grafana provisioning system. For more information about provisioning, and for available configuration options, refer to [Provision Grafana](ref:provision-grafana).
-
-{{< admonition type="note" >}}
-After you have provisioned a data source you cannot edit it.
-{{< /admonition >}}
+* configure -- via -- grafana.ini
+  * [Provision Grafana](ref:provision-grafana)
 
 ## Azure authentication settings
 
-The Prometheus data source works with Azure authentication. To configure Azure authentication refer to [Configure Azure Active Directory (AD) authentication](ref:azure-active-directory).
+* Prometheus data source
+  * works -- with -- Azure authentication
+    * [how to configure Azure Active Directory (AD) authentication](ref:azure-active-directory)
+    * ❌NOT enable `Forward OAuth identity`❌
+      * Reason: 🧠 BOTH methods use the SAME HTTP authorization headers
+        * OAuth token will override your Azure credentials🧠
 
-In Grafana Enterprise, you need to update the .ini configuration file. Refer to [Configuration file location](ref:configure-grafana-configuration-file-location) to locate your .ini file.
+* | Grafana Enterprise,
+  * update the '.ini"
 
-Add the following setting in the **[auth]** section of the .ini configuration file:
-
-```bash
-[auth]
-azure_auth_enabled = true
-```
-
-{{< admonition type="note" >}}
-If you are using Azure authentication, don't enable `Forward OAuth identity`. Both methods use the same HTTP authorization headers, and the OAuth token will override your Azure credentials.
-{{< /admonition >}}
-
-## Recording rules (beta)
-
-You can configure the Prometheus data source to disable recording rules in the data source configuration or provisioning file under `disableRecordingRules` in jsonData.
-
-## Troubleshooting configuration issues
-
-Refer to the following troubleshooting information as needed.
-
-**Data doesn't appear in Metrics Drilldown:**
-
-If you have successfully tested the connection to a Prometheus data source or are sending metrics to Grafana Cloud and there is no metric data appearing in Explore, make sure you've selected the correct data source from the data source drop-down menu. When using `remote_write` to send metrics to Grafana Cloud, the data source name follows the convention `grafanacloud-stackname-prom`.
+    ```bash
+    [auth]
+    azure_auth_enabled = true
+    ```

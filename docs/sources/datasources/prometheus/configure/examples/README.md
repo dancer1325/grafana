@@ -6,10 +6,10 @@
 * `docker compose up -d`
   * Problems:
     * Problem1: " chown */grafana/docs/sources/datasources/prometheus/configure/examples/grafana/provisioning: operation not permitted"
-      * Solution: hit again the command
+      * Solution: hit again the command OR `mkdir -p grafana`
 * http://localhost:3000/
   * Connections > Add new connection > Prometheus
-    * Prometheus server URL: http://host.docker.internal:9090
+    * Prometheus server URL: http://host.docker.internal:9090 
 * Grafana added Prometheus -- as -- data source
   * http://localhost:3000/
     * Explore > Prometheus
@@ -37,3 +37,4 @@
   
   ![img.png](defaultDashboard.png)
 
+## TODO:
