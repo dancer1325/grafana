@@ -107,21 +107,10 @@ refs:
 
 # Configure field overrides
 
-Overrides allow you to customize visualization settings for specific fields or series. When you add an override rule, it targets a particular set of fields and lets you define multiple options for how that field is displayed.
-
-For example, you can override the default unit measurement for all fields that include the text "bytes" by adding an override using the **Fields with name matching regex** matcher and then the **Standard options > Unit** setting to the override rule:
-
-![Field with unit override](/media/docs/grafana/panels-visualizations/screenshot-unit-override-v10.3.png)
-
-After you've set them, your overrides appear in both the **All** and **Overrides** tabs of the panel editor pane:
-
-![All and Overrides tabs of panel editor pane](/media/docs/grafana/panels-visualizations/screenshot-all-overrides-tabs-v11.png)
+* allow you to
+  * customize visualization settings / specific fields or series
 
 ## Supported visualizations
-
-You can configure field overrides for the following visualizations:
-
-{{< column-list >}}
 
 - [Bar chart](ref:bar-chart)
 - [Bar gauge](ref:bar-gauge)
@@ -140,31 +129,33 @@ You can configure field overrides for the following visualizations:
 - [Trend](ref:trend)
 - [XY chart](ref:xy-chart)
 
-{{< /column-list >}}
-
 ## Override rules
-
-You can choose from five types of override rules, which are described in the following sections.
 
 ### Fields with name
 
-Select a field from the list of all available fields. Properties you add to this type of rule are only applied to this single field.
+Select a field from the list of all available fields
+* Properties you add to this type of rule are only applied to this single field.
 
 ### Fields with name matching regex
 
-Specify fields to override with a regular expression. Properties you add to this type of rule are applied to all fields where the field name matches the regular expression. This override doesn't rename the field; to do this, use the [Rename by regex transformation](ref:rename-by-regex-transformation).
+Specify fields to override with a regular expression
+* Properties you add to this type of rule are applied to all fields where the field name matches the regular expression
+* This override doesn't rename the field; to do this, use the [Rename by regex transformation](ref:rename-by-regex-transformation).
 
 ### Fields with type
 
-Select fields by type, such as string, numeric, or time. Properties you add to this type of rule are applied to all fields that match the selected type.
+Select fields by type, such as string, numeric, or time
+* Properties you add to this type of rule are applied to all fields that match the selected type.
 
 ### Fields returned by query
 
-Select all fields returned by a specific query, such as A, B, or C. Properties you add to this type of rule are applied to all fields returned by the selected query.
+Select all fields returned by a specific query, such as A, B, or C
+* Properties you add to this type of rule are applied to all fields returned by the selected query.
 
 ### Fields with values
 
-Select all fields returned by your defined reducer condition, such as **Min**, **Max**, **Count**, **Total**. Properties you add to this type of rule are applied to all fields returned by the selected condition.
+Select all fields returned by your defined reducer condition, such as **Min**, **Max**, **Count**, **Total**
+* Properties you add to this type of rule are applied to all fields returned by the selected condition.
 
 ## Examples
 
@@ -180,7 +171,8 @@ The following result set is a data frame that consists of two fields: time and t
 | 2020-01-02 03:05:00 |    47.0     |
 | 2020-01-02 03:06:00 |    48.0     |
 
-You can apply field options to each field (column) of this structure to alter the way its values are displayed. For example, you can set the following override rule:
+You can apply field options to each field (column) of this structure to alter the way its values are displayed
+* For example, you can set the following override rule:
 
 - Rule: **Fields with type**
 - Field: temperature
@@ -195,7 +187,8 @@ This results in the following table:
 | 2020-01-02 03:05:00 |   47.0 °C   |
 | 2020-01-02 03:06:00 |   48.0 °C   |
 
-In addition, the decimal place isn't required, so you can remove it by adding another override property that changes the **Standard options > Decimals** setting from **auto** to `0`. That results in the following table:
+In addition, the decimal place isn't required, so you can remove it by adding another override property that changes the **Standard options > Decimals** setting from **auto** to `0`
+* That results in the following table:
 
 |        time         | temperature |
 | :-----------------: | :---------: |
@@ -230,7 +223,9 @@ This results in the following table:
 | 2020-01-02 03:05:00 | 47 °C     | 34 °C    | 68 °C    |
 | 2020-01-02 03:06:00 | 48 °C     | 31 °C    | 68 °C    |
 
-The temperature fields are displaying correctly, but the humidity has incorrect units. You can fix this by applying a **Misc > Percent (0-100)** override to the humidity field. This results in the following table:
+The temperature fields are displaying correctly, but the humidity has incorrect units
+* You can fix this by applying a **Misc > Percent (0-100)** override to the humidity field
+* This results in the following table:
 
 | time                | high temp | low temp | humidity |
 | ------------------- | --------- | -------- | -------- |

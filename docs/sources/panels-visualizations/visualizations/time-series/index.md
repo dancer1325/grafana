@@ -59,7 +59,7 @@ refs:
 
     ![](/grafana/media/docs/panels-visualizations/screenshot-time-series-v12.0.png)
   * uses
-    * display large numbers of timed data points / hard to track | table or list
+    * 💡display large numbers of timed data points / hard to track | table or list💡
   * _Examples:_
     - Temperature variations | day
     - daily progress of your retirement account
@@ -84,31 +84,30 @@ refs:
 
 ## Alert rules
 
-You can [link alert rules](ref:link-alert) to time series visualizations in the form of annotations to observe when alerts fire and are resolved
-* In addition, you can create alert rules from the **Alert** tab within the [panel editor](ref:panel-data-section).
+* [link alert rules](ref:link-alert)
 
 ## Special overrides
 
-The following overrides help you further refine a time series visualization.
-
 ### Transform override property
 
-Use the **Graph styles > Transform** [override property](#field-overrides) to transform series values without affecting the values shown in the tooltip, context menu, or legend
-* Choose from the following transform options:
+* allows
+  * transform series values 
+    * WITHOUT affecting the values | tooltip, context menu, or legend
+* Add field override > whatever > **Graph styles > Transform** [override property](#field-overrides)
 
-- **Constant** - Show the first value as a constant line.
-- **Negative Y transform** - Flip the results to negative values on the y-axis.
+* ALLOWED values
+  - **Constant**
+    - FIRST value == constant line
+  - **Negative Y transform** 
+    - results | y-axis
+      - are flipped -- to -- negative values 
 
 ### Fill below to override property
 
-The **Graph styles > Fill below to** [override property](#field-overrides) fills the area between two series
-* When you configure the property, select the series for which you want the fill to stop.
-
-The following example shows three series: Min, Max, and Value
-* The Min and Max series have **Line width** set to 0
-* Max has a **Fill below to** override set to Min, which fills the area between Max and Min with the Max line color.
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-fill-below-to-v12.0.png" max-width="600px" alt="Fill below to example" >}}
+* allows
+  * fills the area BETWEEN 2 series /
+    * ⚠️select the series | fill BELOW⚠️
+* Add field override > whatever > **Graph styles > Fill below to** [override property](#field-overrides)
 
 {{< docs/shared lookup="visualizations/multiple-y-axes.md" source="grafana" version="<GRAFANA_VERSION>" leveloffset="+2" >}}
 

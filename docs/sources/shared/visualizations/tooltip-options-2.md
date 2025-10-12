@@ -6,38 +6,43 @@ comments: |
   This file is used in the following visualizations: time series, trend
 ---
 
-Tooltip options control the information overlay that appears when you hover over data points in the visualization.
+* Tooltip options
+  * == information / overlay | hover over | visualization's data points
 
-| Option                                  | Description                                                                                                                                                                            |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Tooltip mode](#tooltip-mode)           | When you hover your cursor over the visualization, Grafana can display tooltips. Choose how tooltips behave.                                                                           |
-| [Values sort order](#values-sort-order) | This option controls the order in which values are listed in a tooltip.                                                                                                                |
-| Hide zeros                              | When you set the **Tooltip mode** to **All**, the **Hide zeros** option is displayed. This option controls whether or not series with `0` values are shown in the list in the tooltip. |
-| [Hover proximity](#hover-proximity)     | Set the hover proximity (in pixels) to control how close the cursor must be to a data point to trigger the tooltip to display.                                                         |
-| Max width                               | Set the maximum width of the tooltip box.                                                                                                                                              |
-| Max height                              | Set the maximum height of the tooltip box. The default is 600 pixels.                                                                                                                  |
+| Option                                  | Description                                                                              |
+|-----------------------------------------|------------------------------------------------------------------------------------------|
+| [Tooltip mode](#tooltip-mode)           | == tooltips behave                                                                       |
+| [Values sort order](#values-sort-order) | value order \| tooltip                                                                   |
+| Hide zeros                              | if true -> series / `0` values, NOT displayed \| tooltip                                 |
+| [Hover proximity](#hover-proximity)     | == how close (pixels) the cursor -- to a -- data point / trigger the tooltip |
+| Max width                               | maximum width (\|pixels) of the tooltip box                                              |
+| Max height                              | maximum height (\|pixels) of the tooltip box <br/> by default, 600 pixels                |
 
 ### Tooltip mode
 
-When you hover your cursor over the visualization, Grafana can display tooltips. Choose how tooltips behave.
-
-- **Single -** The hover tooltip shows only a single series, the one that you are hovering over on the visualization.
-- **All -** The hover tooltip shows all series in the visualization. Grafana highlights the series that you are hovering over in bold in the series list in the tooltip.
-- **Hidden -** Do not display the tooltip when you interact with the visualization.
-
-Use an override to hide individual series from the tooltip.
+* == how tooltips behave
+  - **Single -**
+    - shows ONLY 1! series (serie | you hover)
+  - **All -** 
+    - shows ALL visualization's series /
+      - hovered over serie is bold highlighted
+  - **Hidden -** 
+    - NOT display the tooltip
 
 ### Values sort order
 
-When you set the **Tooltip mode** to **All**, the **Values sort order** option is displayed. This option controls the order in which values are listed in a tooltip. Choose from the following:
+* requirements
+  * **Tooltip mode** == **All**
 
-- **None** - Grafana automatically sorts the values displayed in a tooltip.
-- **Ascending** - Values in the tooltip are listed from smallest to largest.
-- **Descending** - Values in the tooltip are listed from largest to smallest.
+* == values order | tooltip
+  - **None**
+    - Grafana AUTOMATICALLY sorts
+  - **Ascending**
+    - from smallest to largest
+  - **Descending**
+    - from largest to smallest
 
-### Hover proximity
+### Hide zeros
 
-Set the hover proximity (in pixels) to control how close the cursor must be to a data point to trigger the tooltip to display.
-The following screen recording shows this option in a time series visualization:
-
-![Adding a hover proximity limit for tooltips](/media/docs/grafana/gif-grafana-10-4-hover-proximity.gif)
+* requirements
+  * **Tooltip mode** == **All**

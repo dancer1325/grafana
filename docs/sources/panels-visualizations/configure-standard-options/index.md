@@ -117,17 +117,15 @@ refs:
 
 # Configure standard options
 
-**Standard options** in the panel editor pane let you change how field data is displayed in your visualizations. Options that you apply don't change the data, they just change how Grafana _displays_ the data.
+**Standard options** in the panel editor pane let you change how field data is displayed in your visualizations
+* Options that you apply don't change the data, they just change how Grafana _displays_ the data.
 
-When you set a standard option, the change is applied to all fields or series. For example, if you set the **Unit** option to **Percentage**, all fields with numeric values are displayed as percentages.
+When you set a standard option, the change is applied to all fields or series
+* For example, if you set the **Unit** option to **Percentage**, all fields with numeric values are displayed as percentages.
 
 For more granular control over the display of fields, refer to [Configure overrides](ref:configure-overrides).
 
 ## Supported visualizations
-
-You can configure standard options for the following visualizations:
-
-{{< column-list >}}
 
 - [Bar chart](ref:bar-chart)
 - [Bar gauge](ref:bar-gauge)
@@ -145,13 +143,12 @@ You can configure standard options for the following visualizations:
 - [Trend](ref:trend)
 - [XY chart](ref:xy-chart)
 
-{{< /column-list >}}
-
 ## Standard options
 
 This section explains all available standard options.
 
-To set these options, expand the **Standard options** section in the panel editor pane. Most field options won't affect the visualization until you click outside of the field option box you're editing or press Enter.
+To set these options, expand the **Standard options** section in the panel editor pane
+* Most field options won't affect the visualization until you click outside of the field option box you're editing or press Enter.
 
 {{< admonition type="note" >}}
 Not all of the options listed apply to all visualizations with standard options.
@@ -159,15 +156,20 @@ Not all of the options listed apply to all visualizations with standard options.
 
 ### Unit
 
-This option lets you choose which unit a field should use. Click in the **Unit** field, then drill down until you find the unit you want. The unit you select is applied to all fields except time.
+This option lets you choose which unit a field should use
+* Click in the **Unit** field, then drill down until you find the unit you want
+* The unit you select is applied to all fields except time.
 
 #### Custom units
 
 You can also use the **Unit** drop-down to specify custom units, custom prefixes or suffixes, and date time formats.
 
-To set a custom unit, enter the unit you want to use and then select it in the drop-down. It'll be the last option listed. For example, if you enter a unit called "Hearts", the drop-down will then include the option **Custom unit: Hearts**.
+To set a custom unit, enter the unit you want to use and then select it in the drop-down
+* It'll be the last option listed
+* For example, if you enter a unit called "Hearts", the drop-down will then include the option **Custom unit: Hearts**.
 
-You can further define a custom unit with specific syntax. For example, to set a custom currency unit called "Gems", enter `currency:Gems` in the field. The drop-down will include the option **Custom unit: currency:Gems**:
+You can further define a custom unit with specific syntax
+* For example, to set a custom currency unit called "Gems", enter `currency:Gems` in the field. The drop-down will include the option **Custom unit: currency:Gems**:
 
 ![A custom currency unit called Gems in the Unit drop-down](/media/docs/grafana/panels-visualizations/custom_unit_currency_v11.0.png)
 

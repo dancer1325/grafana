@@ -176,7 +176,9 @@ You can configure data links for the following visualizations:
 
 ## Actions
 
-Using actions, you can trigger processes like starting or shutting down a server, directly from a dashboard panel. [API settings](ref:api-settings) are configured in the **Add action** dialog box. You can also pass variables in the API editor.
+* uses
+  * start OR shut down a server
+* [API settings](ref:api-settings)
 
 ### Supported visualizations
 
