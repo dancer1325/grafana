@@ -1,3 +1,9 @@
+# default way / show the variations of a set of data values | time
+* `docker run -d -p 3000:3000 grafana/grafana`
+* http://localhost:3000/
+* admin / admin
+* **Dashboards** > **New** > **Add visualization** > preselect the time series
+
 # if there are >1 numerical data -> EACH one is plotted | NEW line, point, or bar labeled
 * [link](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=2025-10-10T06:26:43.638Z&to=2025-10-10T07:26:43.638Z&timezone=browser&editPanel=1&viewPanel=panel-1)
 

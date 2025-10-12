@@ -34,36 +34,50 @@ comments: |
   * **Bars**,
   * **Points**
 
-You can use overrides to combine multiple styles in the same graph. Choose from the following:
-
-![Graph style examples](/media/docs/grafana/panels-visualizations/screenshot-time-style-v12.0.png)
-
 #### Line interpolation
 
-Choose how the graph interpolates the series line:
+* requirements
+  * style = lines
 
-- **Linear** - Points are joined by straight lines.
-- **Smooth** - Points are joined by curved lines that smooths transitions between points.
-- **Step before** - The line is displayed as steps between points. Points are rendered at the end of the step.
-- **Step after** - The line is displayed as steps between points. Points are rendered at the beginning of the step.
-
-![Line interpolation examples](/media/docs/grafana/panels-visualizations/screenshot-time-interpolation-v12.0.png)
+* way to interpolate the serie
+  - **Linear**
+    - points / joined -- by -- straight lines
+  - **Smooth** 
+    - points / joined -- by -- curved lines == smooths transitions
+  - **Step before**
+    - line == steps BETWEEN points /
+      - points are rendered | end of the step
+  - **Step after** 
+    - line == steps BETWEEN points /
+      - points are rendered | beginning of the step
 
 #### Gradient mode
 
-Choose a gradient mode to control the gradient fill, which is based on the series color. To change the color, use the standard color scheme field option. For more information, refer to [Color scheme](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/configure-standard-options/#color-scheme).
+* requirements
+  * style = lines OR bars
 
-- **None** - No gradient fill. This is the default setting.
-- **Opacity** - An opacity gradient where the opacity of the fill increases as y-axis values increase.
-- **Hue** - A subtle gradient that's based on the hue of the series color.
-- **Scheme** - A color gradient defined by your [Color scheme](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/configure-standard-options/#color-scheme). This setting is used for the fill area and line. For more information about scheme, refer to [Scheme gradient mode](#scheme-gradient-mode).
+* gradient fill
+  * == 👀fill the area BETWEEN line -- & -- axis X👀 /
+    * degraded colour
 
-Gradient appearance is influenced by the **Fill opacity** setting. The following image shows the **Fill opacity** set to 50.
-
-![Gradient mode examples](/media/docs/grafana/panels-visualizations/screenshot-time-gradient-v12.0.png)
+* control the gradient fill 
+  * -- based on the -- series color & **Fill opacity**
+  * ALLOWED values
+    - **None** 
+      - NO gradient fill
+      - default
+    - **Opacity**
+      - increases -- proportionally to -- y-axis
+    - **Hue**
+      - A subtle gradient that's based on the hue of the series color.
+    - **Scheme**
+      - -- based on -- your [Color scheme](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/configure-standard-options/#color-scheme)
+      - used | fill area -- & -- line
+      - see [Scheme gradient mode](#scheme-gradient-mode)
 
 ##### Scheme gradient mode
 
+* TODO:
 In **Scheme** gradient mode, the line or bar receives a gradient color defined from the selected **Color scheme** option in the visualization's **Standard** options.
 
 The following image shows a line chart with the **Green-Yellow-Red (by value)** color scheme option selected:
@@ -76,30 +90,44 @@ If the **Color scheme** is set to **From thresholds (by value)** and **Gradient 
 
 #### Line style
 
-Choose a solid, dashed, or dotted line style:
+* requirements
+  * style = lines
 
-- **Solid** - Display a solid line. This is the default setting.
-- **Dash** - Display a dashed line. When you choose this option, a list appears for you to select the length and gap (length, gap) for the line dashes. Dash spacing is 10, 10 by default.
-- **Dots** - Display dotted lines. When you choose this option, a list appears for you to select the gap (length = 0, gap) for the dot spacing. Dot spacing is 0, 10 by default.
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-time-line-style-v12.0.png" max-width="550px" alt="Line style examples" >}}
-
-{{< docs/shared lookup="visualizations/connect-null-values.md" source="grafana" version="<GRAFANA_VERSION>" leveloffset="+1" >}}
-
-{{< docs/shared lookup="visualizations/disconnect-values.md" source="grafana" version="<GRAFANA_VERSION>" leveloffset="+1" >}}
-
-To change the color, use the standard [color scheme](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/panels-visualizations/configure-standard-options/#color-scheme) field option.
+* ALLOWED values
+  - **Solid** 
+    - == solid line
+    - default
+  - **Dash** 
+    - == dashed line
+      - == (length, gap) / line dashes
+        - by default,
+          - 10, 10 
+  - **Dots**
+    - == dotted lines
+      - == (length = 0, gap) for the dot spacing
+        - by default,
+          - 0, 10 
 
 #### Show points
 
-Set whether to show data points as lines or bars. Choose from the following:
+* requirements
+  * style = lines
 
-- **Auto** - Grafana determines a point's visibility based on the density of the data. If the density is low, then points appear.
-- **Always** - Show the points regardless of how dense the dataset is.
-- **Never** - Don't show points.
+* == shot real data points
+
+* ALLOWED values
+  - **Auto**
+    - point's visibility -- based on the -- density of the data (== space BETWEEN data points)
+      - if the density is low -> points appear
+  - **Always**
+    - show ALWAYS the data points
+      - -- regardless of -- density of the data
+  - **Never**
+    - NOT show
 
 #### Stack series
 
+* TODO: 
 Set whether Grafana stacks or displays series on top of each other. Be cautious when using stacking because it can create misleading graphs. To read more about why stacking might not be the best approach, refer to [The issue with stacking](https://www.data-to-viz.com/caveat/stacking.html). Choose from the following:
 
 - **Off** - Turns off series stacking. When **Off**, all series share the same space in the visualization.
