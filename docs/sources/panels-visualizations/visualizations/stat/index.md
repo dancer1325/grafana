@@ -90,7 +90,6 @@ refs:
 | Limit       | requirements: show == **All values** <br/> == MAXIMUM number of rows / display                                                                                                                      |
 | Fields      | field / display \| visualization  <br/>  &nbsp;&nbsp; -- depend on -- AVAILABLE fields                                                                                                              |
 
-<!-- prettier-ignore-end -->
 
 ### Stat styles
 
