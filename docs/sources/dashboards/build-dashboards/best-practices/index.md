@@ -70,93 +70,119 @@ refs:
 
 # Grafana dashboard best practices
 
-This section provides information about best practices for intermediate Grafana administrators and users about how to build and maintain Grafana dashboards.
-
-For more information about the different kinds of dashboards you can create, refer to [Grafana dashboards: A complete guide to all the different types you can build](https://grafana.com/blog/2022/06/06/grafana-dashboards-a-complete-guide-to-all-the-different-types-you-can-build/?pg=webinar-getting-started-with-grafana-dashboard-design-amer&plcmt=related-content-1).
+* audience
+  * Grafana administrators
+  * how to build & maintain Grafana dashboards
 
 ## Common observability strategies
 
-When you have a lot to monitor, like a server farm, you need a strategy to decide what is important enough to monitor. This page describes several common methods for choosing what to monitor.
-
-A logical strategy allows you to make uniform dashboards and scale your observability platform more easily.
+* == what to monitor
+* allows you to
+  * make uniform dashboards
+  * scale your observability platform MORE easily
 
 ### Guidelines for usage
 
-- The USE method tells you how happy your machines are, the RED method tells you how happy your users are.
-- USE reports on causes of issues.
-- RED reports on user experience and is more likely to report symptoms of problems.
-- The best practice of alerting is to alert on symptoms rather than causes, so alerting should be done on RED dashboards.
+- USE 
+  - method
+    - tells you
+      - how happy your machines are
+  - 👀reports | causes of issues👀
+- RED 
+  - method
+    - tells you
+      - how happy your users are
+  - 👀reports | user experience 
+    - == symptoms of problems👀
 
 ### USE method
 
-USE stands for:
+* USE ==
+  - **Utilization**
+    - Percent time / resource is busy
+      - _Example:_ node CPU usage
+  - **Saturation**
+    - work / resource has to do
+      - _Example:_ queue length OR node load
+  - **Errors**
+    - Count of error events
 
-- **Utilization -** Percent time the resource is busy, such as node CPU usage
-- **Saturation -** Amount of work a resource has to do, often queue length or node load
-- **Errors -** Count of error events
+* use cases
+  * hardware resources | infrastructure
+    * _Example:_ CPU, memory, and network devices
 
-This method is best for hardware resources in infrastructure, such as CPU, memory, and network devices. For more information, refer to [The USE Method](http://www.brendangregg.com/usemethod.html).
+* MORE [USE Method](http://www.brendangregg.com/usemethod.html)
+* _Example:_ TODO:
 
 ### RED method
 
-RED stands for:
+* RED ==
+  - **Rate**
+    - Requests / second
+  - **Errors** 
+    - NUMBER of requests / are failing
+  - **Duration** 
+    - time / these requests take
 
-- **Rate -** Requests per second
-- **Errors -** Number of requests that are failing
-- **Duration -** Amount of time these requests take, distribution of latency measurements
+* use cases
+  * services
+  * alerting & SLAs 
 
-This method is most applicable to services, especially a microservices environment. For each of your services, instrument the code to expose these metrics for each component. RED dashboards are good for alerting and SLAs. A well-designed RED dashboard is a proxy for user experience.
+* RED dashboard
+  * == proxy -- for -- user experience
 
-For more information, refer to Tom Wilkie's blog post [The RED method: How to instrument your services](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services).
+* [The RED method: How to instrument your services](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services)
+* _Example:_ TODO:
 
 ### The Four Golden Signals
 
-According to the [Google SRE handbook](https://landing.google.com/sre/sre-book/chapters/monitoring-distributed-systems/#xref_monitoring_golden-signals), if you can only measure four metrics of your user-facing system, focus on these four.
+* == user-facing system's metrics 
+  * _Examples of user-facing system:_ web, API, app, ...
 
-This method is similar to the RED method, but it includes saturation.
+* == RED method + saturation
 
-- **Latency -** Time taken to serve a request
-- **Traffic -** How much demand is placed on your system
-- **Errors -** Rate of requests that are failing
-- **Saturation -** How "full" your system is
+- **Latency -**
+  - time taken -- to -- serve a request
+- **Traffic -** 
+  - how much demand | your system
+- **Errors -** 
+  - rate of requests / are failing
+- **Saturation -** 
+  - how "full" your system is
 
-{{< docs/play title="The Four Golden Signals" url="https://play.grafana.org/d/000000109/" >}}
+* see [Google SRE handbook](https://landing.google.com/sre/sre-book/chapters/monitoring-distributed-systems/#xref_monitoring_golden-signals)
+
+* _Example:_ [here](https://play.grafana.org/d/000000109/)
 
 ## Dashboard management maturity model
 
-_Dashboard management maturity_ refers to how well-designed and efficient your dashboard ecosystem is. It's recommended that you periodically review your dashboard setup to gauge where you are and how you can improve.
+* _Dashboard management maturity_ 
+  * == how well-designed & efficient your dashboard ecosystem is
 
-Broadly speaking, dashboard maturity can be defined as low, medium, or high.
-
-Much of the content for this topic was taken from the KubeCon 2019 talk [Fool-Proof Kubernetes Dashboards for Sleep-Deprived Oncalls](https://www.youtube.com/watch?v=YE2aQFiMGfY).
+* [Fool-Proof Kubernetes Dashboards for Sleep-Deprived Oncalls](https://www.youtube.com/watch?v=YE2aQFiMGfY)
 
 ### Low - default state
 
-At this stage, you have no coherent dashboard management strategy. Almost everyone starts here.
+* NO coherent dashboard management strategy
 
-How can you tell you are here?
-
-- Everyone can modify your dashboards.
-- Lots of copied dashboards, little to no dashboard reuse.
-- One-off dashboards that hang around forever.
-- No version control (dashboard JSON in version control).
-- Lots of browsing for dashboards, searching for the right dashboard. This means lots of wasted time trying to find the dashboard you need.
-- Not having any alerts to direct you to the right dashboard.
+* symptoms to be here
+  - everyone can modify your dashboards
+  - copied dashboards
+    - == NO dashboard reuse
+  - NO version control
+  - NO alerts / direct you -- to the -- right dashboard
 
 ### Medium - methodical dashboards
 
-At this stage, you are starting to manage your dashboard use with methodical dashboards. You might have laid out a strategy, but there are some things you could improve.
+* symptoms to be here
+  - prevent duplicated dashboards -- via -- template variables
+    - Even better, you can make the data source a template variable too, so you can reuse the same dashboard across different clusters and monitoring backends.
 
-How can you tell you are here?
-
-- Prevent sprawl by using template variables. For example, you don't need a separate dashboard for each node, you can use query variables. Even better, you can make the data source a template variable too, so you can reuse the same dashboard across different clusters and monitoring backends.
-
-  Refer to the list of [Variable examples](ref:variable-examples) if you want some ideas.
+      Refer to the list of [Variable examples](ref:variable-examples) if you want some ideas.
 
 - Methodical dashboards according to an [observability strategy](#common-observability-strategies).
 - Hierarchical dashboards with drill-downs to the next level.
 
-  {{< figure class="float-right"  max-width="100%" src="/static/img/docs/best-practices/drill-down-example.png" caption="Example of using drill-down" >}}
 
 - Dashboard design reflects service hierarchies. The example shown below uses the RED method (request and error rate on the left, latency duration on the right) with one row per service. The row order reflects the data flow.
 
