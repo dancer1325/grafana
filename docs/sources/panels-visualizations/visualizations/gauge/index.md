@@ -95,7 +95,6 @@ refs:
 * uses
   * refine how your visualization displays its values
 
-<!-- prettier-ignore-start -->
 | Option      | Description                                                                                                                                                                                         |
 |-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Show        | <ul><li>**Calculate** <br/> &nbsp;&nbsp; display 1! value -- based on -- ALL rows</li><li>**All values** <br/> &nbsp;&nbsp; display SEPARATE stat / EACH row                                        |

@@ -41,11 +41,8 @@ You can use a bar gauge visualization when you need to show:
 
 ## Configure a bar gauge visualization
 
-The following video shows you how to create and configure a bar gauge visualization:
-
-{{< youtube id="7PhDysObEXA" >}}
-
-{{< docs/play title="Bar Gauge" url="https://play.grafana.org/d/vmie2cmWz/" >}}
+* [youtube](https://www.youtube.com/watch?v=7PhDysObEXA)
+* _Example:_ [Grafana playground](https://play.grafana.org/d/vmie2cmWz/)
 
 ## Supported data formats
 
