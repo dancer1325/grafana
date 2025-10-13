@@ -68,55 +68,40 @@ refs:
 
 # Table
 
-Tables are a highly flexible visualization designed to display data in columns and rows.
-The table visualization can take multiple datasets and provide the option to switch between them.
-With this versatility, it's the preferred visualization for viewing multiple data types, aiding in your data analysis needs.
+* Tables
+  * highly flexible
+  * allows
+    * display data | columns & rows
+      * 👀EACH table cell can be visualized 👀-- as --
+        * colored text
+        * gauges,
+        * sparklines,
+        * data links,
+        * JSON code,
+        * images
+  * uses
+    * MULTIPLE datasets
+      * Common database queries like logs, traces, metrics
+      - Financial reports
+      - Customer lists
+      - Product catalogs
+      - spreadsheet
 
-![Basic table visualization](/media/docs/grafana/panels-visualizations/screenshot-basic-table-v11.3.png)
-
-You can use a table visualization to show datasets such as:
-
-- Common database queries like logs, traces, metrics
-- Financial reports
-- Customer lists
-- Product catalogs
-
-Any information you might want to put in a spreadsheet can often be best visualized in a table.
-
-Tables also provide different styles to visualize data inside the table cells, such as colored text and cell backgrounds, gauges, sparklines, data links, JSON code, and images.
-
-{{< admonition type="note" >}}
-Annotations and alerts are not currently supported for tables.
-{{< /admonition >}}
+* NOT support
+  * Annotations
+  * alerts
 
 ## Configure a table visualization
-
-The following video provides a visual walkthrough of the options you can set in a table visualization.
-If you want to see a configuration in action, check out the video:
 
 * [Youtube](https://www.youtube.com/watch?v=PCY7O8EJeJY)
 * _Example:_ [here](https://play.grafana.org/d/OhR1ID6Mk/)
 
 ## Supported data formats
 
-The table visualization supports any data that has a column-row structure.
+* 's input
+  * data / has column-row structure
 
-{{< admonition type="note" >}}
-If you’re using a cell type such as sparkline or JSON, the data requirements may differ in a way that’s specific to that type. For more info refer to [Cell type](#cell-type).
-{{< /admonition >}}
-
-### Example
-
-This example shows a basic dataset in which there's data for every table cell:
-
-```csv
-Column1, Column2, Column3
-value1 , value2 , value3
-value4 , value5 , value6
-value7 , value8 , value9
-```
-
-If a cell is missing or the table column-row structure is not complete, as in the following example, the table visualization won’t display any of the data:
+### if a cell is missing OR table column-row structure is NOT complete -> table visualization does NOT display any of the data
 
 ```csv
 Column1, Column2, Column3
@@ -125,85 +110,39 @@ gap1   , gap2
 value4 , value5 , value6
 ```
 
-If you need to hide columns, you can do so using [data transformations](ref:data-transformation), [field overrides](#field-overrides), or by [building a query](ref:build-query) that returns only the needed columns.
+### you can hide columns
+
+* ways
+  * [data transformations](ref:data-transformation),
+  * [field overrides](#field-overrides)
+  * [building a query](ref:build-query)
 
 ## Column filtering
 
-You can temporarily change how column data is displayed using column filtering.
-For example, you can show or hide specific values.
+* requirements
+  * Table > Column filter > enable
 
-### Turn on column filtering
+* steps
+  * Dashboard > choose 1 > edit panel > hover cursor | column's title > toggle on the [**Column filter** switch](#table-options)
 
-To turn on column filtering, follow these steps:
+## Apply ad hoc filters | table
 
-1. In Grafana, navigate to the dashboard with the table with the columns that you want to filter.
-1. Hover over any part of the panel to which you want to add the link to display the actions menu on the top right corner.
-1. Click the menu and select **Edit**.
-1. In the panel editor pane, expand the **Table** options section.
-1. Toggle on the [**Column filter** switch](#table-options).
-
-A filter icon (funnel) appears next to each column title.
-
-{{< figure src="/static/img/docs/tables/column-filter-with-icon.png" max-width="350px" alt="Column filtering turned on" class="docs-image--no-shadow" >}}
-
-### Filter column values
-
-To filter column values, follow these steps:
-
-1. Click the filter icon (funnel) next to a column title.
-
-   Grafana displays the filter options for that column.
-
-   {{< figure src="/media/docs/grafana/panels-visualizations/filter-column-values_12.2.png" max-width="300px" alt="Filter column values" >}}
-
-1. Click the checkbox next to the values that you want to display or click **Select all**.
-1. Enter text in the search field at the top to show those values in the display so that you can select them rather than scroll to find them.
-1. Choose from several operators to display column values:
-   - **Contains** - Matches a regex pattern (operator by default).
-   - **Expression** - Evaluates a boolean expression. The character `$` represents the column value in the expression (for example, "$ >= 10 && $ <= 12").
-   - The typical comparison operators: `=`, `!=`, `<`, `<=`, `>`, `>=`.
-
-1. Click the checkbox above the **Ok** and **Cancel** buttons to add or remove all displayed values to and from the filter.
-
-### Clear column filters
-
-Columns with filters applied have a blue filter displayed next to the title.
-
-{{< figure src="/static/img/docs/tables/filtered-column.png" max-width="100px" alt="Filtered column" class="docs-image--no-shadow" >}}
-
-To remove the filter, click the blue filter icon and then click **Clear filter**.
-
-<!-- vale Grafana.WordList = NO -->
-<!-- vale Grafana.Spelling = NO -->
-
-### Apply ad hoc filters from the table
-
-In tables, you can apply ad hoc filters directly from the visualization with one click.
-
-To display the filter icons, hover your cursor over the cell that has the value for which you want to filter:
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-table-adhoc-filter-v12.2.png" max-width="500px" alt="Table with ad hoc filter icon displayed on a cell" >}}
-
-For more information about applying ad hoc filters this way, refer to [Dashboard drilldown with ad hoc filters](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/variables/add-template-variables/#dashboard-drilldown-with-ad-hoc-filters).
-
-<!-- vale Grafana.Spelling = YES -->
-<!-- vale Grafana.WordList = YES -->
+* hover your cursor | cell
+* see [Dashboard drilldown with ad hoc filters](https://grafana.com/docs/grafana/<GRAFANA_VERSION>/dashboards/variables/add-template-variables/#dashboard-drilldown-with-ad-hoc-filters)
 
 ## Sort columns
 
-Click a column title to change the sort order from default to descending to ascending.
-Each time you click, the sort order changes to the next option in the cycle.
-You can sort multiple columns by holding the `Cmd` or `Ctrl` key
-and clicking the column name.
-
-{{< figure src="/static/img/docs/tables/sort-descending.png" max-width="350px" alt="Sort descending" class="docs-image--no-shadow" >}}
+* | EACH column title,
+  * click to change sort order
 
 ## Dataset selector
 
-If the data queried contains multiple datasets, a table displays a drop-down list at the bottom, so you can select the dataset you want to visualize.
-This option is only available when you're editing the panel.
+* requirements
+  * MULTIPLE datasets
+  * edit panel
 
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-table-multi-dataset-v11.3.png" max-width="650px" alt="Table visualization with multiple datasets" >}}
+* == | bottom,
+  * drop-down list at the bottom, to select the dataset
 
 ## Configuration options
 
@@ -214,19 +153,19 @@ This option is only available when you're editing the panel.
 ### Table options
 
 <!-- prettier-ignore-start -->
-| Option               | Description                                               |
-| -------------------- | --------------------------------------------------------- |
-| Show table header    | Show or hide column names imported from your data source. |
-| Frozen columns       | Freeze columns starting from the left side of the table. Enter a value to set how many columns are frozen. |
-| Cell height          | Set the height of the cell. Choose from **Small**, **Medium**, or **Large**. |
-| Max row height       | Define the maximum height for a row in the table. This can be useful when **Wrap text** is enabled for one or more columns. |
-| Enable pagination    | Toggle the switch to control how many table rows are visible at once. When switched on, the page size automatically adjusts to the height of the table. This option doesn't affect queries. |
+| Option               | Description                                                                                                                                                                                                                                                                 |
+| -------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Show table header    | Show or hide column names imported from your data source.                                                                                                                                                                                                                   |
+| Frozen columns       | Freeze columns -- from the -- left side <br/> == NUMBER of columns to freeze                                                                                                                                                                                                |
+| Cell height          | cell height of the cell                                                                                                                                                                                                                                                     |
+| Max row height       | maximum height / row in the table <br/> uses **Wrap text**                                                                                                                                                                                                                  |
+| Enable pagination    | Toggle the switch to control how many table rows are visible at once. When switched on, the page size automatically adjusts to the height of the table. This option doesn't affect queries.                                                                                 |
 | Minimum column width | Define the lower limit of the column width, in pixels. By default, the minimum width of the table column is 150 pixels. For small-screen devices, such as mobile phones or tablets, reduce the value to `50` to allow table-based panels to render correctly in dashboards. |
-| Column width         | Define a column width, in pixels, rather than allowing the width to be set automatically. By default, Grafana calculates the column width based on the table size and the minimum column width. |
-| Column alignment     | Set how Grafana should align cell contents. Choose from: **Auto** (default), **Left**, **Center**, or **Right**.  |
-| Column filter        | Temporarily change how column data is displayed. For example, show or hide specific values. For more information, refer to [Column filtering](#column-filtering). |
-| Wrap text            | Enables text wrapping for cell content. |
-| Wrap header text     | Enables text wrapping for column headers. |
+| Column width         | Define a column width, in pixels, rather than allowing the width to be set automatically. By default, Grafana calculates the column width based on the table size and the minimum column width.                                                                             |
+| Column alignment     | Set how Grafana should align cell contents. Choose from: **Auto** (default), **Left**, **Center**, or **Right**.                                                                                                                                                            |
+| Column filter        | Temporarily change how column data is displayed                                                                                                                                                                                                                             |
+| Wrap text            | Enables text wrapping for cell content.                                                                                                                                                                                                                                     |
+| Wrap header text     | Enables text wrapping for column headers.                                                                                                                                                                                                                                   |
 <!-- prettier-ignore-end -->
 
 ### Table footer options
@@ -258,39 +197,31 @@ Calculations applied to cell types like **Markdown + HTML** might have unexpecte
 
 ### Cell options
 
-Cell options allow you to control how data is displayed in a table.
-The options are differ based on the cell type that you select and are outlined within the descriptions of each cell type.
-The following table provides short descriptions for each cell type and links to a longer description and the cell type options.
+* how data is displayed | table
+  * -- depends on -- cell type
 
 #### Cell type
 
-By default, Grafana automatically chooses display settings.
-You can override these settings by choosing one of the following cell types to control the default display for all fields.
-Additional configuration is available for some cell types.
-
-If you want to apply a cell type to only some fields instead of all fields, you can do so using the **Cell options > Cell type** field override.
+* apply | ALL cells
+  * if you want to apply | 1! cell type -> Override > choose 1 column > Cell type
 
 <!-- prettier-ignore-start -->
-| Cell type                                 | Description                                                                                                                |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| [Auto](#auto)                             | A basic text and number cell. |
-| [Colored text](#colored-text)             | If thresholds, value mappings, or color schemes are set, then the cell text is displayed in the appropriate color. |
-| [Colored background](#colored-background) | If thresholds, value mappings, or color schemes are set, then the cell background is displayed in the appropriate color. |
-| [Data links](#data-links)                 | The cell text reflects the titles of the configured data links.|
+| Cell type                                 | Description                                                                                                                                               |
+| ----------------------------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Auto](#auto)                             | == basic text + number cell                                                                                                                               |
+| [Colored text](#colored-text)             | If thresholds, value mappings, or color schemes are set, then the cell text is displayed in the appropriate color.                                        |
+| [Colored background](#colored-background) | If thresholds, value mappings, or color schemes are set, then the cell background is displayed in the appropriate color.                                  |
+| [Data links](#data-links)                 | The cell text reflects the titles of the configured data links.                                                                                           |
 | [Gauge](#gauge)                           | Values are displayed as a horizontal bar gauge. You can set the [Gauge display mode](#gauge-display-mode) and the [Value display](#value-display) options. |
-| [Sparkline](#sparkline)                   | Shows values rendered as a sparkline. |
-| [JSON View](#json-view)                   | Shows values formatted as code. |
-| [Pill](#pill)                             | Displays each item in a comma-separated string in a colored block. |
-| [Markdown + HTML](#markdown--html)        | Displays rich markdown or HTML content. |
-| [Image](#image)                           | Displays an image when the value is a URL or a base64 encoded image. |
-| [Actions](#actions)                       | The cell displays a button that triggers a basic, unauthenticated API call when clicked. |
+| [Sparkline](#sparkline)                   | Shows values rendered as a sparkline.                                                                                                                     |
+| [JSON View](#json-view)                   | Shows values formatted as code.                                                                                                                           |
+| [Pill](#pill)                             | Displays each item in a comma-separated string in a colored block.                                                                                        |
+| [Markdown + HTML](#markdown--html)        | Displays rich markdown or HTML content.                                                                                                                   |
+| [Image](#image)                           | Displays an image when the value is a URL or a base64 encoded image.                                                                                      |
+| [Actions](#actions)                       | The cell displays a button that triggers a basic, unauthenticated API call when clicked.                                                                  |
 <!-- prettier-ignore-end -->
 
 #### Auto
-
-This is a basic text and number cell.
-
-It has the following cell options:
 
 {{< docs/shared lookup="visualizations/cell-options.md" source="grafana" version="<GRAFANA_VERSION>" >}}
 
@@ -334,16 +265,15 @@ If you change the cell type to **Data links**, the cell text reflects the titles
 
 #### Gauge
 
-With this cell type, cells can be displayed as a graphical gauge, with several different presentation types.
-
-The gauge cell type has the following options:
+* cell type
+  * displayed -- as a -- graphical gauge
 
 <!-- prettier-ignore-start -->
-| Option             | Description                                                                                                    |
-| ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| Gauge display mode | Controls the type of gauge used. For more information, refer to the [Gauge display mode](#gauge-display-mode). |
-| Value display      | Controls how the value is displayed. For more information, refer to the [Value display](#value-display). |
-| Tooltip from field | Toggle on the **Tooltip from field** switch to use the values from another field (or column) in a tooltip. For more information, refer to [Tooltip from field](#tooltip-from-field). |
+| Option             | Description                                                                                                                                                                        |
+| ------------------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Gauge display mode | [Gauge display mode](#gauge-display-mode)                                                                                                                                          |
+| Value display      | how display the value <br/> [Value display](#value-display)                                                                                                                        |
+| Tooltip from field | **Tooltip from field** switch to use the values from another field (or column) in a tooltip <br/> [Tooltip from field](#tooltip-from-field). |
 <!-- prettier-ignore-end -->
 
 {{< admonition type="note" >}}
@@ -356,11 +286,11 @@ If you don't want the max/min values to be pulled from the whole dataset, you ca
 You can set three gauge display modes.
 
 <!-- prettier-ignore-start -->
-| Option | Description |
-| ------ | ----------- |
-| Basic | Shows a simple gauge with the threshold levels defining the color of gauge. {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-gauge-mode-basic-v11.3.png" alt="Table cell with basic gauge mode" >}} |
-| Gradient | The threshold levels define a gradient. {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-gauge-mode-gradient-v11.3.png" alt="Table cell with gradient gauge mode" >}} |
-| Retro LCD | The gauge is split up in small cells that are lit or unlit. {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-gauge-mode-retro-v11.3.png" alt="Table cell with retro LCD gauge mode" >}} |
+| Option    | Description                                      |
+|-----------|--------------------------------------------------|
+| Basic     | threshold levels -- define the -- color of gauge |
+| Gradient  | threshold levels -- define a -- gradient         |
+| Retro LCD | gauge is split up \| small cells                 |
 <!-- prettier-ignore-end -->
 
 ##### Value display
