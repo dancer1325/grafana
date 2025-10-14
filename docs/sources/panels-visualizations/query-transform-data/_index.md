@@ -150,12 +150,6 @@ To save a query you've created:
 - Users with the Viewer role who have access to Explore can use saved queries, but can't write them.
 - If you have multiple queries open in Explore and you edit one of them by way of the **Edit in Explore** function in the **Saved queries** drawer, the edited query replaces your open queries in Explore.
 
-### Special data sources
-
-* TODO:
-Grafana also includes three special data sources: **Grafana**, **Mixed**, and **Dashboard**.
-For details, refer to [Data sources](ref:data-sources)
-
 ## Navigate the Query tab
 
 * panel's Query tab -- consists of --

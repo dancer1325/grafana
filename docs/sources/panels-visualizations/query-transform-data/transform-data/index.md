@@ -103,42 +103,18 @@ refs:
 
 ## Dashboard variables in transformations
 
-All text input fields in transformations accept [variable syntax](ref:dashboard-variable):
-
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-transformation-variables-v11.6.png" alt="Transformation with a mock variable in a text field" >}}
-
-When you use dashboard variables in transformations, the variables are automatically interpolated before the transformations are applied to the data.
-
-For an example, refer to [Use a dashboard variable](#use-a-dashboard-variable) in the **Filter fields by name** transformation.
-
-## Add a transformation function to data
-
-The following steps guide you in adding a transformation to data. This documentation does not include steps for each type of transformation. For a complete list of transformations, refer to [Transformation functions](#transformation-functions).
-
-1. Navigate to the panel where you want to add one or more transformations.
-1. Hover over any part of the panel to display the actions menu on the top right corner.
-1. Click the menu and select **Edit**.
-1. Click the **Transform** tab.
-1. Click a transformation.
-   A transformation row appears where you configure the transformation options. For more information about how to configure a transformation, refer to [Transformation functions](#transformation-functions).
-   For information about available calculations, refer to [Calculation types][].
-1. To apply another transformation, click **Add transformation**.
-   This transformation acts on the result set returned by the previous transformation.
-   {{< figure src="/static/img/docs/transformations/transformations-7-0.png" class="docs-image--no-shadow" max-width= "1100px" alt="Transform tab in the panel editor" >}}
+* accept
+  * [variable syntax](ref:dashboard-variable) / interpolated BEFORE the transformation
 
 ## Debug a transformation
 
 To see the input and the output result sets of the transformation, click the bug icon on the right side of the transformation row.
-
 The input and output results sets can help you debug a transformation.
-
-{{< figure src="/static/img/docs/transformations/debug-transformations-7-0.png" class="docs-image--no-shadow" max-width= "1100px" alt="The debug transformation screen with the debug icon highlighted" >}}
 
 ## Disable a transformation
 
-You can disable or hide one or more transformations by clicking on the eye icon on the top right side of the transformation row. This disables the applied actions of that specific transformation and can help to identify issues when you change several transformations one after another.
-
-{{< figure src="/static/img/docs/transformations/screenshot-example-disable-transformation.png" class="docs-image--no-shadow" max-width= "1100px" alt="A transformation row with the disable transformation icon highlighted" >}}
+You can disable or hide one or more transformations by clicking on the eye icon on the top right side of the transformation row
+This disables the applied actions of that specific transformation and can help to identify issues when you change several transformations one after another.
 
 ## Filter a transformation
 
@@ -600,69 +576,11 @@ This transformation lets you tailor the time representation in your visualizatio
 
 ### Group by
 
-Use this transformation to group the data by a specified field (column) value and process calculations on each group. Click to see a list of calculation choices. For information about available calculations, refer to [Calculation types][].
-
-Here's an example of original data.
-
-| Time                | Server ID | CPU Temperature | Server Status |
-| ------------------- | --------- | --------------- | ------------- |
-| 2020-07-07 11:34:20 | server 1  | 80              | Shutdown      |
-| 2020-07-07 11:34:20 | server 3  | 62              | OK            |
-| 2020-07-07 10:32:20 | server 2  | 90              | Overload      |
-| 2020-07-07 10:31:22 | server 3  | 55              | OK            |
-| 2020-07-07 09:30:57 | server 3  | 62              | Rebooting     |
-| 2020-07-07 09:30:05 | server 2  | 88              | OK            |
-| 2020-07-07 09:28:06 | server 1  | 80              | OK            |
-| 2020-07-07 09:25:05 | server 2  | 88              | OK            |
-| 2020-07-07 09:23:07 | server 1  | 86              | OK            |
-
-This transformation goes in two steps. First you specify one or multiple fields to group the data by. This will group all the same values of those fields together, as if you sorted them. For instance if we group by the Server ID field, then it would group the data this way:
-
-| Time                | Server ID      | CPU Temperature | Server Status |
-| ------------------- | -------------- | --------------- | ------------- |
-| 2020-07-07 11:34:20 | **server 1**   | 80              | Shutdown      |
-| 2020-07-07 09:28:06 | **server 1**   | 80              | OK            |
-| 2020-07-07 09:23:07 | **server 1**   | 86              | OK            |
-| 2020-07-07 10:32:20 | server 2       | 90              | Overload      |
-| 2020-07-07 09:30:05 | server 2       | 88              | OK            |
-| 2020-07-07 09:25:05 | server 2       | 88              | OK            |
-| 2020-07-07 11:34:20 | **_server 3_** | 62              | OK            |
-| 2020-07-07 10:31:22 | **_server 3_** | 55              | OK            |
-| 2020-07-07 09:30:57 | **_server 3_** | 62              | Rebooting     |
-
-All rows with the same value of Server ID are grouped together. Optionally, you can add a count of how may values fall in the selected group.
-
-After choosing which field you want to group your data by, you can add various calculations on the other fields, and apply the calculation to each group of rows. For instance, we could want to calculate the average CPU temperature for each of those servers. So we can add the _mean_ calculation applied on the CPU Temperature field to get the following:
-
-| Server ID | CPU Temperature (mean) |
-| --------- | ---------------------- |
-| server 1  | 82                     |
-| server 2  | 88.6                   |
-| server 3  | 59.6                   |
-
-If you had added the count stat to the group by transformation, there would be an extra column showing that the count of each server from above was 3.
-
-| Server ID | CPU Temperature (mean) | Server ID (count) |
-| --------- | ---------------------- | ----------------- |
-| server 1  | 82                     | 3                 |
-| server 2  | 88.6                   | 3                 |
-| server 3  | 59.6                   | 3                 |
-
-And we can add more than one calculation. For instance:
-
-- For field Time, we can calculate the _Last_ value, to know when the last data point was received for each server
-- For field Server Status, we can calculate the _Last_ value to know what is the last state value for each server
-- For field Temperature, we can also calculate the _Last_ value to know what is the latest monitored temperature for each server
-
-We would then get:
-
-| Server ID | CPU Temperature (mean) | CPU Temperature (last) | Time (last)         | Server Status (last) |
-| --------- | ---------------------- | ---------------------- | ------------------- | -------------------- |
-| server 1  | 82                     | 80                     | 2020-07-07 11:34:20 | Shutdown             |
-| server 2  | 88.6                   | 90                     | 2020-07-07 10:32:20 | Overload             |
-| server 3  | 59.6                   | 62                     | 2020-07-07 11:34:20 | OK                   |
-
-This transformation allows you to extract essential information from your time series and present it conveniently.
+* allows
+  * group the data -- by a -- specified field (column) value
+    * `Group by`
+  * process calculations | EACH group (== requires `Group by`)
+    * `Calculate`
 
 ### Grouping to matrix
 
@@ -811,72 +729,18 @@ Visualize the distribution of values using the generated histogram, providing in
 
 ### Join by field
 
-Use this transformation to merge multiple results into a single table, enabling the consolidation of data from different queries.
-
-This is especially useful for converting multiple time series results into a single wide table with a shared time field.
+* allows
+  * merging MULTIPLE results | 1! table
+* uses
+  * DIFFERENT queries / share some columns
 
 #### Inner join (for Time Series or SQL-like data)
 
-An inner join merges data from multiple tables where all tables share the same value from the selected field. This type of join excludes data where values do not match in every result.
+* uses
+  * ALL tables share SAME column
 
-Use this transformation to combine the results from multiple queries (combining on a passed join field or the first time column) into one result, and drop rows where a successful join cannot occur. This is not optimized for large Time Series datasets.
-
-In the following example, two queries return Time Series data. It is visualized as two separate tables before applying the inner join transformation.
-
-**Query A:**
-
-| Time                | Job     | Uptime    |
-| ------------------- | ------- | --------- |
-| 2020-07-07 11:34:20 | node    | 25260122  |
-| 2020-07-07 11:24:20 | postgre | 123001233 |
-| 2020-07-07 11:14:20 | postgre | 345001233 |
-
-**Query B:**
-
-| Time                | Server   | Errors |
-| ------------------- | -------- | ------ |
-| 2020-07-07 11:34:20 | server 1 | 15     |
-| 2020-07-07 11:24:20 | server 2 | 5      |
-| 2020-07-07 11:04:20 | server 3 | 10     |
-
-The result after applying the inner join transformation looks like the following:
-
-| Time                | Job     | Uptime    | Server   | Errors |
-| ------------------- | ------- | --------- | -------- | ------ |
-| 2020-07-07 11:34:20 | node    | 25260122  | server 1 | 15     |
-| 2020-07-07 11:24:20 | postgre | 123001233 | server 2 | 5      |
-
-This works in the same way for non-Time Series tabular data as well.
-
-**Students**
-
-| StudentID | Name     | Major            |
-| --------- | -------- | ---------------- |
-| 1         | John     | Computer Science |
-| 2         | Emily    | Mathematics      |
-| 3         | Michael  | Physics          |
-| 4         | Jennifer | Chemistry        |
-
-**Enrollments**
-
-| StudentID | CourseID | Grade |
-| --------- | -------- | ----- |
-| 1         | CS101    | A     |
-| 1         | CS102    | B     |
-| 2         | MATH201  | A     |
-| 3         | PHYS101  | B     |
-| 5         | HIST101  | B     |
-
-The result after applying the inner join transformation looks like the following:
-
-| StudentID | Name    | Major            | CourseID | Grade |
-| --------- | ------- | ---------------- | -------- | ----- |
-| 1         | John    | Computer Science | CS101    | A     |
-| 1         | John    | Computer Science | CS102    | B     |
-| 2         | Emily   | Mathematics      | MATH201  | A     |
-| 3         | Michael | Physics          | PHYS101  | B     |
-
-The inner join only includes rows where there is a match between the "StudentID" in both tables. In this case, the result does not include "Jennifer" from the "Students" table because there are no matching enrollments for her in the "Enrollments" table.
+* NOT good use case
+  * large Time Series datasets
 
 #### Outer join (for Time Series data)
 
@@ -919,37 +783,7 @@ I applied a transformation to join the query results using the time field. Now I
 
 #### Outer join (for SQL-like data)
 
-A tabular outer join combining tables so that the result includes matched and unmatched rows from either or both tables.
-
-| StudentID | Name     | Major            |
-| --------- | -------- | ---------------- |
-| 1         | John     | Computer Science |
-| 2         | Emily    | Mathematics      |
-| 3         | Michael  | Physics          |
-| 4         | Jennifer | Chemistry        |
-
-Can now be joined with:
-
-| StudentID | CourseID | Grade |
-| --------- | -------- | ----- |
-| 1         | CS101    | A     |
-| 1         | CS102    | B     |
-| 2         | MATH201  | A     |
-| 3         | PHYS101  | B     |
-| 5         | HIST101  | B     |
-
-The result after applying the outer join transformation looks like the following:
-
-| StudentID | Name     | Major            | CourseID | Grade |
-| --------- | -------- | ---------------- | -------- | ----- |
-| 1         | John     | Computer Science | CS101    | A     |
-| 1         | John     | Computer Science | CS102    | B     |
-| 2         | Emily    | Mathematics      | MATH201  | A     |
-| 3         | Michael  | Physics          | PHYS101  | B     |
-| 4         | Jennifer | Chemistry        | NULL     | NULL  |
-| 5         | NULL     | NULL             | HIST101  | B     |
-
-Combine and analyze data from various queries with table joining for a comprehensive view of your information.
+* includes matched & unmatched rows -- from -- either or both tables
 
 ### Join by labels
 
@@ -1244,55 +1078,20 @@ A long time series combines data into one frame, with the first field being an a
 
 ### Reduce
 
-Use this transformation to apply a calculation to each field in the data frame and return a single value. This transformation is particularly useful for consolidating multiple time series data into a more compact, summarized format. Time fields are removed when applying this transformation.
+* allows
+  * applying a calculation / 
+    * EACH data frame's field
+    * return 1! value
+* uses
+  * consolidate MULTIPLE time series data -- format (compact, summarized)
 
-Consider the input:
-
-**Query A:**
-
-| Time                | Temp | Uptime  |
-| ------------------- | ---- | ------- |
-| 2020-07-07 11:34:20 | 12.3 | 256122  |
-| 2020-07-07 11:24:20 | 15.4 | 1230233 |
-
-**Query B:**
-
-| Time                | AQI | Errors |
-| ------------------- | --- | ------ |
-| 2020-07-07 11:34:20 | 6.5 | 15     |
-| 2020-07-07 11:24:20 | 3.2 | 5      |
-
-The reduce transformer has two modes:
-
-- **Series to rows** - Creates a row for each field and a column for each calculation.
-- **Reduce fields** - Keeps the existing frame structure, but collapses each field into a single value.
-
-For example, if you used the **First** and **Last** calculation with a **Series to rows** transformation, then
-the result would be:
-
-| Field  | First  | Last    |
-| ------ | ------ | ------- |
-| Temp   | 12.3   | 15.4    |
-| Uptime | 256122 | 1230233 |
-| AQI    | 6.5    | 3.2     |
-| Errors | 15     | 5       |
-
-The **Reduce fields** with the **Last** calculation,
-results in two frames, each with one row:
-
-**Query A:**
-
-| Temp | Uptime  |
-| ---- | ------- |
-| 15.4 | 1230233 |
-
-**Query B:**
-
-| AQI | Errors |
-| --- | ------ |
-| 3.2 | 5      |
-
-This flexible transformation simplifies the process of consolidating and summarizing data from multiple time series into a more manageable and organized format.
+* modes
+  - **Series to rows**
+    - creates a row / 
+      - EACH field & column
+      - EACH calculation
+  - **Reduce fields**
+    - EACH field is collapsed -- into -- 1! value
 
 ### Rename by regex
 
