@@ -92,17 +92,17 @@ refs:
 
 * built-in types of variables
 
-| Variable type     | Description                                                                                                                                                                                 |
-| :---------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Query             | Query-generated list of values <br/> _Examples:_ metric names, server names, sensor IDs, data centers, ... <br/> [here](#add-a-query-variable)                                              |
-| Custom            | define variable options -- via -- comma-separated list <br/> [here](#add-a-custom-variable)                                                                                                 |
-| Text box          | free text input field / OPTIONAL default value <br/> [Add a text box variable](#add-a-text-box-variable)                                                                                    |
-| Constant          | hidden constant <br/> [Add a constant variable](#add-a-constant-variable)                                                                                                                   |
-| Data source       | change the data source \| entire dashboard <br/> [Add a data source variable](#add-a-data-source-variable)                                                                                  |
-| Interval          | Interval variables represent time spans. [Add an interval variable](#add-an-interval-variable).                                                                                             |
-| Ad hoc filters    | Key/value filters that are automatically added to all metric queries for a data source (Prometheus, Loki, InfluxDB, and Elasticsearch only). [Add ad hoc filters](#add-ad-hoc-filters).     |
-| Global variables  | Built-in variables that can be used in expressions in the query editor. Refer to [Global variables](#global-variables).                                                                     |
-| Chained variables | Variable queries can contain other variables. Refer to [Chained variables](#chained-variables).                                                                                             |
+| Variable type     | Description                                                                                                                                                                             |
+| :---------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Query             | Query-generated list of values <br/> _Examples:_ metric names, server names, sensor IDs, data centers, ... <br/> [here](#add-a-query-variable)                                          |
+| Custom            | define variable options -- via -- comma-separated list <br/> [here](#add-a-custom-variable)                                                                                             |
+| Text box          | free text input field / OPTIONAL default value <br/> [Add a text box variable](#add-a-text-box-variable)                                                                                |
+| Constant          | hidden constant <br/> [Add a constant variable](#add-a-constant-variable)                                                                                                               |
+| Data source       | change the data source \| entire dashboard <br/> [Add a data source variable](#add-a-data-source-variable)                                                                              |
+| Interval          | Interval variables represent time spans. [Add an interval variable](#add-an-interval-variable).                                                                                         |
+| Ad hoc filters    | Key/value filters that are automatically added to all metric queries for a data source (Prometheus, Loki, InfluxDB, and Elasticsearch only). [Add ad hoc filters](#add-ad-hoc-filters). |
+| Global variables  | Built-in variables <br/> [here](#global-variables)                                                                                                                                      |
+| Chained variables | Variable queries can contain other variables. Refer to [Chained variables](#chained-variables).                                                                                         |
 
 ## Variable's GENERAL options
 
@@ -456,19 +456,20 @@ In order to have custom regular expression, globs, or Lucene syntax in the **Cus
 
 ### `$__from` and `$__to`
 
-Grafana has two built-in time range variables: `$__from` and `$__to`. They are currently always interpolated as epoch milliseconds by default, but you can control date formatting.
+* time range variables
+  * by default,
+    * interpolated -- as -- epoch milliseconds
 
-| Syntax                   | Example result           | Description                                                                                                                                                      |
-| ------------------------ | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `${__from}`              | 1594671549254            | Unix millisecond epoch                                                                                                                                           |
-| `${__from:date}`         | 2020-07-13T20:19:09.254Z | No arguments, defaults to ISO 8601/RFC 3339                                                                                                                      |
-| `${__from:date:iso}`     | 2020-07-13T20:19:09.254Z | ISO 8601/RFC 3339                                                                                                                                                |
-| `${__from:date:seconds}` | 1594671549               | Unix seconds epoch                                                                                                                                               |
-| `${__from:date:YYYY-MM}` | 2020-07                  | Any custom [date format](https://momentjs.com/docs/#/displaying/) that does not include the `:` character. Uses browser time. Use `:date` or `:date:iso` for UTC |
+| Syntax / ALLOWED formatting                         | Example result           | Description                                                                                                                                                                     |
+|-----------------------------------------------------| ------------------------ |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `${__from}`                                         | 1594671549254            | Unix millisecond epoch                                                                                                                                                          |
+| `${__from:date}` & `${__to:date}`                   | 2020-07-13T20:19:09.254Z | No arguments, defaults to ISO 8601/RFC 3339                                                                                                                                     |
+| `${__from:date:iso}`  & `${__to:date:iso}`          | 2020-07-13T20:19:09.254Z | ISO 8601/RFC 3339                                                                                                                                                               |
+| `${__from:date:seconds}` & `${__to:date:seconds}`   | 1594671549               | Unix seconds epoch                                                                                                                                                              |
+| `${__from:date:YYYY-MM}` & `${__to:date:YYYY-MM}`   | 2020-07                  | Any custom [date format](https://momentjs.com/docs/#/displaying/) that does not include the `:` character <br/> -- based on -- browser time <br/> Use `:date` or `:date:iso` for UTC |
 
-The syntax above also works with `${__to}`.
-
-You can use this variable in URLs, as well. For example, you can send a user to a dashboard that shows a time range from six hours ago until now: https://play.grafana.org/d/000000012/grafana-play-home?viewPanel=2&orgId=1?from=now-6h&to=now
+* uses
+  * | URLs
 
 ### `$__interval`
 

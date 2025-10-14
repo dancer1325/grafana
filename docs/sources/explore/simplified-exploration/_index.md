@@ -43,7 +43,7 @@ cards:
   * use cases
     * Grafana data sources (Prometheus, Loki, Tempo, Pyroscope)
   * allows
-    * get data WITHOUT learning query languages
+    * get data 👀WITHOUT learning query languages💡
   * [history](/grafana/docs/sources/shared/plugins/rename-note.md)
   * see 
     * [From multi-line queries to no-code investigations: meeting Grafana users where they are](https://grafana.com/blog/2024/10/22/from-multi-line-queries-to-no-code-investigations-meeting-grafana-users-where-they-are/)

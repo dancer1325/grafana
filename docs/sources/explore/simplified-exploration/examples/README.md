@@ -4,6 +4,7 @@
   * query & visualizations ALREADY set up
   * "show logs"
     * Reason:🧠check used query🧠
+* Grafana cloud
 
 ## Metrics Drilldown
 * [Grafana playground > Drilldown > Metrics](https://play.grafana.org/a/grafana-metricsdrilldown-app/drilldown?layout=grid&filters-rule=&filters-prefix=&filters-suffix=&from=now-1h&to=now&timezone=utc&var-ds=grafanacloud-demoinfra-prom&var-filters=&from-2=now-1h&to-2=now&timezone-2=utc&var-labelsWingman=%28none%29&search_txt=&var-metrics-reducer-sort-by=default&var-other_metric_filters=)

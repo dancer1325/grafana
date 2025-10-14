@@ -68,3 +68,19 @@
     * Data source == Prometheus
 
 ![](../static/addAdhocFilters.gif)
+
+
+# Global variables
+* Dashboard > New Dashboard > Add visualization > Text
+
+```markdown
+# Current Variable Values
+
+* `servers`: ${servers}
+* `extra`: ${extra}
+
+# Global variables
+
+* __dashboard: $__dashboard
+* __from: $__from
+```
