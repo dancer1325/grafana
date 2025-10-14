@@ -145,3 +145,8 @@ Additonal cases
         * \> Custom all value
           * ⚠️NOT add anything⚠️
           * ❌if you include  == `test1, test2, test3` -> formatting NOT valid❌
+
+
+# Variables in URLs -- synced -- , via query parameter syntax
+* check the URL
+  * http://localhost:3000/d/adxcslf/new-dashboard?orgId=1&from=now-6h&to=now&timezone=browser&var-servers=$__all&var-extra=test1&var-extra=test2&editIndex=0&editPanel=1
