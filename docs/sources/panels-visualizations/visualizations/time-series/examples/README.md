@@ -6,6 +6,7 @@
 
 # if there are >1 numerical data -> EACH one is plotted | NEW line, point, or bar labeled
 * [link](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=2025-10-10T06:26:43.638Z&to=2025-10-10T07:26:43.638Z&timezone=browser&editPanel=1&viewPanel=panel-1)
+* 👀uncomment 1 query👀
 
 # uses
 ## DIFFICULT to track | table
@@ -13,8 +14,23 @@
   * click table view OR switch visualization to table
 
 # Supported data formats
+## if the time field is NOT AUTOMATICALLY detected -> convert the data -- , via [data transformation](ref:panel-data-section), to a -- time format
+* Connections > Data sources > testdata > Save & test
+* Dashboard > Visualization > Add visualization >
+  * Data source = Testdata
+  * Scenario = CSV Content
+  ```
+  timestamp_str,cpu_usage,memory_usage
+  "2024-01-15 10:00:00",45.2,67.8
+  "2024-01-15 10:05:00",48.1,69.2
+  "2024-01-15 10:10:00",52.3,71.5
+  "2024-01-15 10:15:00",49.7,68.9
+  ```
+  * Transformation > Convert field type
+    * Field = timestamp_str
+      * as Time
+      * Input format == YYYY-MM-DD HH:mm:ss
 ## formatted -- as a -- table /
-
 * [here](https://play.grafana.org/goto/af0m4sjm36vi8c?orgId=1)
   * see table-related
   * [visualization-related](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=now-1h&to=now&timezone=browser&tab=queries&editPanel=1)
@@ -26,7 +42,7 @@
 # Special overrides
 ## Transform override property
 * [Grafana playground](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=now-1h&to=now&timezone=browser&editPanel=1)
-  * Add field override > whatever > **Graph styles > Transform** [override property](#field-overrides)
+  * Add field override > Field with name == backend01 > **Graph styles > Transform** [override property](#field-overrides)
     * switch BETWEEN values
 ## Fill below to override property
 * [Grafana playground](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=now-1h&to=now&timezone=browser&editPanel=220)
