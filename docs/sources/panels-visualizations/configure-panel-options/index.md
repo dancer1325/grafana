@@ -73,7 +73,7 @@ refs:
 | Description            | == text / appears \| panel's upper-left corner tooltip <br/> ALLOWED to use: [variables you have defined](ref:variables-you-have-defined) <br/> ❌NOT ALLOWED to use [global variables](ref:global-variables)❌                      |
 | Transparent background | panel's background color == OR != dashboard's background color                                                                                                                                                                     |
 | Panel links            | [links to the panel](ref:links-to-the-panel) <br/> == shortcuts -- to -- OTHER dashboards, panels, and external websites <br/> == iconS \| panel title                                                                             |
-| Repeat options         | repeat the panel / EACH selected variable's value <br/> [see](#configure-repeating-panels)                                                                                                                                 |
+| Repeat options         | repeat the panel / EACH selected variable's value <br/> [here](#configure-repeating-panels)                                                                                                                                        |
 
 * if you want to populate **Title** & **Description** fields -- via -- generative AI -> use [Grafana LLM plugin](ref:grafana-llm-plugin)
   * [how to set up](ref:set-up-generative-ai-features-for-dashboards)
@@ -87,19 +87,18 @@ refs:
     * variables dynamically change your queries | ALL dashboard's panels 
   * [how to configure repeating rows](ref:configure-repeating-rows)
   * _Example:_ [dashboard / repeating panels](https://play.grafana.org/goto/yfZOReUNR?orgId=1)
+  * repeat options
+    * **Disable repeating**
+    * choose your variable
+  * repeat direction
+    * **Horizontal**
+      * arrange panels side-by-side
+      * Grafana adjusts the repeated panel's width 
+      * | this row,
+        * ❌NOT possible to mix OTHER panels❌
+    * **Vertical**
+      * Arrange panels in a column
+      * repeated panels' width == original repeated panel's width
 
 * requirements
-  * query / has multi-value variable 
-* steps
-  1. | panels' panel options > repeat options
-  1. TODO: Under **Repeat options**, select a variable in the **Repeat by variable** drop-down list.
-  1. Under **Repeat direction**, choose one of the following:
-     - **Horizontal** - Arrange panels side-by-side. Grafana adjusts the width of a repeated panel. You can't mix other panels on a row with a repeated panel.
-     - **Vertical** - Arrange panels in a column. The width of repeated panels is the same as the original, repeated panel.
-
-  1. If you selected **Horizontal** in the previous step, select a value in the **Max per row** drop-down list to control the maximum number of panels that can be in a row.
-  1. Click **Save dashboard**.
-  1. Click **Back to dashboard** and then **Exit edit**.
-  1. To propagate changes to all panels, reload the dashboard.
-
-You can stop a panel from repeating by selecting **Disable repeating** in the **Repeat by variable** drop-down list.
+  * query / has multi-value variable
