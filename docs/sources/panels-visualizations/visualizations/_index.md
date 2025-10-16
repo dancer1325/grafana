@@ -166,21 +166,54 @@ refs:
 - Graphs & charts
   - [Time series](ref:time-series)
     - default & main one
-  - [State timeline](ref:state-timeline) for state changes over time.
+    - uses
+      - time-based line
+    - _Example:_ [Grafana playground](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1)
+      - ALSO adjust -- as -- area & bar charts
+  - [State timeline](ref:state-timeline)
+    - == state changes | time
+    - _Example:_
+      - application's version | time
+      - pipeline's status | time
   - [Status history](ref:status-history) for periodic state over time.
-  - [Bar chart](ref:bar-chart) shows any categorical data.
-  - [Histogram](ref:histogram) calculates and shows value distribution in a bar chart.
-  - [Heatmap](ref:heatmap) visualizes data in two dimensions, used typically for the magnitude of a phenomenon.
-  - [Pie chart](ref:pie-chart) is typically used where proportionality is important.
+  - [Bar chart](ref:bar-chart)
+    - uses
+      - categorical data
+    - _Example:_
+      - number of errors, number of deployments / EACH microservice
+  - [Histogram](ref:histogram)
+    - == value distribution | bar chart
+    - _Example:_ 
+      - response time distribution
+  - [Heatmap](ref:heatmap)
+    - uses
+      - phenomenon's intensity 
+    - _Example:_
+      - CPU usage / server & time
+      - request latency / endpoint & hour
+  - [Pie chart](ref:pie-chart) 
+    - uses
+      - compare category's options vs ALL
+    - _Example:_
+      - MORE used languages | company
   - [Candlestick](ref:candlestick) is typically for financial data where the focus is price/data movement.
-  - [Gauge](ref:gauge) is the traditional rounded visual showing how far a single metric is from a threshold.
+  - [Gauge](ref:gauge)
+    - uses
+      - how close 1! is metric is -- from a -- threshold 
+    - _Example:_
+      - SLO / microservice
   - [Trend](ref:trend) for datasets that have a sequential, numeric x that is not time.
   - [XY chart](ref:xy-chart) provides a way to visualize arbitrary x and y values in a graph.
 - Stats & numbers
-  - [Stat](ref:stat) for big stats and optional sparkline.
+  - [Stat](ref:stat)
+    - uses
+      - for big stats and optional sparkline
+    - _Example:_
+      - billing 
+      - NUMBER of deployments / year
   - [Bar gauge](ref:bar-gauge) is a horizontal or vertical bar gauge.
 - Misc
-  - [Table](ref:table) is the main and only table visualization.
+  - [Table](ref:table)
   - [Logs](ref:logs) is the main visualization for logs.
   - [Node graph](ref:node-graph) for directed graphs or networks.
   - [Traces](ref:traces) is the main visualization for traces.
@@ -207,27 +240,6 @@ refs:
 ## ADDITIONAL ones
 
 * installing [panel plugins](https://grafana.com/grafana/plugins/?type=panel)
-
-## Examples
-
-* [play.grafana.org](https://play.grafana.org)
-
-### Graphs
-
-* default [time series](ref:time-series) visualization
-  * uses
-    * time based line,
-    * area
-    * bar charts 
-  * _Example:_ [Grafana playground](https://play.grafana.org/d/000000016/1-time-series-graphs?orgId=1)
-
-![](/grafana/media/docs/time-series-panel/time_series_small_example.png)
-
-* [bar chart](ref:bar-chart)
-  * uses
-    * categorical data (!= continuous data)
-
-![](/grafana/media/docs/bar-chart-panel/barchart_small_example.png)
 
 ### Big numbers & stats
 
