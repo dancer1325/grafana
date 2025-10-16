@@ -1,6 +1,8 @@
-* `docker run -d -p 3000:3000 grafana/grafana`
+[* `docker run -d -p 3000:3000 grafana/grafana`
 * http://localhost:3000/
-  * admin / admin
+  * admin / admin](* `docker run -d -p 3000:3000 grafana/grafana`
+* http://localhost:3000/
+  * admin / admin)
 
 
 * **Dashboards** > **New** > **Add visualization** >

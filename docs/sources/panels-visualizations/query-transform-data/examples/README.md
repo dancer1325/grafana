@@ -1,13 +1,11 @@
-# About queries
-## TODO:
-## Saved queries
-### requirements
-#### | Grafana OSS
-* docker run -d -p 3000:3000 grafana/grafana
+* `docker run -d -p 3000:3000 grafana/grafana`
 * http://localhost:3000/
   * admin / admin
-  * Explore > choose a datasource 
-  * ❌NOT displayed❌
+
+## Saved queries
+### requirements
+#### | Grafana OSS, ❌NOT displayed❌
+* Explore > choose a datasource
 #### | Grafana Cloud
 * Create account
 * Grafana Cloud portal > Launch instance > Explore > "grafanacloud-usage" > `grafanacloud_grafana_instance_active_users`
@@ -24,9 +22,6 @@
 * my Grafana Cloud
 ##### tag -> `AND` operator
 * my Grafana Cloud
-## TODO:
-
-# TODO:
 
 # Add a query
 * [here](https://play.grafana.org/d/000000016/time-series-graphs?orgId=1&from=2025-10-10T08:47:44.693Z&to=2025-10-10T09:47:44.693Z&timezone=browser&editPanel=1)
@@ -36,3 +31,17 @@
 * my Grafana cloud
 ## **Replace EXISTING query -- with -- saved query**
 * my Grafana cloud
+
+
+# Query options
+## Relative time override dashboard time picker
+* **Dashboards** > **New** > **Add visualization** >
+  * Visualization = Time series
+  * Relative time: 3h
+  * Save dashboard
+  * Adjust Dashboard's date time picker
+## Time shift, shift panel's time begining -- relative to -- dashboard's time picker
+* **Dashboards** > **New** > **Add visualization** >
+  * Visualization = Time series
+  * Time shift: 1h
+  * Save dashboard
