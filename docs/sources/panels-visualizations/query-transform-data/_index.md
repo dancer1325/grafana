@@ -78,8 +78,12 @@ refs:
   * configuration
     * | panel's data source options
       * query frequency
-      * data collection limits
-  * <= 26 queries / panel
+
+        ![](static/queryRefresh.png)
+
+      * [query options](#query-options)
+
+        ![](static/dataCollectionLimits.png)
 
 ### Query editors
 
@@ -129,19 +133,6 @@ refs:
 
 ![](/grafana/media/docs/panels-visualizations/SavedQuery.png)
 
-#### Save a query
-
-To save a query you've created:
-
-1. From the query editor, click the **Save query** icon:
-
-   {{< figure src="/media/docs/grafana/panels-visualizations/screenshot-save-query-v12.2.png" max-width="750px" alt="Save a query" >}}
-
-1. In the **Saved queries** drawer, enter a title for the query that will make it easy to find later.
-1. (Optional) Enter a description and relevant tags.
-1. Clear the **Share query with all users** checkbox if you only want the saved query to be available to you.
-1. Click **Save**.
-
 #### Known limitations
 
 - No validation is performed when you save a query, so it's possible to save an invalid query. You should confirm the query is working properly before you save it.
@@ -150,9 +141,9 @@ To save a query you've created:
 - Users with the Viewer role who have access to Explore can use saved queries, but can't write them.
 - If you have multiple queries open in Explore and you edit one of them by way of the **Edit in Explore** function in the **Saved queries** drawer, the edited query replaces your open queries in Explore.
 
-## Navigate the Query tab
+## Query tab
 
-* panel's Query tab -- consists of --
+* panel's Query tab ==
   - **Data source selector:**
     - == data source -- to -- query
   - **Query options:**
@@ -163,7 +154,8 @@ To save a query you've created:
   - **Query inspector button:**
     - Opens the query inspector panel
     - uses
-      - check -- to optimize -- your query
+      - check -- to optimize -- your query 
+        - == 👀| Stats👀
   - **Query editor list:**
   - **Expressions:**
     - see [here](expression-queries)
@@ -185,52 +177,56 @@ To save a query you've created:
 
 ## Manage queries
 
-Grafana organizes queries in collapsible query rows.
-Each query row contains a query editor and is identified with a letter (A, B, C, and so on).
-
-You can:
+* Grafana
+  * organizes queries | collapsible query rows
 
 <!-- prettier-ignore-start -->
-| Icon    | Description                                  |
-| ------- | -------------------------------------------- |
-| {{< figure src="/static/img/docs/queries/query-editor-help-7-4.png" max-width="30px" max-height="30px" alt="Help icon" >}} | Toggles query editor help. If supported by the data source, click this icon to display information on how to use the query editor or provide quick access to common queries. |
-| {{< figure src="/media/docs/grafana/panels-visualizations/create-recorded-query-icon.png" max-width="30px" max-height="30px" alt="Create recorded query icon" >}} | Create [recorded queries](ref:recorded-queries) so you can see trends over time by taking a snapshot of a data point on a set interval (Enterprise and Cloud only). |
-| {{< figure src="/media/docs/grafana/panels-visualizations/save-to-query-icon.png" max-width="30px" max-height="30px" alt="Save query icon" >}} | Save query. Saves the query so it can be reused. Access saved queries by clicking **+ Add saved query**. For more information, refer to [Saved queries](#saved-queries) (Enterprise and Cloud only). |
-| {{< figure src="/static/img/docs/queries/duplicate-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Duplicate icon" >}} | Copies a query. Duplicating queries is useful when working with multiple complex queries that are similar and you want to either experiment with different variants or do minor alterations. |
-| {{< figure src="/static/img/docs/queries/hide-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Hide icon" >}} | Hides a query. Grafana does not send hidden queries to the data source. |
-| {{< figure src="/static/img/docs/queries/remove-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Remove icon">}} | Removes a query. Removing a query permanently deletes it, but sometimes you can recover deleted queries by reverting to previously saved versions of the panel. |
+| Icon    | Description                                                                                                                                                                                                                                     |
+| ------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| {{< figure src="/static/img/docs/queries/query-editor-help-7-4.png" max-width="30px" max-height="30px" alt="Help icon" >}} | Toggles query editor help. If supported by the data source, click this icon to display information on how to use the query editor or provide quick access to common queries.                                                                    |
+| {{< figure src="/media/docs/grafana/panels-visualizations/create-recorded-query-icon.png" max-width="30px" max-height="30px" alt="Create recorded query icon" >}} | Create [recorded queries](ref:recorded-queries) <br/> restrictions: ⚠️Enterprise & Cloud ⚠️                                                                                                                                                     |
+| {{< figure src="/media/docs/grafana/panels-visualizations/save-to-query-icon.png" max-width="30px" max-height="30px" alt="Save query icon" >}} | Save query. Saves the query so it can be reused. Access saved queries by clicking **+ Add saved query**. For more information, refer to [Saved queries](#saved-queries) (Enterprise and Cloud only).                                            |
+| {{< figure src="/static/img/docs/queries/duplicate-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Duplicate icon" >}} | Copies a query. Duplicating queries is useful when working with multiple complex queries that are similar and you want to either experiment with different variants or do minor alterations.                                                    |
+| {{< figure src="/static/img/docs/queries/hide-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Hide icon" >}} | Hides a query. Grafana does not send hidden queries to the data source.                                                                                                                                                                         |
+| {{< figure src="/static/img/docs/queries/remove-query-icon-7-0.png" max-width="30px" max-height="30px" alt="Remove icon">}} | Removes a query. Removing a query permanently deletes it, but sometimes you can recover deleted queries by reverting to previously saved versions of the panel.                                                                                 |
 | {{< figure src="/static/img/docs/queries/query-drag-icon-7-2.png" max-width="30px" max-height="30px" alt="Drag icon" >}} | Reorders queries. Change the order of queries by clicking and holding the drag icon, then drag queries where desired. The order of results reflects the order of the queries, so you can often adjust your visual results based on query order. |
 <!-- prettier-ignore-end -->
 
 ## Query options
 
-Click **Query options** next to the data source selector to see settings for the selected data source.
-Changes you make here affect only queries made in this panel.
+* default by Grafana
+* ALLOWED options
+  * Max data points
+    * == Max data points | specified frame time
+    * uses
+      * improve query performance
+      * visualization
+  * Min interval
+    * == Min interval / EACH data point
+    * | s
+  * Relative time
+    * == Last interval | THIS specific panel
+      * ⚠️override dashboard time picker⚠️
+  * Time shift
+    * shift panel's time begining -- relative to -- dashboard's time picker
+  * Hide time info
+    * enable OR disable time shift | panel
 
-{{< figure src="/media/docs/grafana/panels-visualizations/screenshot-query-options-v11.6.png" max-width="750px" alt="Data source query options" >}}
 
-Grafana sets defaults that are shown in dark gray text.
-Changes are displayed in white text.
-To return a field to the default setting, delete the white text from the field.
 
-Panel data source query options include:
 
-- **Max data points** - If the data source supports it, this sets the maximum number of data points for each series returned.
-  If the query returns more data points than the max data points setting, then the data source reduces the number of points returned by aggregating them together by average, max, or another function.
-
-  You can limit the number of points to improve query performance or smooth the visualized line.
-  The default value is the width (or number of pixels) of the graph, because you can only visualize as many data points as the graph panel has room to display.
-
-  With streaming data, Grafana uses the max data points value for the rolling buffer.
+- **Max data points** -
+  * TODO:With streaming data, Grafana uses the max data points value for the rolling buffer.
   Streaming is a continuous flow of data, and buffering divides the stream into chunks.
   For example, Loki streams data in its live tailing mode.
 
-- **Min interval** - Sets a minimum limit for the automatically calculated interval, which is typically the minimum scrape interval.
+- **Min interval** - 
   If a data point is saved every 15 seconds, you don't benefit from having an interval lower than that.
   You can also set this to a higher minimum than the scrape interval to retrieve queries that are more coarse-grained and well-functioning.
 
   {{< admonition type="note" >}}
-  The **Min interval** corresponds to the min step in Prometheus. Changing the Prometheus interval can change the start and end of the query range because Prometheus aligns the range to the interval. Refer to [Min step](https://grafana.com/docs/grafana/latest/datasources/prometheus/query-editor/#min-step) for more details.
+  The **Min interval** corresponds to the min step in Prometheus
+- Changing the Prometheus interval can change the start and end of the query range because Prometheus aligns the range to the interval. Refer to [Min step](https://grafana.com/docs/grafana/latest/datasources/prometheus/query-editor/#min-step) for more details.
   {{< /admonition >}}
 
 - **Interval** - Sets a time span that you can use when aggregating or grouping data points by time.
