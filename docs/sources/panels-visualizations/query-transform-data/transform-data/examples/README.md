@@ -37,14 +37,14 @@
     * Scenario == CSV Content
       ```
       server,cpu_usage,memory_usage,requests,errors
-      web-01,80,60,1000,10
-      web-02,75,70,800,5
-      db-01,90,85,500,2
+      web-01,80,60.2,1000,10
+      web-02,75,70.6,800,5
+      db-01,90,85.7,500,2
       ```
 * Transformation > Add field from calculation
   * Mode
     * == Unary operation
-      * Operation == `exp(cpu_usage)`
+      * Operation == `round(memory_usage)`
     * == Binary operation
       * Operation = 
         * case1
@@ -55,12 +55,45 @@
           * error rate
     * == Reduce row
       * Operation == cpu_usage, memory_usage
-      * Calculation = Last
+      * Calculation = Max
     * Cumulative functions
       * Field = memory_usage
       * Calculation 
         * Total
         * Mean
+
+## Concatenate fields
+* Dashboard > New Dashboard > Datasource = TestData
+  * Query A
+    * Scenario == CSV Content
+    ```
+    Temp, Uptime
+    15.4, 1230233
+    ```
+  * Query B
+    * Scenario == CSV Content
+    ```
+    AQI, Errors
+    3.2, 5
+    ```
+
+## Config from query results
+* Dashboard > New Dashboard > Datasource = TestData
+  * Query A
+    * Scenario == CSV Content
+      ```
+      Temp, Value
+      1626178119127, 10
+      1626178119129, 30
+      ```
+  * Query B
+    * Scenario == CSV Content
+    ```
+    Temp, Value
+    1626178119127, 1000
+    1626178119129, 3000
+    ```
+  * 
 
 ## Filter data by values
 * Dashboard > New Dashboard > Datasource = TestData
@@ -162,3 +195,22 @@
         * Reason: 🧠STILL it's a join🧠
 ### Outer join (time series)
 * TODO:
+
+
+## Merge series/tables
+* Dashboard > New Dashboard > Datasource = TestData
+  * Query A
+    * Scenario == CSV Content
+      ```
+      Time,Job,Uptime
+      2020-07-07 11:34:20,node,25260122
+      2020-07-07 11:24:20,postgre,123001233
+      ```
+    * Query B
+      * Scenario == CSV Content
+      ```
+      Time,Job,Errors
+      2020-07-07 11:34:20,node,15
+      2020-07-07 11:24:20,postgre,5
+      ```
+  * Transformation > Merge series/tables

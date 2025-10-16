@@ -144,27 +144,38 @@ We recommend that you remove transformations that you don't need. When you delet
 
 ### Add field from calculation
 
-* FROM 2 other fields, add a NEW field
+* FROM ALL INPUT fields -> add a NEW field (== COLUMN) 
 
 - **Mode** - Select a mode:
-  - **Reduce row** - apply selected calculation / EACH row
-  - **Binary operation** - Apply basic binary operations (for example, sum or multiply) on values in a single row from two selected fields.
-  - **Unary operation** - Apply basic unary operations on values in a single row from a selected field. The available operations are:
-    - **Absolute value (abs)** - Returns the absolute value of a given expression. It represents its distance from zero as a positive number.
-    - **Natural exponential (exp)** - Returns _e_ raised to the power of a given expression.
-    - **Natural logarithm (ln)** - Returns the natural logarithm of a given expression.
-    - **Floor (floor)** - Returns the largest integer less than or equal to a given expression.
-    - **Ceiling (ceil)** - Returns the smallest integer greater than or equal to a given expression.
-  - **Cumulative functions** - Apply functions on the current row and all preceding rows.
-    - **Total** - Calculates the cumulative total up to and including the current row.
-    - **Mean** - Calculates the mean up to and including the current row.
+  - **Reduce row**
+    - apply selected calculation / EACH row
+  - **Binary operation** 
+    - basic binary operations -- from -- 2 selected fields
+  - **Unary operation** 
+    - basic unary operations | specific field (==column) / EACH row
+    - ALLOWED operations
+      - **Absolute value (abs)** - Returns the absolute value of a given expression. It represents its distance from zero as a positive number.
+      - **Natural exponential (exp)** - Returns _e_ raised to the power of a given expression.
+      - **Natural logarithm (ln)** - Returns the natural logarithm of a given expression.
+      - **Floor (floor)** - Returns the largest integer less than or equal to a given expression.
+      - **Ceiling (ceil)** - Returns the smallest integer greater than or equal to a given expression.
+  - **Cumulative functions** 
+    - apply functions | specific field's (CURRENT row + ALL preceding rows) 
+    - ALLOWED values
+      - **Total**
+        - CURRENT row + NEXT rows
+      - **Mean**
   - **Window functions** - Apply window functions. The window can either be **trailing** or **centered**.
     With a trailing window the current row will be the last row in the window.
     With a centered window the window will be centered on the current row.
     For even window sizes, the window will be centered between the current row, and the previous row.
-    - **Mean** - Calculates the moving mean or running average.
-    - **Stddev** - Calculates the moving standard deviation.
-    - **Variance** - Calculates the moving variance.
+    - ALLOWED calculations
+      - **Mean** 
+        - Calculates the moving mean or running average
+      - **Stddev**
+        - Calculates the moving standard deviation
+      - **Variance**
+        - Calculates the moving variance
   - **Row index** - Insert a field with the row index.
 - **Field name** - Select the names of fields you want to use in the calculation for the new field.
 - **Calculation** - If you select **Reduce row** mode, then the **Calculation** field appears. Click in the field to see a list of calculation choices you can use to create the new field. For information about available calculations, refer to [Calculation types][].
@@ -181,45 +192,48 @@ In the example below, we added two fields together and named them Sum.
 
 ### Concatenate fields
 
-Use this transformation to combine all fields from all frames into one result.
+* ALL frames' fields are combined -- into -- 1 result
+* allows
+  * simplifying merging DIFFERENT data sources
 
-For example, if you have separate queries retrieving temperature and uptime data (Query A) and air quality index and error information (Query B), applying the concatenate transformation yields a consolidated data frame with all relevant information in one view.
+* _Example:_ 
+  * **Query A:**
+  
+  | Temp | Uptime  |
+  | ---- | ------- |
+  | 15.4 | 1230233 |
 
-Consider the following:
-
-**Query A:**
-
-| Temp | Uptime  |
-| ---- | ------- |
-| 15.4 | 1230233 |
-
-**Query B:**
-
-| AQI | Errors |
-| --- | ------ |
-| 3.2 | 5      |
-
-After you concatenate the fields, the data frame would be:
-
-| Temp | Uptime  | AQI | Errors |
-| ---- | ------- | --- | ------ |
-| 15.4 | 1230233 | 3.2 | 5      |
-
-This transformation simplifies the process of merging data from different sources, providing a comprehensive view for analysis and visualization.
+  * **Query B:**
+  
+    | AQI | Errors |
+    | --- | ------ |
+    | 3.2 | 5      |
+  * result
+  
+  | Temp | Uptime  | AQI | Errors |
+  | ---- | ------- | --- | ------ |
+  | 15.4 | 1230233 | 3.2 | 5      |
 
 ### Config from query results
 
-Use this transformation to select a query and extract standard options, such as **Min**, **Max**, **Unit**, and **Thresholds**, and apply them to other query results. This feature enables dynamic visualization configuration based on the data returned by a specific query.
+* uses
+  * select a query & extract standard options (**Min**, **Max**, **Unit**, and **Thresholds**)
 
 #### Options
 
-- **Config query** - Select the query that returns the data you want to use as configuration.
-- **Apply to** - Select the fields or series to which the configuration should be applied.
-- **Apply to options** - Specify a field type or use a field name regex, depending on your selection in **Apply to**.
+- **Config query** 
+  - select the query / returns the data / you want to use -- as -- configuration
+- **Apply to**
+  - == fields or series | which apply the configuration
+- **Apply to options**
+  - ALLOWED values -- depend on -- Apply to
 
 #### Field mapping table
 
-Below the configuration options, you'll find the field mapping table. This table lists all fields found in the data returned by the config query, along with **Use as** and **Select** options. It provides control over mapping fields to config properties, and for multiple rows, it allows you to choose which value to select.
+* TODO:
+Below the configuration options, you'll find the field mapping table
+This table lists all fields found in the data returned by the config query, along with **Use as** and **Select** options
+It provides control over mapping fields to config properties, and for multiple rows, it allows you to choose which value to select.
 
 #### Example
 
@@ -933,32 +947,31 @@ This transformation helps you tailor the visual presentation of your data to foc
 
 ### Merge series/tables
 
-Use this transformation to combine the results from multiple queries into a single result, which is particularly useful when using the table panel visualization. This transformation merges values into the same row if the shared fields contain the same data.
+* allows
+  * MULTIPLE queries results -- are combined into -- 1! result 
+    * if SHARED fields contain the SAME data -> values | SAME row 
 
-Here's an example illustrating the impact of the **Merge series/tables** transformation on two queries returning table data:
+* _Example:_ 
+  * **Query A:**
+  
+  | Time                | Job     | Uptime    |
+  | ------------------- | ------- | --------- |
+  | 2020-07-07 11:34:20 | node    | 25260122  |
+  | 2020-07-07 11:24:20 | postgre | 123001233 |
 
-**Query A:**
+  * **Query B:**
+  
+  | Time                | Job     | Errors |
+  | ------------------- | ------- | ------ |
+  | 2020-07-07 11:34:20 | node    | 15     |
+  | 2020-07-07 11:24:20 | postgre | 5      |
 
-| Time                | Job     | Uptime    |
-| ------------------- | ------- | --------- |
-| 2020-07-07 11:34:20 | node    | 25260122  |
-| 2020-07-07 11:24:20 | postgre | 123001233 |
-
-**Query B:**
-
-| Time                | Job     | Errors |
-| ------------------- | ------- | ------ |
-| 2020-07-07 11:34:20 | node    | 15     |
-| 2020-07-07 11:24:20 | postgre | 5      |
-
-Here is the result after applying the Merge transformation.
-
-| Time                | Job     | Errors | Uptime    |
-| ------------------- | ------- | ------ | --------- |
-| 2020-07-07 11:34:20 | node    | 15     | 25260122  |
-| 2020-07-07 11:24:20 | postgre | 5      | 123001233 |
-
-This transformation combines values from Query A and Query B into a unified table, enhancing the presentation of data for better insights.
+  * result
+  
+  | Time                | Job     | Errors | Uptime    |
+  | ------------------- | ------- | ------ | --------- |
+  | 2020-07-07 11:34:20 | node    | 15     | 25260122  |
+  | 2020-07-07 11:24:20 | postgre | 5      | 123001233 |
 
 ### Organize fields by name
 
