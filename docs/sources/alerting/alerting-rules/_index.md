@@ -48,20 +48,28 @@ refs:
 # Configure alert rules
 
 * [Alert rules](ref:alert-rules)
-  * == your alerting system's central component  
-
-An alert rule consists of one or more queries and expressions that select the data you want to measure. It contains a condition to trigger the alert, an evaluation period that determines how often the rule is evaluated, and additional options to manage alert events and their notifications.
-
-Grafana supports two types of alert rules:
-
-1. **Grafana-managed alert rules** — the recommended option. They can query backend data sources—including Prometheus-based ones—and offer a [richer feature set](ref:comparison-ds-grafana-rules).
-1. **Data source-managed alert rules** — supported for Prometheus-based data sources (such as Mimir, Loki, and Prometheus), with rules stored in the data source itself.
-
-   You can [convert and import data source-managed rules into Grafana-managed rules](ref:import-to-grafana-managed) to let Grafana Alerting manage them.
-
-Both types of alert rules can be configured in Grafana using the **+ New alert rule** flow. For step-by-step instructions, refer to:
-
-- [Configure Grafana-managed alert rules](ref:configure-grafana-alerts)
-- [Configure data source-managed alert rules](ref:configure-ds-alerts)
-
-In Grafana Alerting, you can also [configure recording rules](ref:recording-rules), which pre-compute queries and save the results as new time series metrics for use in other alert rules or dashboard queries.
+  * requirements
+    * ⚠️compatible Data source⚠️
+      * == ❌NOT valid -- with -- Grafana's special built-in data source❌
+  * == 👀your alerting system's central component👀
+  * == >=1 queries + condition + evaluation period + ADDITIONAL options  
+    * querieS
+      * select the data to measure
+    * evaluation period
+      * how often to evaluate the rule  
+    * ADDITIONAL options
+      * manage 
+        * alert events
+        * alert notifications
+  * supported types 
+    * alert rules
+      1. **Grafana-managed alert rules**
+         * recommended option
+           * Reason:🧠offer a [richer feature set](ref:comparison-ds-grafana-rules)🧠
+         * query backend data sources 
+      1. **Data source-managed alert rules**
+         * == 👀alert rules / stored | data source itself👀
+         * AVAILABLE | Prometheus-based data sources (Mimir, Loki, and Prometheus) 
+         * [can be converted -- into -- Grafana-managed rules](ref:import-to-grafana-managed) 
+           * == Grafana Alerting manage them
+    * [recording rules](ref:recording-rules)

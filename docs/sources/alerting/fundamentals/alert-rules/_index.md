@@ -75,23 +75,23 @@ refs:
 * Grafana Alerting
   * 👀inherits the Prometheus Alerting model👀
   * supported alert rule types
-  - **Data source-managed alert rules**
-    - requirements
-      - query Prometheus-based data sources (Mimir, Loki, Prometheus)
-    - stored | data source
-    - enable
-      - these data sources' horizontal scalability 
-  - **Grafana-managed alert rules**
-    - 👀recommended one👀
-    - support
-      - [data sources](/grafana/plugins/data-source-plugins/?features=alerting)
-        - MULTIPLE | 1! alert rule
-      - expression-based transformations,
-      - advanced alert conditions,
-      - images | notifications,
-      - handling of error & NOT data states
-      - [MORE](ref:comparison-ds-grafana-rules)
-    - [how to configure](ref:configure-grafana-alerts)
+    - **Data source-managed alert rules**
+      - requirements
+        - query Prometheus-based data sources (Mimir, Loki, Prometheus)
+      - stored | data source
+      - enable
+        - these data sources' horizontal scalability 
+    - **Grafana-managed alert rules**
+      - 👀recommended one👀
+      - support
+        - [data sources](/grafana/plugins/data-source-plugins/?features=alerting)
+          - MULTIPLE | 1! alert rule
+        - expression-based transformations,
+        - advanced alert conditions,
+        - images | notifications,
+        - handling of error & NOT data states
+        - [MORE](ref:comparison-ds-grafana-rules)
+  * [how to configure](ref:configure-grafana-alerts)
 
 ## Recording rules
 

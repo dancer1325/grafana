@@ -62,15 +62,19 @@ refs:
 
 # Configure silences
 
-Silences stop notifications from being created for a specified time window but do not interrupt alert evaluation. Use them to temporarily prevent alert notifications, such as during incident response or a maintenance window.
-
-{{< admonition type="note" >}}
-Silences are assigned to a [specific Alertmanager](ref:alertmanager-architecture) and only suppress notifications for alerts managed by that Alertmanager.
-{{< /admonition >}}
+* Silences 
+  * == 💡mute alerts | given time💡
+    * ALTHOUGH, ❌NOT interrupt alert evaluation❌
+  * uses
+    * prevent alert notifications
+      * _Examples:_ incident response OR maintenance window
+  * are assigned -- to a -- [⚠️specific⚠️ Alertmanager](ref:alertmanager-architecture)
+    * == ONLY suppress notifications / that Alertmanager
 
 ## Mute and active timings vs silences
 
-[Mute and active timings](ref:shared-mute-timings) and [silences](ref:shared-silences) are distinct methods to suppress notifications. They do not prevent alert rules from being evaluated or stop alert instances from appearing in the user interface; they only prevent notifications from being created.
+[Mute and active timings](ref:shared-mute-timings) and [silences](ref:shared-silences) are distinct methods to suppress notifications
+* They do not prevent alert rules from being evaluated or stop alert instances from appearing in the user interface; they only prevent notifications from being created.
 
 The following table highlights the key differences between mute timings and silences.
 
@@ -196,6 +200,8 @@ To link to a new silence page for an external Alertmanager, add a `alertmanager`
 
 ## Inhibition rules
 
-Inhibition rules are supported in the Prometheus Alertmanager. You can [configure a Prometheus Alertmanager](ref:configure-alertmanager) to handle the notification of alerts and suppress notifications via inhibition rules.
+* supported | Prometheus Alertmanager
+  * [how to configure a Prometheus Alertmanager](ref:configure-alertmanager)
 
-Inhibition rules are not currently supported in the Grafana Alertmanager. For tracking the progress of this feature request, follow [this GitHub issue](https://github.com/grafana/grafana/issues/68822).
+* ❌NOT supported | Grafana Alertmanager❌
+  * [feature request](https://github.com/grafana/grafana/issues/68822)

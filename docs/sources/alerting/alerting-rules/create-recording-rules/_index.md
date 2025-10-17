@@ -35,9 +35,16 @@ refs:
 
 # Configure recording rules
 
-Recording rules allows you to periodically pre-compute frequently used or computationally expensive queries, saving the results as a new time series metric.
+* Recording rules
+  * allows
+    * pre-compute queries + save the results -- as -- NEW time series metrics 
+      * NEW time series metrics uses
+        * OTHER alert rules
+        * OTHER dashboard queries
 
-For instance, you can create a recording rule generating a new metric, `error_9001_count`, which counts occurrences of a specific log error within one minute. Then, query the `error_9001_count` metric in dashboards and alert rules.
+For instance, you can create a recording rule generating a new metric, `error_9001_count`
+which counts occurrences of a specific log error within one minute
+Then, query the `error_9001_count` metric in dashboards and alert rules.
 
 Recording rules can be helpful in various scenarios, such as:
 

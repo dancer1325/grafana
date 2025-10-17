@@ -1,0 +1,35 @@
+groups:
+- name: example
+  rules:
+  - alert: HighCPU
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: warning
+      service: web
+      cluster: production
+    annotations:
+      summary: "High CPU usage on {{ $labels.instance }}"
+      description: "CPU usage has exceeded 80% for more than 5 minutes"
+      
+  - alert: HighMemory
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: warning
+      service: web
+      cluster: production
+    annotations:
+      summary: "High Memory usage on {{ $labels.instance }}"
+      description: "Memory usage has exceeded 90% for more than 5 minutes"
+      
+  - alert: DiskSpaceLow
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+      service: database
+      cluster: production
+    annotations:
+      summary: "Low disk space on {{ $labels.instance }}"
+      description: "Disk space is below 10%"

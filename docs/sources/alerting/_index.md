@@ -51,6 +51,12 @@ cards:
 
 ## Overview
 
+* requirements
+  * data sources
+    * ⚠️OTHERWISE -> bug⚠️
+
+    ![](static/bugWithoutAvailableAllowedDatasources.png)
+
 * goal
   * monitor your 
     * incoming metrics data OR
