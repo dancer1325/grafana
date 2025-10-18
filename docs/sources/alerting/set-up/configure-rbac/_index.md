@@ -17,11 +17,25 @@ weight: 155
 
 # Configure RBAC
 
-Role-based access control (RBAC) for Grafana Enterprise and Grafana Cloud provides a standardized way of granting, changing, and revoking access, so that users can view and modify Grafana resources.
+* requirements
+  * Grafana Enterprise OR Grafana Cloud
 
-A user is any individual who can log in to Grafana. Each user is associated with a role that includes permissions. Permissions determine the tasks a user can perform in the system.
+* Role-based access control (RBAC)
+  * allows, about Grafana resources, access
+    * grant,
+    * change,
+    * revoke access 
 
-Each permission contains one or more actions and a scope.
+* user
+  * == any individual / can log in | Grafana
+  * associated -- with a -- role
+
+* role
+  * == permissions
+
+* Permissions
+  * == >=1 action + scope
+  * -> tasks / a user can perform | system
 
 ## Permissions
 

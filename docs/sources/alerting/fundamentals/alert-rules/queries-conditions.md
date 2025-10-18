@@ -61,78 +61,81 @@ refs:
 
 # Queries and conditions
 
-In Grafana, queries fetch and transform data from data sources, which include databases like MySQL or PostgreSQL, time series databases like Prometheus or InfluxDB, and services like Amazon CloudWatch or Azure Monitor.
-
-An alert rule defines the following components:
-
-- A [query](#data-source-queries) that specifies the data to retrieve from a data source, with the syntax depending on the type of data source used.
-- A [condition](#alert-condition) that must be met before the alert rule fires.
-- Optional [expressions](#advanced-options-expressions) to perform transformations on the retrieved data.
-
-Alerting periodically runs the queries and expressions, evaluating the condition. If the condition is breached, an alert instance is triggered for each time series.
-
 ## Data source queries
 
-Alerting queries are the same as the queries used in Grafana panels, but Grafana-managed alerts are limited to querying [data sources that have Alerting enabled](/grafana/plugins/data-source-plugins/?features=alerting).
-
-Queries in Grafana can be applied in various ways, depending on the data source and query language being used. Each data source’s query editor provides a customized user interface to help you write queries that take advantage of its unique capabilities. For details about query editors and syntax in Grafana, refer to [Query and transform data](ref:query-transform-data).
-
-Alerting can work with two types of data:
-
-1. **Time series data** — The query returns a collection of time series, where each series must be [reduced](#reduce) to a single numeric value for evaluating the alert condition.
-1. **Tabular data** — The query must return data in a table format with only one numeric column. Each row must have a value in that column, used to evaluate the alert condition. See a [tabular data example](ref:table-data-example).
-
-Each time series or table row is evaluated as a separate [alert instance](ref:alert-instance).
-
-{{< figure src="/media/docs/alerting/alerting-query-conditions-default-options.png" max-width="750px" caption="Alert query using the Prometheus query editor and alert condition" >}}
+* Alerting queries
+  * == queries / done | Grafana panels
+  * Grafana-managed alerts' restrictions
+    * [data sources / `alerting` is enabled](/grafana/plugins/data-source-plugins/?features=alerting)
+  * 's editor
+    * customized user interface / data source
+  * ⚠️ALLOWED data types⚠️ 
+    1 **Time series data** 
+      * query returns a >=1 time series / EACH series must be [reduced](#reduce) -- to a -- 1! numeric value 
+        * Reason:🧠evaluate the alert condition🧠
+        * 👀EACH time series is evaluated -- as a -- separate [alert instance](ref:alert-instance)👀 
+    1. **Tabular data** 
+      * query returns data | table format / 1! numeric column / EACH row
+        * Reason:🧠evaluate the alert condition🧠
+        * 👀EACH time series or table row is evaluated -- as a -- separate [alert instance](ref:alert-instance)👀
+      * See a [tabular data example](ref:table-data-example)
 
 ## Alert condition
 
-The alert condition is the query or expression that determines whether the alert fires or not depending whether the value satisfies the specified comparison. There can be only one condition which determines the triggering of the alert.
-
-If the queried data meets the defined condition, Grafana fires the alert.
-
-When using **Default options**, the `When` input [reduces the query data](#reduce), and the last input defines the threshold condition.
-
-When using **Advanced options**, you have to choose one of your queries or expressions as the alert condition.
+* alert condition
+  * == query OR expression / determines whether the alert fires OR NOT
+  * types
+    * | use **Default options**,
+      * `When query` 
+        * [reduces the query data](#reduce)
+    * | use **Advanced options**,
+      * you can choose
 
 ## Advanced options: Expressions
 
-Expressions are only available for Grafana-managed alerts and when the **Advanced options** are enabled.
+* requirements
+  * Grafana-managed alerts
+  * enable the **Advanced options**
 
-In Grafana, expressions allow you to perform calculations, transformations, or aggregations on queried data. They modify existing metrics through mathematical operations, functions, or logical expressions.
-
-With expression queries, you can perform tasks such as calculating the percentage change between two values, applying functions like logarithmic or trigonometric functions, aggregating data over specific time ranges or dimensions, and implementing conditional logic to handle different scenarios.
-
-{{< figure src="/media/docs/alerting/alert-rule-expressions.png" max-width="750px" caption="Alert rule expressions" >}}
-
-The following expressions are available:
+* allows
+  * | retrieved data, performing
+    * transformations 
+    * calculations,
+    * aggregations
 
 ### Reduce
 
-Aggregates time series values within the selected time range into a single number.
+* 👀range vector is converted -- into a -- 1! number👀
+* 's input
+  * \>=1 range vector time series
+* 's return
+  * EACH series are transformed -- into -- 1! number
+    * Reason:🧠compare | alert condition🧠
 
-Reduce takes one or more time series and transform each series into a single number, which can then be compared in the alert condition.
-
-The following aggregations functions are included: `Min`, `Max`, `Mean`, `Median`, `Sum`, `Count`, and `Last`. For more details, refer to the [Reduce documentation](ref:reduce-operation).
+* ALLOWED functions
+  * `Min`,
+  * `Max`,
+  * `Mean`,
+  * `Median`,
+  * `Sum`,
+  * `Count`,
+  * `Last`
+* [MORE](ref:reduce-operation)
 
 ### Math
 
-Performs free-form math functions/operations on time series data and numbers. For example, `$A + 1` or `$A * 100`.
+* requirements
+  * | time series
 
-If queries being compared have **multiple series in their results**, series from different queries are matched(joined) if they have the same labels. For example:
+* allows
+  * performing free-form math functions/operations | time series data and numbers
 
-{{< docs/shared lookup="alerts/math-example.md" source="grafana" version="<GRAFANA_VERSION>" >}}
+* uses | 
+  * query / if series have SAME labels -> joined
+  * expression's alert condition
+    * _Example:_ [here](ref:dynamic-threshold-example)
 
-In this case, only series with matching labels are joined, and the operation is calculated between them.
-
-For additional scenarios on how Math handles different data types, refer to the [Math documentation](ref:math-operation).
-
-You can also use a Math expression to define the **alert condition**. For example:
-
-- `$B > 70` should fire if the value of B (query or expression) is more than 70.
-- `$B < $C * 100` should fire if the value of B is less than the value of C multiplied by 100.
-- Compare matching series from two queries, as shown in the [dynamic threshold example](ref:dynamic-threshold-example).
+* [MORE](ref:math-operation)
 
 ### Resample
 

@@ -1,0 +1,32 @@
+groups:
+- name: mimir-alerts
+  rules:
+  - alert: MimirDown
+    expr: up{job="mimir"} == 0
+    for: 1m
+    labels:
+      severity: critical
+      service: mimir
+    annotations:
+      summary: "Mimir is down"
+      description: "Mimir has been down for more than 1 minute"
+
+  - alert: MimirHighIngestionRate
+    expr: rate(cortex_distributor_samples_in_total[5m]) > 1000
+    for: 2m
+    labels:
+      severity: warning
+      service: mimir
+    annotations:
+      summary: "High ingestion rate in Mimir"
+      description: "Mimir ingestion rate is {{ $value }} samples/sec"
+
+  - alert: MimirIngesterUnhealthy
+    expr: cortex_ring_members{state!="ACTIVE",name="ingester"} > 0
+    for: 1m
+    labels:
+      severity: critical
+      service: mimir
+    annotations:
+      summary: "Mimir ingester unhealthy"
+      description: "{{ $value }} Mimir ingesters are not in ACTIVE state"

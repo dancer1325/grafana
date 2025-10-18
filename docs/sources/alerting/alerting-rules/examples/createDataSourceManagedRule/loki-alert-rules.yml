@@ -1,0 +1,35 @@
+groups:
+  - name: loki-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          sum(rate({job="app"} |= "ERROR" [5m])) by (job)
+          /
+          sum(rate({job="app"}[5m])) by (job) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "High error rate in logs"
+          description: "Error rate is {{ $value | humanizePercentage }} for job {{ $labels.job }}"
+
+      - alert: TooManyLogErrors
+        expr: sum(count_over_time({job="app"} |= "ERROR" [5m])) > 50
+        for: 1m
+        labels:
+          severity: critical
+          service: application
+        annotations:
+          summary: "Too many log errors"
+          description: "More than 50 errors in the last 5 minutes"
+
+      - alert: NoLogsReceived
+        expr: absent_over_time({job="app"}[10m])
+        for: 5m
+        labels:
+          severity: warning
+          service: logging
+        annotations:
+          summary: "No logs received"
+          description: "No logs have been received from job {{ $labels.job }} for 10 minutes"

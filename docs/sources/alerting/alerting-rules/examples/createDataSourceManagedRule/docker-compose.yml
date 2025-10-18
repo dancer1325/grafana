@@ -1,0 +1,82 @@
+services:
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-alert-rules.yml:/etc/prometheus/alert-rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+
+  # Mimir (single binary mode)
+  mimir:
+    image: grafana/mimir:latest
+    container_name: mimir
+    ports:
+      - "9009:9009"
+    volumes:
+      - ./mimir-config.yml:/etc/mimir/mimir.yml
+      - ./mimir-alert-rules.yml:/etc/mimir/alert-rules.yml
+      - mimir-data:/data
+    command:
+      - '-config.file=/etc/mimir/mimir.yml'
+
+  # Loki
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/loki.yml
+      - ./loki-alert-rules.yml:/etc/loki/rules/fake/alert-rules.yml
+    command:
+      - '-config.file=/etc/loki/loki.yml'
+
+  # Promtail (log collector)
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/promtail.yml
+      - /var/log:/var/log:ro
+    command:
+      - '-config.file=/etc/promtail/promtail.yml'
+
+  # Alertmanager
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager-config.yml:/etc/alertmanager/alertmanager.yml
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana-provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+      - mimir
+      - loki
+      - alertmanager
+
+volumes:
+  mimir-data:
+  grafana-storage:

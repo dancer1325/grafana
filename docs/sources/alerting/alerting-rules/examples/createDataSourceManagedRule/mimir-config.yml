@@ -1,0 +1,39 @@
+target: all
+
+server:
+  http_listen_port: 9009
+  grpc_listen_port: 9095
+
+common:
+  storage:
+    backend: filesystem
+    filesystem:
+      dir: /data/blocks
+
+ruler:
+  enable_api: true
+  rule_path: /data/ruler-data
+  alertmanager_url: http://alertmanager:9093
+  ring:
+    kvstore:
+      store: inmemory
+
+ruler_storage:
+  backend: filesystem
+  filesystem:
+    dir: /data/ruler-storage
+
+ingester:
+  ring:
+    kvstore:
+      store: inmemory
+
+store_gateway:
+  sharding_ring:
+    kvstore:
+      store: inmemory
+
+compactor:
+  sharding_ring:
+    kvstore:
+      store: inmemory
