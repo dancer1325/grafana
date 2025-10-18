@@ -48,7 +48,7 @@ refs:
     - == AFTER the condition is NO longer met, 
       - how long the alert continues to fire 
 
-![](/grafana/media/docs/alerting/alert-rule-evaluation-2.png)
+  ![](/grafana/media/docs/alerting/alert-rule-evaluation-2.png)
 
 ## Alerting lifecycle
 
@@ -79,13 +79,9 @@ refs:
 
 * 👀EVERY alert rule & recording rule is assigned -- to an -- evaluation group👀
 
-* EXIST **evaluation interval** / EACH evaluation group
-  * uses
-    * how frequently the rule is checked
-  * _Examples:_ `10s`, `30s`, `1m`, `10m`, etc.
-
 * Evaluation interval
   * == how frequently the alert rule is checked
+  * EXIST / EACH evaluation group
 
 * ways to evaluate the rules
   * concurrently OR
@@ -94,8 +90,10 @@ refs:
 ## Pending period
 
 * **Pending period**
-  * == how long the condition must be met -- to -- trigger the alert rule
+  * == how long the condition MUST be met -- to -- trigger the alert rule
   * 👀prevent unnecessary notifications / caused -- by -- temporary issues👀
+  * requirements
+    * ⚠️\> evaluation interval⚠️
 
 * Pending state
   * requirements
@@ -103,7 +101,7 @@ refs:
   * if you set **Pending period=0** -> skip the **Pending** state
     * == transition DIRECTLY -- to -- **Alerting** immediately
 
-- **Normal** -> **Pending** -> **Alerting**<sup>\*</sup>
+- **Normal** -> **Pending** -> **Alerting**
 
 ## Keep firing for
 

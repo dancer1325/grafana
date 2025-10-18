@@ -24,11 +24,6 @@ refs:
 
 # How rules are evaluated within a group
 
-* evaluation group
-  * contains
-    * **evaluation interval**
-      * == how FREQUENTLY the rule is evaluated
-
 * rules | 
   * DIFFERENT evaluation groups, 
     * can be evaluated SIMULTANEOUSLY
