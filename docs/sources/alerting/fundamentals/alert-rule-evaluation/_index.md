@@ -107,29 +107,8 @@ refs:
 
 * **Keep firing for** period
   * 👀avoid repeated firing-resolving-firing notifications / caused -- by -- flapping conditions 👀
-  * AFTER **Keep firing for** period -> alert transitions -- to the -- **Normal** state & marked as **Resolved**
-  * if **Keep firing for** period == zero -> transition -- DIRECTLY to -- Normal
+  * AFTER **Keep firing for** period WITHOUT meeting alert rule's condition -> alert transitions -- to the -- **Normal** state & marked as **Resolved**
+  * if **Keep firing for** period == 0 -> transition -- DIRECTLY to -- Normal
     * == skip the **Recovering** state 
 
-- **Alerting** → **Recovering** → **Normal (Resolved)**<sup>\*</sup>
-
-## Evaluation example
-
-* _Example:_ alert rule / 
-  * **evaluation interval** = 30 seconds
-  * **pending period** = 90 seconds
-
-| Time                      | Condition | Alert instance state | Pending counter |
-| ------------------------- | --------- | -------------------- | --------------- |
-| 00:30 (first evaluation)  | Not met   | Normal               | -               |
-| 01:00 (second evaluation) | Breached  | Pending              | 0s              |
-| 01:30 (third evaluation)  | Breached  | Pending              | 30s             |
-| 02:00 (fourth evaluation) | Breached  | Pending              | 60s             |
-| 02:30 (fifth evaluation)  | Breached  | Alerting 📩          | 90s             |
-
-* **keep firing for** period == 0 seconds
-
-| Time                       | Condition | Alert instance state          | Pending counter |
-| -------------------------- | --------- | ----------------------------- | --------------- |
-| 03:00 (sixth evaluation)   | Not met   | Normal <sup>Resolved</sup> 📩 | 120s            |
-| 03:30 (seventh evaluation) | Not met   | Normal                        | 150s            |
+- **Alerting** → **Recovering** → **Normal (Resolved)**

@@ -106,19 +106,9 @@ refs:
 * alert instances == alerts
 
 * EACH alert rule can produce >= 1 alert instances
-  * 1 alert instance / EACH time series OR dimension
+  * 👀1 alert instance / EACH time series OR dimension👀
   * allows
     * 👀observe >=1 resources | 1! expression👀
-
-* _Examples:_ alert rule / create 1  alert instance / EACH CPU
-
-  ```promql
-  sum by(cpu) (
-    rate(node_cpu_seconds_total{mode!="idle"}[1m])
-  )
-  ```
-
-  ![](/grafana/media/docs/alerting/multi-dimensional-alert.png)
 
 ### Contact points
 
