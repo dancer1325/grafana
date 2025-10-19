@@ -41,21 +41,18 @@ refs:
       * NEW time series metrics uses
         * OTHER alert rules
         * OTHER dashboard queries
-
-For instance, you can create a recording rule generating a new metric, `error_9001_count`
-which counts occurrences of a specific log error within one minute
-Then, query the `error_9001_count` metric in dashboards and alert rules.
-
-Recording rules can be helpful in various scenarios, such as:
-
-- **Faster queries** are needed: Performing heavy aggregations or querying large data sets is quicker with precomputed results than real-time queries.
-- **Reducing system load:** Precomputing specific queries in advance can reduce system overload caused by multiple simultaneous queries.
-- **Simplifying complex aggregations:** Create a new metric from complex aggregations to facilitate alert and dashboard setup.
-- **Reusing queries across alerts:** Improve efficiency by reusing the same query across similar alert rules and dashboards.
-
-The evaluation group of the recording rule determines how often the metric is pre-computed.
-
-Similar to alert rules, Grafana supports two types of recording rules:
-
-1. [Grafana-managed recording rules](ref:grafana-managed-recording-rules), which can query any Grafana data source supported by alerting. It's the recommended option.
-2. [Data source-managed recording rules](ref:data-source-managed-recording-rules), which can query Prometheus-based data sources like Mimir or Loki.
+  * use cases
+    * **Faster queries**
+    * **Reduce system load:**
+      - Reason:🧠Precompute specific queries in advanc🧠
+    * **Simplifying complex aggregations:**
+      - Reason:🧠use NEW metric🧠
+    * **Reusing queries across alerts:**
+      - Improve efficiency by reusing the same query across similar alert rules and dashboards
+  * types of recording rules
+    1. [Grafana-managed recording rules](ref:grafana-managed-recording-rules)
+       * ALLOWED | any Grafana data source -- supported by -- alerting
+       * recommended
+    2. [Data source-managed recording rules](ref:data-source-managed-recording-rules)
+       * requirements
+         * Prometheus-based data sources (Mimir, Loki or Prometheus)

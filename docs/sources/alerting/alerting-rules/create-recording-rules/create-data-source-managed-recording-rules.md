@@ -25,22 +25,25 @@ refs:
 
 # Create data source-managed recording rules
 
-[Recording rules](ref:create-recording-rules) allow you to periodically pre-compute frequently used or computationally expensive queries, saving the results as a new time series metric.
+* | data source-managed groups,
+  * alert rules & recording rules, are evaluated SEQUENTIALLY
+    * useful | recording rules
+      * Reason:🧠recording rule is evaluated BEFORE any other alert rule🧠
 
-Alert rules and dashboards can then query the new metric resulting from the recording rule. This is faster than querying real-time data and can help to reduce system load.
+## requirements
 
-Data source-managed recording rules can query Prometheus-based data sources like Mimir or Loki. For more information on recording rules in Prometheus, refer to [Defining recording rules in Prometheus](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/).
-
-Note that in data source-managed groups, the alert rules and recording rules within the same evaluation group are evaluated sequentially. This is useful to ensure that a recording rule is evaluated before any other alert rule queries the pre-computed metric.
-
-## Before you begin
-
-- Verify that you have write permission to the Prometheus or Loki data source. Otherwise, you will not be able to create or update Grafana Mimir managed alerting rules.
-
-- For Grafana Mimir and Loki data sources, enable the ruler API by configuring their respective services.
-  - **Loki** - The `local` rule storage type, default for the Loki data source, supports only viewing of rules. To edit rules, configure one of the other rule storage types.
-
-  - **Mimir** - use the `/prometheus` prefix. The Prometheus data source supports both Grafana Mimir and Prometheus, and Grafana expects that both the [Query API](/docs/mimir/latest/operators-guide/reference-http-api/#querier--query-frontend) and [Ruler API](/docs/mimir/latest/operators-guide/reference-http-api/#ruler) are under the same URL. You cannot provide a separate URL for the Ruler API.
+- write permission | Prometheus or Loki data source
+- | Grafana Mimir and Loki data sources,
+  - enable the ruler API -- by configuring their -- respective services
+  - **Loki**
+    - rule storage types
+      - `local`
+        - default one
+        - supports ⚠️ONLY viewing of rule⚠️
+          - if you want to edit rules -> configure other
+  - **Mimir**
+    - use `/prometheus` prefix
+    - [Query API](/docs/mimir/latest/operators-guide/reference-http-api/#querier--query-frontend) & [Ruler API](/docs/mimir/latest/operators-guide/reference-http-api/#ruler) are | SAME URL
 
 ## Add new recording rule
 
@@ -55,7 +58,8 @@ The recording rule name must be a Prometheus metric name and contain no whitespa
 
 ## Define recording rule
 
-Select your data source and enter a query. The queries used in data source-managed recording rules always run as instant queries.
+Select your data source and enter a quer
+The queries used in data source-managed recording rules always run as instant queries.
 
 ## Add namespace and group
 
