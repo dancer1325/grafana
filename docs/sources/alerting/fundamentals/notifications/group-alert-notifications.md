@@ -33,55 +33,43 @@ refs:
 
 # Group alert notifications
 
-Grouping in Grafana Alerting allows you to batch relevant alerts together into a smaller number of notifications. This is particularly important if notifications are delivered to first-responders, such as engineers on-call, where receiving lots of notifications in a short period of time can be overwhelming. In some cases, it can negatively impact a first-responders ability to respond to an incident. For example, consider a large outage where many of your systems are down. In this case, grouping can be the difference between receiving 1 phone call and 100 phone calls.
-
-{{< admonition type="tip" >}}
-For a practical example of grouping, refer to our [Getting Started with Grouping tutorial](https://grafana.com/tutorials/alerting-get-started-pt3/).
-{{< /admonition  >}}
+* [tutorial](https://grafana.com/tutorials/alerting-get-started-pt3/)
 
 ## Group notifications
 
-Grouping combines similar alert instances within a specific period into a single notification, reducing alert noise.
+* == notification policy's configuration
+  * 💡-- via -- `Group by`💡
+    * by default, by alert rule -- `alertname` & `grafana_folder` labels --
 
-In the [notification policy](ref:notification-policies), you can configure how to group multiple alerts into a single notification:
-
-- The `Group by` option specifies the criteria for grouping incoming alerts within the policy. The default is by alert rule.
-- [Timing options](#timing-options) determine when and how often to send the notification.
-
-{{< figure src="/media/docs/alerting/alerting-notification-policy-diagram-with-labels-v3.png" max-width="750px" alt="A diagram about the components of a notification policy, including labels and groups" >}}
-
-Alert instances are grouped together if they have the same exact label values for the labels configured in the `Group by` option.
-
-For example, given the `Group by` option set to the `team` label:
-
-- `alertname:foo, team=frontend`, and `alertname:bar, team=frontend` are in one group.
-- `alertname:foo, team=frontend`, and `alertname:qux, team=backend` are in another group.
+![](/grafana/media/docs/alerting/alerting-notification-policy-diagram-with-labels-v3.png)
 
 ### Group by alert rule or labels
 
-By default, notification policies in Grafana group alerts by the alert rule. Specifically, they are grouped using the `alertname` and `grafana_folder` labels, as alert rule names are not unique across folders.
+### 1! group / ALL alerts
 
-If you want to group alerts by other labels, something other than the alert rule, change the `Group by` option to any other combination of labels.
+* | Default policy,
+  * set `Group by` = "" 
 
-### A single group for all alerts
+### Disable grouping ==separate notification / EACH alert
 
-If you want to group all alerts handled by the notification policy in a single group (without grouping notifications by alert rule or other labels), leave `Group by` empty in the Default policy.
-
-### Disable grouping
-
-If you want to receive every alert as a separate notification, you can do so by grouping by a special label called `...`, ensuring that other labels are not present.
+* set `Group by` = "..." 
 
 ## Timing options
 
-In the notification policy, you can also configure how often notifications are sent for each [group of alerts](#group-notifications). There are three distinct timers applied to groups within the notification policy:
+* == notification policy's configuration
+* == how often to send the notification / EACH [group of alerts](#group-notifications)
+  * == delaying the delivery of notifications
+* allows
+  * grouping incoming alerts | 1! notification
+* == 
+  - **[Group wait](#group-wait)**
+    - time to wait BEFORE sending the FIRST notification -- for a -- NEW group of alerts
+  - **[Group interval](#group-interval)**
+    - time to wait BEFORE sending a notification about changes | alert group
+  - **[Repeat interval](#repeat-interval)**
+    - if the group has NOT changed since last notification -> time to wait BEFORE sending a notification 
 
-- **[Group wait](#group-wait)**: the time to wait before sending the first notification for a new group of alerts.
-- **[Group interval](#group-interval)**: the time to wait before sending a notification about changes in the alert group.
-- **[Repeat interval](#repeat-interval)**: the time to wait before sending a notification if the group has not changed since the last notification.
-
-These timers reduce the number of notifications sent. By delaying the delivery of notifications, incoming alerts can be grouped into just one notification instead of many.
-
-{{< figure src="/media/docs/alerting/alerting-timing-options-flowchart-v2.png" max-width="750px" alt="A basic sequence diagram of the the notification policy timers" caption="A basic sequence diagram of the notification policy timers" >}}
+![](/grafana/media/docs/alerting/alerting-timing-options-flowchart-v2.png)
 
 <!--
 flowchart LR
@@ -99,9 +87,12 @@ flowchart LR
 
 Group wait is the duration Grafana waits before sending the first notification for a new group of alerts.
 
-This option helps reduce the number of notifications sent for related alerts occurring within a short time frame. The longer the group wait, the more time other alerts have to be included in the initial notification of the new group. The shorter the group wait, the earlier the first notification is sent, but at the risk of not including some alerts.
+This option helps reduce the number of notifications sent for related alerts occurring within a short time frame
+* The longer the group wait, the more time other alerts have to be included in the initial notification of the new group
+* The shorter the group wait, the earlier the first notification is sent, but at the risk of not including some alerts.
 
-If an alert is resolved before the duration elapses, no notification is sent for that alert. This reduces noise from flapping alerts.
+If an alert is resolved before the duration elapses, no notification is sent for that alert
+* This reduces noise from flapping alerts.
 
 **Example**
 
