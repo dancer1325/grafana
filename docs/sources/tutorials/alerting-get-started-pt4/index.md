@@ -70,14 +70,8 @@ refs:
       destination: /docs/grafana-cloud/alerting-and-irm/alerting/fundamentals/templates/
 ---
 
-<!-- INTERACTIVE page intro.md START -->
-
-This tutorial is a continuation of the [Get started with Grafana Alerting - Grouping notifications](http://www.grafana.com/tutorials/alerting-get-started-pt3/) tutorial.
-
-{{< youtube id="9CSrQGKeZwQ" >}}
-
-In this tutorial, you will learn:
-
+* goal
+  * 
 - The two types of templates in Grafana Alerting: labels and annotations and notification templates.
 - How to configure alert rules with summary and description annotations.
 - How to create a notification template that integrates with alert rule annotations.
@@ -90,10 +84,6 @@ In this tutorial, you will learn:
 <!-- INTERACTIVE ignore START -->
 
 {{< docs/ignore >}}
-
-## Set up the Grafana stack
-
-{{< /docs/ignore >}}
 
 ## Before you begin
 
