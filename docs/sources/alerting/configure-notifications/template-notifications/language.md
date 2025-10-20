@@ -42,39 +42,45 @@ refs:
 
 # Alerting template language
 
-Notification templates and alert rule templates, such as annotations and labels, both use the Go template language, [text/template](https://pkg.go.dev/text/template).
+* goal
+  * [Go text/template](https://pkg.go.dev/text/template)'s functions & operators / AVAILABLE |
+    * notification templates
+    * alert rule templates
 
-Both types of templates can use the same keywords, functions, and comparison operators of the Go template language, such as `range`, `if`, `and`, `index`, `eq`, and more.
-
-However, it's important to note that because notifications and alert rules operate in distinct context, some additional variables and functions are only available for either notification or alert rule templates. Refer to:
-
-- [Annotation and label template reference](ref:alert-rule-template-reference)
-- [Notification template reference](ref:notification-template-reference)
-
-This documentation provides an overview of the functions and operators of the Go template language that are available for both notification and alert rule templates.
+* Notification templates & alert rule templates (_Examples:_annotations and labels)
+  * 💡use Go text/template💡 
+    * ❌NOT ALL variables OR functions VALID for notification OR alert rule templates❌ 
 
 ## Print
 
-To print the value of something, use `{{` and `}}`. You can print the value of a [variable](#variables), a field of a variable, the result of a function, or the value of dot.
+* `{{ somethingToPrint }}`
+  * `somethingToPrint` ALLOWED
+    * [variable](#variables)'s
+      * value
+      * field
+    * function's result
+    * value of dot
 
-```
-{{ $values }}
-{{ $values.A.Value }}
-{{ humanize 1000.0 }}
-{{ .Alerts }}
-```
+    ```
+    {{ $values }}
+    {{ $values.A.Value }}
+    {{ humanize 1000.0 }}
+    {{ .Alerts }}
+    ```
 
-## Dot
+## Dot -- `.` --
 
-In `text/template`, there is a special cursor called dot, written as `.`. You can think of this cursor as a variable whose value changes depending on where in the template it is used.
+* == special cursor | `text/template`
+* == variable / 
+  * 👀's value -- depend on -- template's place | use👀
+    * [Notification Data](ref:reference-notificationdata) -- notification templates start -- 
 
-At the start of notification templates, dot (`.`) refers to [Notification Data](ref:reference-notificationdata).
+      ```
+      {{ .Alerts }}
+      ```
 
-```
-{{ .Alerts }}
-```
-
-In annotation and label templates, dot (`.`) is initialized with all alert data. It’s recommended to use the [`$labels` and `$values` variables](ref:alert-rule-template-reference-variables) instead to directly access the alert labels and query values.
+In annotation and label templates, dot (`.`) is initialized with all alert data
+* It’s recommended to use the [`$labels` and `$values` variables](ref:alert-rule-template-reference-variables) instead to directly access the alert labels and query values.
 
 {{< admonition type="note" >}}
 Dot (`.`) might refer to something else when used in a [range](#range), a [with](#with), or when writing [templates](#templates) used in other templates.

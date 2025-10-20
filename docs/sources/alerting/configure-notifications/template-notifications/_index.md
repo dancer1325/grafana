@@ -40,75 +40,74 @@ refs:
 
 # Template notifications
 
-You can use notification templates to change the title, message, and format of notifications.
+* allows
+  * changing the notifications
+    * title,
+    * message,
+    * format 
+      * restrictions == ❌NOT possible to modify❌ 
+        * the visual appearance
+          * _Example:_ add HTML OR CSS
+        * the notification integration message service's (slack, team, ...) design 
+        * the template's input
+        * webhooks' HTTP headers
 
-Grafana provides a **default template** for notification titles (`default.title`) and one default template for notification messages (`default.message`). Both templates display common alert details.
+* built-in templates
+  * display COMMON alert details 
+  * are
+    * `default.title`
+      * == **default template** -- for -- notification titles
+    * `default.message`
+      * == default template -- for -- notification messages
 
-You can also create a notification template to customize the content and format of your notification messages. For example:
+* custom notification template
+  * created | notification template group
+  * 's name
+    * ⚠️MUST be UNIQUE ACROSS ALL notification template groups⚠️
+      * recommendations
+        * avoid using built-in templates names 
+          * _Examples:_ `__subject`, `__text_values_list`, `__text_alert_list`, `default.title` and `default.message`
+  * 👀syntax👀
+    ```text,title=textWithGoTemplate
+    {{define "<NAME>"}}
+    ...
+    {{end}}
+    ```
+    * if you do NOT add specifically
+      * `{{define "<NAME>"}}` -> added AUTOMATICALLY `{{ define "<NOTIFICATION_TEMPLATE_NAME>" }}`
+      * `{{ end }}` -> added AUTOMATICALLY
 
-- Personalize the subject of an email or the title of a message.
-- Modify text within notifications, like selecting or omitting certain labels, annotations, and links.
-- Format text with bold and italic styles, and add or remove line breaks.
+* notification template group
+  * allows
+    * test & implement MULTIPLE templates TOGETHER
+  * syntax
+    ```text,title=textWithGoTemplate
+    {{define "<TEMPLATE_1_NAME>"}}
+    ...
+    {{end}}
+    {{define "<TEMPLATE_2_NAME>"}}
+    ...
+    {{end}}
+    ...
+    ```
 
-However, there are limitations. You cannot:
+* _[Examples](ref:examples)_
 
-- Modify Visual Appearance: Add HTML or CSS to email notifications for visual changes. Alter the design of notifications in messaging services like Slack or Microsoft Teams, such as adding custom blocks or adaptive cards.
-- Manage Media and Data: Customize the data structure or format passed to the templates, like adding new JSON fields or sending XML data for webhooks. Modify HTTP headers in webhooks beyond those defined in the configuration, or adjust the number, size, or placement of images.
+* recommendations
+  * ❌NOT add alert instances' extra information | notification templates❌
+    * Reason:🧠[use annotations or labels](ref:template-annotations-and-labels) 🧠
 
-Here's an [example](ref:examples) that displays the summary and description annotations for each alert in the notification:
+## Select a notification template for a contact point
 
-```go
-{{ define "custom.alerts" -}}
-{{ len .Alerts }} alert(s)
-{{ range .Alerts -}}
-  {{ template "alert.summary_and_description" . -}}
-{{ end -}}
-{{ end -}}
-{{ define "alert.summary_and_description" }}
-  Summary: {{.Annotations.summary}}
-  Status: {{ .Status }}
-  Description: {{.Annotations.description}}
-{{ end -}}
-```
+* uses
+  * 👀can be ACROSS MULTIPLE contact points👀
+    * == ❌NOT tied -- to -- specific contact point integrations❌
 
-The notification message would look like this:
+* fields / can be templated
+  * -- depend on -- contact point integration
 
-```
-2 alert(s)
-
-  Summary: The database server db1 has exceeded 75% of available disk space.
-  Status: firing
-  Description: This alert fires when a database server is at risk of running out of disk space. You should take measures to increase the maximum available disk space as soon as possible to avoid possible corruption.
-
-  Summary: The web server web1 has been responding to 5% of HTTP requests with 5xx errors for the last 5 minutes.
-  Status: resolved
-  Description: This alert fires when a web server responds with more 5xx errors than is expected. This could be an issue with the web server or a backend service.
-```
-
-{{< admonition type="note" >}}
-Avoid adding extra information about alert instances in notification templates, as this information will only be visible in the notification message.
-
-Instead, you should [use annotations or labels](ref:template-annotations-and-labels) to add information directly to the alert, ensuring it's also visible in the alert state and alert history within Grafana. You can then print the new alert annotation or label in notification templates.
-{{< /admonition >}}
-
-#### Select a notification template for a contact point
-
-Notification templates are not tied to specific contact point integrations, such as email or Slack, and the same template can be shared across multiple contact points.
-
-The notification template is assigned to the contact point to determine the notification message sent to contact point integrations.
-
-{{< figure src="/media/docs/alerting/how-notification-templates-works.png" max-width="1200px" caption="A flow of the alert notification process, from querying the alert rule to sending the alert notification message." >}}
-
-By default, Grafana provides default templates, such as `{{define "default.title"}}` and `{{define "default.message"}}`, to format notification messages.
+![](/grafana/media/docs/alerting/how-notification-templates-works.png)
 
 ## More information
 
-For further details on how to write notification templates, refer to:
-
-- [Select, create, and preview a notification template](ref:manage-notification-templates)
-- [Notification template reference](ref:reference)
-- [Notification template examples](ref:examples)
-
-{{< admonition type="tip" >}}
-For a practical example of templating, refer to our [Getting Started with Templating tutorial](https://grafana.com/tutorials/alerting-get-started-pt4/).
-{{< /admonition  >}}
+* [Notification Templating tutorial](https://grafana.com/tutorials/alerting-get-started-pt4/).
