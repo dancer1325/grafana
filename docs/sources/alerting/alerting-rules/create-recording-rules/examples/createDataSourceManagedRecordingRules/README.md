@@ -19,7 +19,8 @@
     * data source
       * Problems:
         * Problem1: NOTHING appear
-          * Note: NOT related to exist ALREADY a record rule | data source
+          * Note1: NOT related to exist ALREADY a record rule | data source
+          * Note2: valid | grafana cloud / enabled -- via -- Administration -> Plugins and Data -> Recorded queries
           * Solution: TODO:
     * query
       * == instant queries
