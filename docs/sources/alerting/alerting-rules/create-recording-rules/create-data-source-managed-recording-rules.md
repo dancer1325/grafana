@@ -30,6 +30,10 @@ refs:
     * useful | recording rules
       * Reason:🧠recording rule is evaluated BEFORE any other alert rule🧠
 
+* ways to create
+  * -- via -- Grafana UI
+  * AUTOMATICALLY | connect data source / has a recording rule
+
 ## requirements
 
 - write permission | Prometheus or Loki data source
@@ -45,40 +49,9 @@ refs:
     - use `/prometheus` prefix
     - [Query API](/docs/mimir/latest/operators-guide/reference-http-api/#querier--query-frontend) & [Ruler API](/docs/mimir/latest/operators-guide/reference-http-api/#ruler) are | SAME URL
 
-## Add new recording rule
+## namespace and group
 
-To create a new data source-managed recording rule:
-
-1. Click **Alerts & IRM** -> **Alerting** -> **Alert rules**.
-1. At the top of the Alert rules page, click **More** -> **New Grafana recording rule**.
-
-## Enter recording rule name
-
-The recording rule name must be a Prometheus metric name and contain no whitespace.
-
-## Define recording rule
-
-Select your data source and enter a quer
-The queries used in data source-managed recording rules always run as instant queries.
-
-## Add namespace and group
-
-1. From the **Namespace** dropdown, select an existing rule namespace or add a new one.
-
-   Namespaces can contain one or more rule groups and only have an organizational purpose.
-
-1. From the **Group** dropdown, select an existing group within the selected namespace or add a new one.
-
-   Rules within a group are run sequentially at a regular interval, with the same evaluation time.
-
-   Newly created rules are appended to the end of the group, and you can reorder them from the **Alert rules** page.
-
-## Add labels
-
-Optionally, you can add custom labels to the resulting metric by selecting existing key-value pairs from the drop down or entering the new key or value.
-
-## Query the new metric in dashboards or alert rules
-
-Click **Save rule** or **Save rule and exit** to save the rule.
-
-Once saved, the new recording metric is available for use in dashboards and alert rules.
+* Namespaces
+  * \>= 1 rule groups
+  * goal
+    * organizational purpose
