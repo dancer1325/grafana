@@ -18,9 +18,7 @@
     * == 1! value is calculated
 ## time-series
 * [Grafana](https://play.grafana.org/d/Zb3f4veGk/stats?orgId=1&from=now-6h&to=now&timezone=utc&editPanel=6&showCategory=Panel%20options)
-
-
-
+  * check table view
 
 # Value options
 * [Grafana plaground](https://play.grafana.org/d/Zb3f4veGk/stats?orgId=1&from=now-6h&to=now&timezone=utc&editPanel=14)
